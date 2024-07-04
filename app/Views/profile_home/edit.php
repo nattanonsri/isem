@@ -75,15 +75,15 @@
             <div class="col-12 mt-3">
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="disease" id="disease3"
+                        <input class="form-check-input" type="radio" name="disease_id" id="disease3"
                             value="ผู้สูงอายุไม่มีโรคประจำตัว" onclick="toggleCheckbox3(false)"
-                            <?= $profile['disease'] == 'ผู้สูงอายุไม่มีโรคประจำตัว' ? 'checked' : '' ?> />
+                            <?= $profile['disease_id'] == '1' ? 'checked' : '' ?> />
                         <label class="form-check-label" for="disease3">ผู้สูงอายุไม่มีโรคประจำตัว</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="disease" id="disease4"
+                        <input class="form-check-input" type="radio" name="disease_id" id="disease4"
                             value="ผู้สูงอายุมีโรคประจำตัว" onclick="toggleCheckbox3(true)"
-                            <?= $profile['disease'] == 'ผู้สูงอายุมีโรคประจำตัว' ? 'checked' : '' ?> />
+                            <?= $profile['disease_id'] == '2' ? 'checked' : '' ?> />
                         <label class="form-check-label" for="disease4">ผู้สูงอายุมีโรคประจำตัว</label>
                     </div>
                 </div>
@@ -91,7 +91,7 @@
             <div class="col-12 mt-3">
                 <div class="form-floating">
                     <input type="text" name="disease_details" id="disease_detailseMobile" class="form-control"
-                        placeholder="โรคประจำตัว" <?= $profile['disease'] == 'ผู้สูงอายุมีโรคประจำตัว' ? '' : 'disabled' ?>
+                        placeholder="โรคประจำตัว" <?= $profile['disease_id'] == '2' ? '' : 'disabled' ?>
                         value="<?= esc($profile['disease_details']) ?>" />
                     <label for="disease_detailseMobile">โรคประจำตัว</label>
                 </div>
@@ -99,14 +99,14 @@
             <div class="col-12 mt-3">
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="succor" id="succor3"
+                        <input class="form-check-input" type="radio" name="succor_id" id="succor3"
                             value="ผู้สูงอายุช่วยเหลือตัวเองไม่ได้"
-                            <?= $profile['succor'] == 'ผู้สูงอายุช่วยเหลือตัวเองไม่ได้' ? 'checked' : '' ?> />
+                            <?= $profile['succor_id'] == '1' ? 'checked' : '' ?> />
                         <label class="form-check-label" for="succor3">ผู้สูงอายุช่วยเหลือตัวเองไม่ได้</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="succor" id="succor4"
-                            value="ผู้สูงอายุช่วยเหลือตัวเองได้" <?= $profile['succor'] == 'ผู้สูงอายุช่วยเหลือตัวเองได้' ? 'checked' : '' ?> />
+                        <input class="form-check-input" type="radio" name="succor_id" id="succor4"
+                            value="ผู้สูงอายุช่วยเหลือตัวเองได้" <?= $profile['succor_id'] == '2' ? 'checked' : '' ?> />
                         <label class="form-check-label" for="succor4">ผู้สูงอายุช่วยเหลือตัวเองได้</label>
                     </div>
                 </div>
@@ -114,15 +114,15 @@
             <div class="col-12 mt-3">
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="relative" id="relative3"
+                        <input class="form-check-input" type="radio" name="relative_id" id="relative3"
                             value="ผู้สูงอายุไม่มีญาติ" onclick="toggleCheckbox4(false)"
-                            <?= $profile['relative'] == 'ผู้สูงอายุไม่มีญาติ' ? 'checked' : '' ?> />
+                            <?= $profile['relative_id'] == '1' ? 'checked' : '' ?> />
                         <label class="form-check-label" for="relative3">ผู้สูงอายุไม่มีญาติ</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="relative" id="relative4"
+                        <input class="form-check-input" type="radio" name="relative_id" id="relative4"
                             value="ผู้สูงอายุมีญาติ" onclick="toggleCheckbox4(true)"
-                            <?= $profile['relative'] == 'ผู้สูงอายุมีญาติ' ? 'checked' : '' ?>>
+                            <?= $profile['relative_id'] == '2' ? 'checked' : '' ?>>
                         <label class="form-check-label" for="relative4">ผู้สูงอายุมีญาติ</label>
                     </div>
                 </div>
@@ -130,7 +130,7 @@
             <div class="col-12 mt-3">
                 <div class="form-floating">
                     <input type="text" name="caretaker" id="caretakerMobile" class="form-control" placeholder="ผู้ดูแล"
-                        <?= $profile['relative'] == 'ผู้สูงอายุมีญาติ' ? '' : 'disabled' ?>
+                        <?= $profile['relative_id'] == '2' ? '' : 'disabled' ?>
                         value="<?= esc($profile['caretaker']) ?>" />
                     <label for="caretakerMobile">ผู้ดูแล</label>
                 </div>
@@ -226,7 +226,6 @@
                     showConfirmButton: false,
                     timer: 1500
                 }).then(function () {
-                    console.log(response);
                     window.location.href = '<?= base_url('profile') ?>'                    
                 });
             },

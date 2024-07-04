@@ -10,15 +10,13 @@ class Member extends Controller
     public function index()
     {
 
-        $model = new MemberModel();
-
-        $data['member'] = $model->getMember();
+       
 
         // var_dump($data);exit();
 
-        echo view('common/header', $data);
-        echo view('member/overview', $data);
-        echo view('common/footer', $data);
+        echo view('common/header');
+        echo view('member/dashboard');
+        echo view('common/footer');
 
     }
 

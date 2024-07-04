@@ -1,120 +1,214 @@
 <style>
     #map {
+        position: relative;
         width: 100%;
         height: 100vh;
+        z-index: 0;
+    }
+
+    #controls {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 1;
+        background-color: #80C4E9;
+        padding: 10px 35px 10px 35px;
+        border-radius: 10px;
+    }
+
+    #menubar {
+        position: absolute;
+        z-index: 1;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+
+    #frm-switch {
+        position: absolute;
+        z-index: 1;
+        top: 60px;
+        right: 10px;
+        cursor: pointer;
+        background-color: #fff;
+        padding: 10px 35px 10px 35px;
+        border-radius: 10px;
+        display: none;
 
     }
-    .slider{
 
+    .close-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        cursor: pointer;
     }
+
+    .form-switch {
+        padding-left: 1em;
+    }
+
+    .input-group {
+        position: absolute;
+        z-index: 1;
+        width: 250px;
+        top: 10px;
+        left: 60px;
+    }
+
 </style>
 
-
 <div id="map"></div>
-<div id="controls"></div>
+<div id="controls" class="shadow bg-body d-none"></div>
+<div id="menubar" class="shadow py-2 px-3 bg-body rounded"><i class="fa-solid fa-bars"></i></div>
 
+<form id="frm-search">
+    <div class="input-group shadow">
+        <input type="text" name="txtkeyword" class="form-control bg-light border-0 small" placeholder="ค้นหา..." aria-label="Search" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="button" name="submit" id="searchButton">
+                <i class="fas fa-search fa-sm"></i>
+            </button>
+        </div>
+    </div>
+    </form>
+
+<div id="frm-switch">
+    <i class="fa-solid fa-xmark close-btn fs-4 pe-1 pt-1"></i>
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="medicine">
+        <label class="form-check-label" for="medicine"><?= lang('Home.medicine'); ?></label>
+    </div>
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="relative">
+        <label class="form-check-label" for="relative"><?= lang('Home.relative'); ?></label>
+    </div>
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="disease">
+        <label class="form-check-label" for="disease"><?= lang('Home.disease'); ?></label>
+    </div>
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="succor">
+        <label class="form-check-label" for="succor"><?= lang('Home.succor'); ?></label>
+    </div>
+   
+</div>
+
+
+</div>
 
 <script>
-    const profileData = <?php echo $profile_json; ?>;
-    const jsArray = JSON.parse(JSON.stringify(profileData));
 
-    // สร้างแผนที่ที่กำหนดตำแหน่งเริ่มต้น
+    if (typeof map !== 'undefined') {
+        map.remove();
+    }
+
     var map = L.map('map').setView([13.7563, 100.5018], 10); // Bangkok, Thailand
 
-    // เพิ่ม tile layer ให้แผนที่
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
+        attribution: '© ISEM'
     }).addTo(map);
 
-    // ตำแหน่ง marker ที่ได้จาก jsArray
-    const markerPositions = jsArray.map(item => item.coordinates);
-    // console.log(markerPositions);
+    var profileData = <?php echo $profile_json; ?>;
 
-    // รูปภาพสำหรับ marker ทั้ง 10
-    // var markerImages = [
-    // 'path/to/image1.jpg',
-    // 'path/to/image2.jpg',
-    // 'path/to/image3.jpg',
-    // 'path/to/image4.jpg',
-    // 'path/to/image5.jpg',
-    // 'path/to/image6.jpg',
-    // 'path/to/image7.jpg',
-    // 'path/to/image8.jpg',
-    // 'path/to/image9.jpg',
-    // 'path/to/image10.jpg'
-    // ];
-
-    // สีสำหรับ marker ทั้ง 10
-    var markerColors = [
-        'red',
-        'blue',
-        'green',
-        'orange',
-        'purple',
-        'yellow',
-        'cyan',
-        'magenta',
-        'lime',
-        'pink'
-    ];
-
-    // สร้าง marker และเก็บไว้ใน array
+    var profile = JSON.parse(JSON.stringify(profileData));
     var markers = [];
 
-    var controls = document.getElementById('controls');
-    for (var i = 0; i < jsArray.length; i++) {
-        (function (index) {
-            var item = jsArray[index];
-
-            // ตรวจสอบว่าค่าพิกัดไม่เป็น null หรือ undefined
+    function addMarkers(profile) {
+        markers.forEach(m => map.removeLayer(m.marker));
+        markers = [];
+        
+        profile.forEach((item, index) => {
             if (!item.coordinates || item.coordinates.length !== 2) {
                 console.error(`Invalid coordinates for item at index ${index}`);
-                return; // ข้ามมาร์กเกอร์นี้ถ้าข้อมูลไม่ถูกต้อง
+                return;
             }
 
-            // สร้าง icon สำหรับ marker ที่มีสีไม่ซ้ำกัน
-            var blueIcon = new L.Icon({
+            let blueIcon = new L.Icon({
                 iconUrl: '<?= base_url('assets/icons/marker-icon-blue.png'); ?>',
                 shadowUrl: '<?= base_url('assets/icons/marker-shadow.png'); ?>',
-                iconSize: [25,41],
-                iconAnchor: [12,41],
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
                 popupAnchor: [1, -34],
                 shadowSize: [41, 41]
-
-            })
-
-            var marker = L.marker(item.coordinates, { icon: blueIcon }).bindPopup(`
-                        <img src="${item.file_image}" alt="Image for Marker ${index + 1}" style="width:100%;height:auto;">            
-                        <p style="font-size: 14pt">${item.fname} ${item.lname} <br/>
-                        - ${item.disease} <br/>
-                        - ${item.succor} <br/>
-                        - ${item.relative}
-                        <p>Marker at ${item.coordinates}</p>
-                        
-                    `);
-            markers.push(marker);
-            marker.addTo(map);
-
-            // สร้างปุ่มสวิตช์สำหรับ marker แต่ละตัว
-            var switchContainer = document.createElement('div');
-            switchContainer.innerHTML = `
-                        <label class="switch">
-                            <input type="checkbox" id="toggleMarker${item.disease}" checked>
-                            <span class="slider"></span>
-                        </label>
-                        <label for="toggleMarker${item.disease}">Marker ${item.disease}</label>
-                    `;
-            controls.appendChild(switchContainer);
-
-            // เพิ่ม event listener ให้ปุ่มสวิตช์
-            document.getElementById(`toggleMarker${item.disease}`).addEventListener('change', function () {
-                if (this.checked) {
-                    map.addLayer(marker);
-                } else {
-                    map.removeLayer(marker);
-                }
             });
 
-        })(i);
+            let marker = L.marker(item.coordinates, { icon: blueIcon }).bindPopup(`
+                    <img src="${item.file_image}" alt="Image for Marker ${index + 1}" style="width:100%;height:auto;">            
+                    <p style="font-size: 14pt">${item.fname} ${item.lname} <br/>
+                    - ${item.disease_name} <br/>
+                    - ${item.succor_name} <br/>
+                    - ${item.relative_name}
+                    <p>Marker at ${item.coordinates}</p>
+                `);
+
+            markers.push({ marker, item });
+            marker.addTo(map);
+        });
     }
+
+    addMarkers(profile);
+
+
+
+    $('#menubar').click(function () {
+        $('#frm-switch').toggle();
+    });
+
+    $('.close-btn').click(function () {
+        $('#frm-switch').hide();
+    });
+
+//     // $('#relative').change(function () {
+
+//     // })
+//     $(document).ready(function () {
+//         check_load_home();
+//     });
+
+//     $('#disease').change(function () {
+//         if ($(this).is(':checked')) {
+//             check_load_home('2')
+//         }else{
+//             check_load_home('1')
+//         }
+        
+//     });
+//     function check_load_home(status = 'all') {
+//     $.ajax({
+//         url: '<?= base_url('home/load_home_all') ?>',
+//         type: 'POST',
+//         data: {
+//             '<?= csrf_token() ?>': '<?= csrf_hash() ?>',
+//             status: status
+//         },
+//         success: function(response) {
+//             $('#map').html(response.map_html); // Assuming the response contains the updated map HTML
+//         },
+       
+//     });
+// }
+    // function load_home_all() {
+ 
+    //     if ($(this).is(':checked')) {
+
+    //         $.ajax({
+    //             url: '',
+    //             type: 'POST',
+    //             data: {
+    //                
+    //                 reletive: ,
+    //             },
+    //             dataType: 'json',
+    //             success: function (data) {
+    //                 if (data.status == 200) {
+    //                     console.log(data.message);
+    //                 } else {
+    //                     console.log(data.message);
+    //                 }
+    //             },
+    //         });
+    // };
+
+
 </script>

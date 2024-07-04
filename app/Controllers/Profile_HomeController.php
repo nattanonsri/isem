@@ -6,87 +6,99 @@ use App\Models\AdminProfileModel;
 use CodeIgniter\Controller;
 use Ramsey\Uuid\Uuid;
 
-
-
 class Profile_HomeController extends Controller
 {
+    protected $helpers = ['url', 'form'];
     public function index()
     {
+        $user = new Profile_HomeModel();
 
-        $model = new Profile_HomeModel();
+        $profile = $user->getProfileAll();
 
-        $data['profile'] = $model->getProfileHome();
+        $data['profile'] = $profile;
 
         echo view('common/header', $data);
         echo view('profile_home/index', $data);
         echo view('common/footer', $data);
 
     }
-    public function create()
+    public function createProfile()
+    {
+        echo view('common/header', ['title' => 'ฟอร์มเพิ่มข้อมูล']);
+        echo view('profile_home/create');
+        echo view('common/footer');
+    }
+
+    public function uploadForm()
     {
 
-
-        $model = new Profile_HomeModel();
-
-        $uuid = Uuid::uuid4();
-
-        if ($this->request->getMethod() === 'POST') {
-
-            $file = $this->request->getFile('file_image');
-
-            // if ($file->isValid() && !$file->hasMoved()) {
-
+        $insertProfile = new Profile_HomeModel();
+        if ($this->request->getPost()) {
+            $prefix = $this->request->getPost('prefix');
             $fname = $this->request->getPost('fname');
             $lname = $this->request->getPost('lname');
+            $card_id = $this->request->getPost('card_id');
             $birthdate = $this->request->getPost('birthdate');
+            $coordinates = $this->request->getpost('coordinates');
+            $disease_id = $this->request->getPost('disease_id');
+            $disease_details = $this->request->getPost('disease_details');
+            $succor_id = $this->request->getPost('succor_id');
+            $relative_id = $this->request->getPost('relative_id');
+            $caretaker = $this->request->getPost('caretaker');
+            $medicines = $this->request->getPost('medicines');
+            $medicines = $this->request->getPost('medicines');
+            $file = $this->request->getFile('file_image');
+
 
             $imageNameUpload = "{$fname}-{$lname}-{$birthdate}.jpeg";
             $file->move('uploads/profiles/', $imageNameUpload);
-            $filePath = 'uploads/profiles/' . $imageNameUpload;
+            $file_image = 'uploads/profiles/' . $imageNameUpload;
 
-            $model->save([
-                'uuid' => $uuid->toString(),
-                'prefix' => $this->request->getPost('prefix'),
-                'fname' => $this->request->getPost('fname'),
-                'lname' => $this->request->getPost('lname'),
-                'card_id' => $this->request->getPost('card_id'),
-                'birthdate' => $this->request->getPost('birthdate'),
-                'disease' => $this->request->getPost('disease'),
-                'disease_details' => $this->request->getPost('disease_details'),
-                'succor' => $this->request->getPost('succor'),
-                'relative' => $this->request->getPost('relative'),
-                'caretaker' => $this->request->getPost('caretaker'),
-                'medicines' => $this->request->getPost('medicines'),
-                'coordinates' => $this->request->getPost('coordinates'),
-                'file_image' => $filePath
-            ]);
+            $data = array(
+                'uuid' => Uuid::uuid4()->toString(),
+                'prefix' => $prefix,
+                'fname' => $fname,
+                'lname' => $lname,
+                'card_id' => $card_id,
+                'birthdate' => $birthdate,
+                'coordinates' => $coordinates,
+                'disease_id' => $disease_id,
+                'disease_details' => $disease_details,
+                'succor_id' => $succor_id,
+                'relative_id' => $relative_id,
+                'caretaker' => $caretaker,
+                'medicines' => $medicines,
+                'file_image' => $file_image,
+            );
 
+            $insert = $insertProfile->insert($data);
 
-            return redirect()->to('/profile')->with('success', 'Profile created successfully');
-            // } else {
-            //     return redirect()->back()->with('error', 'File upload failed: ' . $file->getErrorString());
-            // }
-        } else {
-            echo view('common/header', ['title' => 'ฟอร์มเพิ่มข้อมูล']);
-            echo view('profile_home/create');
-            echo view('common/footer');
+            if ($insert) {
+                $data = array('status' => 200, 'message' => 'success');
+            } else {
+                $data = array('status' => 400, 'message' => 'error');
+            }
+
+            echo json_encode($data);
+            exit();
         }
-
+        // echo '<pre>';
+        // var_dump($imageNameUpload);
+        // exit();
 
     }
 
     public function edit($id)
     {
 
-        $model = new Profile_HomeModel();
+        $editUser = new Profile_HomeModel();
 
         if (!empty($id)) {
             $data = [
-                'profile' => $model->find($id),
+                'profile' => $editUser->find($id),
                 'title' => 'แก้ไข ข้อมูลผู้สูงอายุ'
             ];
         }
-
         // chech profile edit
         if (!$data['profile']) {
             log_message('error', 'UUID: ' . $id);
@@ -104,24 +116,17 @@ class Profile_HomeController extends Controller
                 'lname' => $this->request->getPost('lname'),
                 'card_id' => $this->request->getPost('card_id'),
                 'birthdate' => $this->request->getPost('birthdate'),
-                'disease' => $this->request->getPost('disease'),
+                'disease_id' => $this->request->getPost('disease_id'),
                 'disease_details' => $this->request->getPost('disease_details'),
-                'succor' => $this->request->getPost('succor'),
-                'relative' => $this->request->getPost('relative'),
+                'succor_id' => $this->request->getPost('succor_id'),
+                'relative_id' => $this->request->getPost('relative_id'),
                 'caretaker' => $this->request->getPost('caretaker'),
                 'medicines' => $this->request->getPost('medicines'),
                 'coordinates' => $this->request->getPost('coordinates'),
 
             ];
 
-
-
             if ($file->isValid() && !$file->hasMoved()) {
-
-                // list($width, $height) = getimagesize($file->getPathname());
-
-                // if ($width == 1920 && $height == 1080) {
-
                 $profile = $data['profile'];
 
                 if ($profile['file_image']) {
@@ -136,11 +141,9 @@ class Profile_HomeController extends Controller
                 $file->move('uploads/profiles/', $imageName);
                 $filePath = 'uploads/profiles/' . $imageName;
                 $updateData['file_image'] = $filePath;
-                // } else {
-                //     return redirect()->back()->with('error', 'Image must be 1920x1080 pixels.');
-                // }
+
             }
-            if ($model->save($updateData)) {
+            if ($editUser->save($updateData)) {
                 return redirect()->to('/profile')->with('success', 'Profile created successfully');
             } else {
                 $data['info_msg'] = 'อัพเดท profile ผิดพลาด';

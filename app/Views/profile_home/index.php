@@ -40,7 +40,7 @@
             <h5 class="card-title">
               <?= esc($row['prefix'] . $row['fname']); ?>&nbsp;<?= esc($row['lname']); ?>
             </h5>
-            <p class="card-text">โรคประจำตัว : <?= esc($row['disease_details'] ?? 'ไม่มี'); ?><br>
+            <p class="card-text">โรคประจำตัว : <?= esc($row['disease_name'] ?? 'ไม่มี'); ?><br>
               ผู้ดูแล : <?= esc($row['caretaker'] ?? 'ไม่มี'); ?><br>
               ยาที่ใช้ : <?= esc($row['medicines'] ?? 'ไม่มี'); ?></p>
             <div class="text-end">
@@ -103,7 +103,7 @@
             <h5 class="card-title">
               <?= esc($row['prefix'] . $row['fname']); ?>&nbsp;<?= esc($row['lname']); ?>
             </h5>
-            <p class="card-text">โรคประจำตัว : <?= esc($row['disease_details'] ?? 'ไม่มี') ?><br>
+            <p class="card-text">โรคประจำตัว : <?= esc($row['disease_name'] ?? 'ไม่มี') ?><br>
               ผู้ดูแล : <?= esc($row['caretaker'] ?? 'ไม่มี'); ?><br>
               ยาที่ใช้ : <?= esc($row['medicines'] ?? 'ไม่มี'); ?></p>
             <div class="text-end">
@@ -111,8 +111,8 @@
               <div class="btn-group " role="group" aria-label="Basic mixed styles example">
                 <a href="<?= base_url('/profile/delete/' . esc($row['id'])) ?>"
                   class="btn btn-danger deleteBtnMobile">ลบข้อมูล</a>
-                <a href="<?= base_url('/profile/edit/' . esc($row['id'])) ?>" class="btn btn-warning">แก้ไข</a>
-                <a href="#" class="btn btn-primary">ดูเพิ่มเติม</a>
+                <a href="<?= base_url('/profile/edit/' . esc($row['id'])) ?>" class="btn btn-warning ">แก้ไขข้อมูล</a>
+                <!-- <a href="#" class="btn btn-primary">ดูเพิ่มเติม</a> -->
               </div>
             </div>
           </div>
