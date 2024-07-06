@@ -20,6 +20,9 @@ class Home extends Controller
         $model = new Profile_HomeModel();
 
         $profiles = $model->getProfileAll();
+        // $birthDate = '1990-07-06'; // วันที่เกิด
+        // $age = $this->calculateAge($birthDate); 
+
 
         foreach ($profiles as &$profile) {
             if (isset($profile['coordinates'])) {
@@ -34,31 +37,23 @@ class Home extends Controller
         echo view('home/index', $data);
         echo view('common/footer');
     }
-    // public function checkSwitch()
-    // {
-    //     $db = Database::connect();
-    //     if ($this->request->getPost()) {
-    //         $uuid = $this->request->getPost('reletive[uuid]');
-    //         $relative = $db->table('tb_user_relative as rel')
-    //         ->select('rel.id, rel.uuid, rel.name_th, user.uuid as user_uuid, user.fname, user.lname')
-    //         ->join('tb_user as user', 'user.relative_id = rel.id', 'left')
-    //         ->where('rel.uuid', $uuid)
-    //         ->get()
-    //         ->getResultArray();
 
-    //         if($relative){
-    //             $data = array('status' => 200, 'message' => 'success');
-    //         }else{
-    //             $data = array('status' => 400, 'message' => 'error');
-    //         }
-            
-    //         echo json_encode($data);
-    //         exit();
 
-    //     }
-    // }
 
-    public function load_home_all() {
-        
+    public function check_search_user()
+    {
+        $db = Database::connect();
+
+        if ($this->request->getPost()) {
+            $search = $this->request->getPost('search');
+            $check_user = $db->table('tb_user');
+            $check_user->where('fname >', $search);
+            $check_user->where('lname >', $search);
+
+            $query = $check_user->get();
+            $result = $query->getResultArray();
+            var_dump($result);
+        }
     }
+
 }

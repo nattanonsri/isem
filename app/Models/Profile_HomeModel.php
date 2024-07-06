@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
-
 class Profile_HomeModel extends Model
 {
     protected $table = 'tb_user';

@@ -11,7 +11,7 @@ $routes->setTranslateURIDashes(false);
 $routes->set404Override();
 $routes->setAutoRoute(true);
 $routes->get('/', 'Home::index');
-$routes->get('home/checkSwitch/', 'Home::checkSwitch');
+$routes->get('home/check_search_user/', 'Home::check_search_user');
 
 // $routes->get('member', 'Member::index');
 

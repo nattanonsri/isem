@@ -55,7 +55,6 @@
         top: 10px;
         left: 60px;
     }
-
 </style>
 
 <div id="map"></div>
@@ -64,14 +63,15 @@
 
 <form id="frm-search">
     <div class="input-group shadow">
-        <input type="text" name="txtkeyword" class="form-control bg-light border-0 small" placeholder="ค้นหา..." aria-label="Search" aria-describedby="basic-addon2">
+        <input type="text" name="txtkeyword" id="txtkeyword" class="form-control bg-light border-0 small"
+            placeholder="ค้นหา..." aria-label="Search" aria-describedby="basic-addon2">
         <div class="input-group-append">
-            <button class="btn btn-primary" type="button" name="submit" id="searchButton">
+            <button class="btn btn-primary" type="button" onclick="searchButton();">
                 <i class="fas fa-search fa-sm"></i>
             </button>
         </div>
     </div>
-    </form>
+</form>
 
 <div id="frm-switch">
     <i class="fa-solid fa-xmark close-btn fs-4 pe-1 pt-1"></i>
@@ -91,7 +91,7 @@
         <input class="form-check-input" type="checkbox" id="succor">
         <label class="form-check-label" for="succor"><?= lang('Home.succor'); ?></label>
     </div>
-   
+
 </div>
 
 
@@ -117,7 +117,7 @@
     function addMarkers(profile) {
         markers.forEach(m => map.removeLayer(m.marker));
         markers = [];
-        
+
         profile.forEach((item, index) => {
             if (!item.coordinates || item.coordinates.length !== 2) {
                 console.error(`Invalid coordinates for item at index ${index}`);
@@ -159,56 +159,27 @@
         $('#frm-switch').hide();
     });
 
-//     // $('#relative').change(function () {
+    function searchButton() {
+        // let form =  $('#frm-search').serialize();
+        let search = $('#txtkeyword').val();
 
-//     // })
-//     $(document).ready(function () {
-//         check_load_home();
-//     });
-
-//     $('#disease').change(function () {
-//         if ($(this).is(':checked')) {
-//             check_load_home('2')
-//         }else{
-//             check_load_home('1')
-//         }
-        
-//     });
-//     function check_load_home(status = 'all') {
-//     $.ajax({
-//         url: '<?= base_url('home/load_home_all') ?>',
-//         type: 'POST',
-//         data: {
-//             '<?= csrf_token() ?>': '<?= csrf_hash() ?>',
-//             status: status
-//         },
-//         success: function(response) {
-//             $('#map').html(response.map_html); // Assuming the response contains the updated map HTML
-//         },
-       
-//     });
-// }
-    // function load_home_all() {
- 
-    //     if ($(this).is(':checked')) {
-
-    //         $.ajax({
-    //             url: '',
-    //             type: 'POST',
-    //             data: {
-    //                
-    //                 reletive: ,
-    //             },
-    //             dataType: 'json',
-    //             success: function (data) {
-    //                 if (data.status == 200) {
-    //                     console.log(data.message);
-    //                 } else {
-    //                     console.log(data.message);
-    //                 }
-    //             },
-    //         });
-    // };
-
+        console.log(search);
+        $.ajax({
+            url: '<?= base_url('Home/check_search_user'); ?>',
+            type: 'POST',
+            data: {
+                search: search,
+                '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.success == 200) {
+                    console.log(data.message);
+                } else {
+                    console.log(data.message);
+                }
+            }
+        });
+    }
 
 </script>
