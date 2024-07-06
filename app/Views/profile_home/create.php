@@ -6,7 +6,7 @@
             <?= \Config\Services::validation()->listErrors(); ?>
         </div>
     </div>
-    <form id="frmMobile" enctype="multipart/form-data">
+    <form id="frmMobile" method="post" enctype="multipart/form-data">
         <?= csrf_field() ?>
         <div class="row mt-3">
 
@@ -30,13 +30,15 @@
 
             <div class="col-6 mt-3">
                 <div class="form-floating">
-                    <input class="form-control" type="text" name="fname" id="fnameMobile" placeholder="ชื่อจริง" required>
+                    <input class="form-control" type="text" name="fname" id="fnameMobile" placeholder="ชื่อจริง"
+                        required>
                     <label for="fnameMobile">ชื่อจริง&nbsp;<span class="text-danger">*</span></label>
                 </div>
             </div>
             <div class="col-6 mt-3">
                 <div class="form-floating">
-                    <input class="form-control" type="text" name="lname" id="lnameMobile" placeholder="นามสกุล" required>
+                    <input class="form-control" type="text" name="lname" id="lnameMobile" placeholder="นามสกุล"
+                        required>
                     <label for="lnameMobile">นามสกุล&nbsp;<span class="text-danger">*</span></label>
                 </div>
             </div>
@@ -72,13 +74,13 @@
             <div class="col-12 mt-3">
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="disease" id="disease3"
-                            value="ผู้สูงอายุไม่มีโรคประจำตัว" onclick="toggleCheckbox3(false)" checked />
+                        <input class="form-check-input" type="radio" name="disease_id" id="disease3" value="1"
+                            onclick="toggleCheckbox3(false)" checked />
                         <label class="form-check-label" for="disease3">ผู้สูงอายุไม่มีโรคประจำตัว</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="disease" id="disease4"
-                            value="ผู้สูงอายุมีโรคประจำตัว" onclick="toggleCheckbox3(true)" />
+                        <input class="form-check-input" type="radio" name="disease_id" id="disease4" value="2"
+                            onclick="toggleCheckbox3(true)" />
                         <label class="form-check-label" for="disease4">ผู้สูงอายุมีโรคประจำตัว</label>
                     </div>
                 </div>
@@ -93,13 +95,11 @@
             <div class="col-12 mt-3">
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="succor" id="succor3"
-                            value="ผู้สูงอายุช่วยเหลือตัวเองไม่ได้" checked />
+                        <input class="form-check-input" type="radio" name="succor_id" id="succor3" value="1" checked />
                         <label class="form-check-label" for="succor3">ผู้สูงอายุช่วยเหลือตัวเองไม่ได้</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="succor" id="succor4"
-                            value="ผู้สูงอายุช่วยเหลือตัวเองได้" />
+                        <input class="form-check-input" type="radio" name="succor_id" id="succor4" value="2" />
                         <label class="form-check-label" for="succor4">ผู้สูงอายุช่วยเหลือตัวเองได้</label>
                     </div>
                 </div>
@@ -107,13 +107,13 @@
             <div class="col-12 mt-3">
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="relative" id="relative3"
-                            value="ผู้สูงอายุไม่มีญาติ" onclick="toggleCheckbox4(false)" checked />
+                        <input class="form-check-input" type="radio" name="relative_id" id="relative3" value="1"
+                            onclick="toggleCheckbox4(false)" checked />
                         <label class="form-check-label" for="relative3">ผู้สูงอายุไม่มีญาติ</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="relative" id="relative4"
-                            value="ผู้สูงอายุมีญาติ" onclick="toggleCheckbox4(true)">
+                        <input class="form-check-input" type="radio" name="relative_id" id="relative4" value="2"
+                            onclick="toggleCheckbox4(true)">
                         <label class="form-check-label" for="relative4">ผู้สูงอายุมีญาติ</label>
                     </div>
                 </div>
@@ -127,20 +127,21 @@
             </div>
             <div class="col-12 mt-3">
                 <div class="form-floating">
-                    <input class="form-control" type="text" name="medicines" id="medicinesMobile"
-                        placeholder="ยาที่ใช้" required>
+                    <input class="form-control" type="text" name="medicines" id="medicinesMobile" placeholder="ยาที่ใช้"
+                        required>
                     <label for="medicinesMobile">ยาที่ใช้</label>
                 </div>
             </div>
             <div class="col-12 mt-3 mb-3">
                 <div class="fform-group">
                     <label for="file_imageMobile">รูปภาพบ้าน&nbsp;<span class="text-danger">*</span></label>
-                    <input class="form-control" type="file" name="file_image" id="file_imageMobile" accept="image/*" required>
+                    <input class="form-control" type="file" name="file_image" id="file_imageMobile" accept="image/*" capture="camera"
+                        required>
                 </div>
             </div>
             <div class="col-12 mb-3 text-right">
                 <a class="btn btn-light" href="<?= base_url('/profile') ?>">Cancel</a>
-                <button class="btn btn-primary" type="submit" name="submit" id="submitBtnMobile">เพิ่มข้อมูล</button>
+                <button class="btn btn-primary" type="button" onclick="submitBtnMobile()">เพิ่มข้อมูล</button>
             </div>
         </div>
     </form>
@@ -195,43 +196,79 @@
         x.value = position.coords.latitude + ", " + position.coords.longitude;
     }
 
-    $('#submitBtnMobile').on('click', function (e) {
-        $(this).prop('disabled', true);
 
-        e.preventDefault();
-
+    function submitBtnMobile() {
         var form = $('#frmMobile')[0];
         var formData = new FormData(form);
-        var url = '<?= base_url('profile/create/') ?>';
-
+        var url = '<?= base_url('/profile/uploadForm') ?>';
         $.ajax({
             url: url,
             type: 'POST',
+            dataType: 'json',
             data: formData,
             processData: false,
             contentType: false,
-            success: function (response) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'บันทึกข้อมูลสำเร็จ',
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(function () {
-                    console.log(response);
-                    window.location.href = '<?= base_url('profile') ?>'                    
-                });
+            success: function (data) {
+                if (data.status == 200) {
+                    Swal.fire({
+                        icon: "success",
+                        title: data.message,
+                        text: ''
+                    }).then(function () {
+                        window.location.href = '<?= base_url('/profile') ?>';
+                    });
+                }
+                else {
+                    Swal.fire({
+                        icon: "success",
+                        title: data.message,
+                        text: ''
+
+                    });
+                }
             },
             error: function (xhr, status, error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'เกิดข้อผิดพลาด',
-                    text: xhr.responseText
-                });
-            },
-            complete: function () {
-                // เมื่อเสร็จสิ้นการส่งข้อมูล ให้เปิดปุ่มอีกครั้ง
-                $('#submitBtnMobile').prop('disabled', false);
+                console.log(error);
             }
         });
-    });
+    }
+
+    // $('#submitBtnMobile').on('click', function (e) {
+    //     // $(this).prop('disabled', true);
+
+    //     e.preventDefault();
+
+    //     var form = $('#frmMobile')[0];
+    //     var formData = new FormData(form);
+    //     console.log(formData);
+
+    //     // $.ajax({
+    //     //     url: '<?= base_url('profile/uploadForm/') ?>',
+    //     //     type: 'POST',
+    //     //     data: formData,
+    //     //     processData: false,
+    //     //     contentType: false,
+    //     //     success: function (response) {
+    //     //         Swal.fire({
+    //     //             icon: 'success',
+    //     //             title: 'บันทึกข้อมูลสำเร็จ',
+    //     //             showConfirmButton: false,
+    //     //             timer: 1500
+    //     //         }).then(function () {
+    //     //             // window.location.href = '<?= base_url('profile') ?>'
+    //     //         });
+    //     //     },
+    //     //     error: function (xhr, status, error) {
+    //     //         Swal.fire({
+    //     //             icon: 'error',
+    //     //             title: 'เกิดข้อผิดพลาด',
+    //     //             text: xhr.responseText
+    //     //         });
+    //     //     },
+    //     //     complete: function () {
+    //     //         // เมื่อเสร็จสิ้นการส่งข้อมูล ให้เปิดปุ่มอีกครั้ง
+    //     //         $('#submitBtnMobile').prop('disabled', false);
+    //     //     }
+    //     // });
+    // });
 </script>

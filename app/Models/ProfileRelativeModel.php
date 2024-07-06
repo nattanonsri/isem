@@ -1,28 +1,28 @@
 <?php
-
 namespace App\Models;
 
 use CodeIgniter\Model;
 
-class AdminProfileModel extends Model
+class ProfileRelativeModel extends Model
 {
-
-    protected $table = 'tb_admin_profile';
-
+    protected $table = 'tb_user_relative';
     protected $primaryKey = 'id';
+    protected $useAutoIncrement = true;
     protected $returnType = 'array';
-
-    protected $allowedFields = ['uuid', 'fname', 'lname', 'birthday', 'gender', 'phone', 'username', 'password'];
-    protected bool $allowEmptyInserts = false;
+    protected $allowedFields = ['uuid', 'name_th', 'name_en'];
+    protected bool $allowEmptyInserts = true;
     protected bool $updateOnlyChanged = true;
+
+    // Dates
     protected $useTimestamps = true;
+    protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
-    protected $dateFormat = 'datetime';
+
     // Validation
     protected $validationRules = [];
     protected $validationMessages = [];
-    protected $skipValidation = false;
+    protected $skipValidation = true;
     protected $cleanValidationRules = true;
 
     // Callbacks
@@ -36,17 +36,21 @@ class AdminProfileModel extends Model
     protected $beforeDelete = [];
     protected $afterDelete = [];
 
-    public function getAdminProfile()
+    function getRelative()
     {
-
         return $this->findAll();
-
     }
-
-    public function ckeckDuplicate($fname, $lname)
+    function getUiidRel()
     {
-        $query = $this->where('fname', $fname)->where('lname', $lname)->get();
-
-        return ($query->getNumRows() > 0);
+        return $this->select('uuid')->findAll();
     }
+    function getUserRelativeByUUID($uuid)
+    {
+        return $this->select('rel.id, rel.uuid, rel.name_th, user.uuid as user_uuid, user.fname, user.lname')
+                    ->join('tb_user as user', 'user.relative_id = rel.id', 'left')
+                    ->where('rel.uuid', $uuid)
+                    ->findAll();
+    }
+
+
 }
