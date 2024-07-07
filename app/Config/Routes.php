@@ -13,7 +13,7 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Home::index');
 $routes->get('home/check_search_user/', 'Home::check_search_user');
 
-// $routes->get('member', 'Member::index');
+$routes->get('/backend', 'backend::dashboard');
 
 // $routes->match(['get', 'post'], 'member/create', 'Member::create');
 

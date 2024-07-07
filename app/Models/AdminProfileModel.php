@@ -6,12 +6,9 @@ use CodeIgniter\Model;
 
 class AdminProfileModel extends Model
 {
-
     protected $table = 'tb_admin_profile';
-
     protected $primaryKey = 'id';
     protected $returnType = 'array';
-
     protected $allowedFields = ['uuid', 'fname', 'lname', 'birthday', 'gender', 'phone', 'username', 'password'];
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -38,15 +35,12 @@ class AdminProfileModel extends Model
 
     public function getAdminProfile()
     {
-
         return $this->findAll();
-
     }
 
     public function ckeckDuplicate($fname, $lname)
     {
         $query = $this->where('fname', $fname)->where('lname', $lname)->get();
-
         return ($query->getNumRows() > 0);
     }
 }

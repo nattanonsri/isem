@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use DateTime;
+
 class Profile_HomeModel extends Model
 {
-    protected $table = 'tb_user';
+    protected $table = 'tb_user as user';
     protected $primaryKey = 'id';
     protected $useAutoIncrement = true;
     protected $returnType = 'array';
@@ -57,16 +59,13 @@ class Profile_HomeModel extends Model
         return $this->findAll();
     }
 
-    public function getProfileAll($disease = '',$relative= '', $succor = '')
+    public function getProfileAll($search = '')
     {
-        $db = \Config\Database::connect();
-
-        $builder = $db->table('tb_user as user');
+        $builder = $this->db->table($this->table);
         $builder->select('user.id, 
         user.uuid as user_uuid,
         user.prefix,
-        user.fname, 
-        user.lname, 
+        CONCAT(user.fname, " ", user.lname) as fullname,
         user.card_id, 
         user.birthdate, 
         disease.uuid as disease_uuid, 
@@ -85,23 +84,22 @@ class Profile_HomeModel extends Model
         $builder->join('tb_user_succor as succor', 'succor.id = user.succor_id', 'left');
         $builder->join('tb_user_relative as relative', 'relative.id = user.relative_id', 'left');
 
-        if($disease != ''){
-            $builder->where('user.disease_id', $disease);
+        if (!empty($search)) {
+            $builder->like('CONCAT(user.fname, " ", user.lname)', $search);
         }
-        if($relative != ''){
-            $builder->where('user.relative_id', $relative);
-        }
-        if($succor != ''){
-            $builder->where('user.succor_id', $succor);
-        }
-        
+
         $query = $builder->get();
         $results = $query->getResultArray();
-
-        
-
 
         return $results;
     }
 
+    public function calculateAge($birthDate)
+    {
+        $birthDate = new DateTime($birthDate);
+        $currentDate = new DateTime();
+        $age = $currentDate->diff($birthDate)->y;
+
+        return $age;
+    }
 }

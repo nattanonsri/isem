@@ -102,15 +102,16 @@
     if (typeof map !== 'undefined') {
         map.remove();
     }
-
+    var key = 'SP0YvasznjoCPiwDZi6N';
     var map = L.map('map').setView([13.7563, 100.5018], 10); // Bangkok, Thailand
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        apiKey: key,
         attribution: '© ISEM'
     }).addTo(map);
 
     var profileData = <?php echo $profile_json; ?>;
-
+    
     var profile = JSON.parse(JSON.stringify(profileData));
     var markers = [];
 
@@ -160,9 +161,7 @@
     });
 
     function searchButton() {
-        // let form =  $('#frm-search').serialize();
         let search = $('#txtkeyword').val();
-
         console.log(search);
         $.ajax({
             url: '<?= base_url('Home/check_search_user'); ?>',
@@ -173,8 +172,10 @@
             },
             dataType: 'json',
             success: function (data) {
-                if (data.success == 200) {
-                    console.log(data.message);
+                if (data.status == 200) {
+                    profile = data.data;
+                    addMarkers(profile);
+                    console.log(data.data);
                 } else {
                     console.log(data.message);
                 }
