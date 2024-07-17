@@ -41,6 +41,12 @@ class AdminProfileModel extends Model
     public function ckeckDuplicate($fname, $lname)
     {
         $query = $this->where('fname', $fname)->where('lname', $lname)->get();
-        return ($query->getNumRows() > 0);
+        
+        if($query->getNumRows() > 0){
+            return $query->getNumRows();
+        }else{
+            return $query;
+        }
+        // return ($query->getNumRows() > 0);
     }
 }

@@ -136,7 +136,7 @@
 
             let marker = L.marker(item.coordinates, { icon: blueIcon }).bindPopup(`
                     <img src="${item.file_image}" alt="Image for Marker ${index + 1}" style="width:100%;height:auto;">            
-                    <p style="font-size: 14pt">${item.fname} ${item.lname} <br/>
+                    <p style="font-size: 14pt">${item.prefix}${item.fullname} <br/>
                     - ${item.disease_name} <br/>
                     - ${item.succor_name} <br/>
                     - ${item.relative_name}
@@ -162,7 +162,6 @@
 
     function searchButton() {
         let search = $('#txtkeyword').val();
-        console.log(search);
         $.ajax({
             url: '<?= base_url('Home/check_search_user'); ?>',
             type: 'POST',

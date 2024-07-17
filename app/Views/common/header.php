@@ -23,6 +23,8 @@
 
   <link href="<?= base_url() ?>/assets/sb-admin-2/sb-admin-2.min.css" rel="stylesheet">
 
+  <link href="<?= base_url() ?>/assets/aos/css/aos.css" rel="stylesheet" />
+
   <!-- MapTiler SDK -->
   <script src="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.umd.js"></script>
   <link href="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.css" rel="stylesheet" />
@@ -39,6 +41,8 @@
   <script src="<?= base_url() ?>assets/ajaxjs/jquery-3.6.0.min.js"></script>
   <!-- sweetaert2 -->
   <script src="<?= base_url() ?>assets/sweetaert2/js/sweetalert2@11.js"></script>
+  
+  <script src="<?= base_url() ?>/assets/aos/js/aos.js"></script>
 
 
 </head>
@@ -46,6 +50,9 @@
 <style>
   * {
     font-family: 'Kanit', sans-serif;
+  }
+  body{
+    color: black;
   }
 </style>
 

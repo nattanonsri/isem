@@ -1,10 +1,9 @@
-
-
-
 <script type="text/javascript">
-$(function(){
-      
-});
+    $(function () {
+
+    });
+    AOS.init();
 </script>
 </body>
+
 </html>

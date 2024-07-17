@@ -1,238 +1,138 @@
-<!-- Web -->
-<div class="d-none d-sm-block">
-    <div class="vh-100 gradient-custom">
-        <div class="container py-5 h-100">
-            <div class="row justify-content-center align-items-center h-100">
-                <div class="col-12 col-lg-9 col-xl-7">
-                    <div class="card shadow-2-strong card-registration" style="border-radius: 1rem;">
-                        <div class="card-body p-5 ">
+<!-- <div class="d-none d-sm-block"> -->
+<div class="vh-100 gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-12 col-lg-9 col-xl-7">
+                <div class="card shadow-2-strong card-registration" style="border-radius: 1rem;" data-aos="fade-up"
+                    data-aos-anchor=".other-element">
+                    <div class="card-body p-5 ">
 
-                            <h2 class="fw-bold mb-5 text-capitalize">Register From</h2>
-                            <form id="registerFormWeb" method="POST">
-                                <?= csrf_field() ?> 
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="form-floating mb-4">
-                                            <input type="text" class="form-control" name="fname" id="fnameWeb"
-                                                placeholder="ชื่อจริง" required>
-                                            <label for="fnameWeb">ชื่อจริง</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-floating mb-4">
-                                            <input type="text" class="form-control" name="lname" id="lnameWeb"
-                                                placeholder="นามสกุล" required>
-                                            <label for="lnameWeb">นามสกุล</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-floating mb-4">
-                                            <input type="date" class="form-control" name="birthday" id="birthdayWeb"
-                                                placeholder="วัน/เดือน/ปีเกิด" required>
-                                            <label for="birthdayWeb">วัน/เดือน/ปีเกิด</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 mb-4">
-                                        <h6 class="mb-2 pb-1">เพศ: </h6>
-
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="gender"
-                                                id="femaleGenderWeb" value="ชาย" checked />
-                                            <label class="form-check-label" for="femaleGenderWeb">ชาย</label>
-                                        </div>
-
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="gender"
-                                                id="maleGenderWeb" value="หญิง" />
-                                            <label class="form-check-label" for="maleGenderWeb">หญิง</label>
-                                        </div>
-
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="gender"
-                                                id="otherGenderWeb" value="อื่นๆ" />
-                                            <label class="form-check-label" for="otherGenderWeb">อื่นๆ</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 ">
-                                        <div class="form-floating mb-4">
-                                            <input type="text" class="form-control" name="phone" id="phoneWeb"
-                                                placeholder="เบอร์โทรศัพท์" required>
-                                            <label for="phoneWeb">เบอร์โทรศัพท์</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 ">
-                                        <div class="form-floating mb-4">
-                                            <input type="text" class="form-control" name="username" id="usernameWeb"
-                                                placeholder="username" required>
-                                            <label for="usernameWeb">username</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-floating mb-2">
-                                            <input type="password" class="form-control" name="password" id="passwordWeb"
-                                                placeholder="password" required>
-                                            <label for="passwordWeb">password</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-floating mb-2">
-                                            <input type="password" class="form-control" name="repeat_password"
-                                                id="repeat_passwordWeb" placeholder="repeat password" required>
-                                            <label for="repeat_passwordWeb">repeat password</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12  mb-4">
-                                        <span class="fs-6 fst-normal">- มีความยาวอย่างน้อย 8 ตัวอักษร</span><br>
-                                        <span class="fs-6 fst-normal">- ประกอบด้วยตัวเลขอย่างน้อย 1 ตัว</span><br>
-                                        <span class="fs-6 fst-normal">- ประกอบด้วยตัวอักษรพิมพ์ใหญ่อย่างน้อย 1
-                                            ตัว</span><br>
-                                        <span class="fs-6 fst-normal">- ประกอบด้วยตัวอักษรพิมพ์เล็กอย่างน้อย 1
-                                            ตัว</span><br>
-                                        <span class="fs-6 fst-normal">- ประกอบด้วยอักขระพิเศษอย่างน้อย 1 ตัว</span>
-                                    </div>
-
-                                    <div class="col-12 text-end">
-                                        <a href="<?= base_url('/login') ?>" class="btn btn-light">ย้อนกลับ</a>
-                                        <button type="submit" id="submitBtnWeb"
-                                            class="btn btn-primary">บันทึกข้อมูล</button>
+                        <h2 class="fw-bold mb-5 text-capitalize"><?= lang('profile.register-from') ?></h2>
+                        <form id="registerFormWeb" method="POST">
+                            <?= csrf_field() ?>
+                            <div class="row">
+                                <div class="col-md-6 col-12">
+                                    <div class="form-floating mb-4">
+                                        <input type="text" class="form-control" name="fname" id="fname"
+                                            placeholder="<?= lang('profile.fname') ?>" required>
+                                        <label for="fname"><?= lang('profile.fname') ?></label>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-floating mb-4">
+                                        <input type="text" class="form-control" name="lname" id="lname"
+                                            placeholder="<?= lang('profile.lname') ?>" required>
+                                        <label for="lname"><?= lang('profile.lname') ?></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-floating mb-4">
+                                        <input type="date" class="form-control" name="birthday" id="birthday"
+                                            placeholder="<?= lang('profile.birthday') ?>" required>
+                                        <label for="birthday"><?= lang('profile.birthday') ?></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12 mb-4">
+                                    <h6 class="mb-2 pb-1"><?= lang('profile.gender') ?>: </h6>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="femaleGender"
+                                            value="<?= lang('profile.man') ?>" checked />
+                                        <label class="form-check-label"
+                                            for="femaleGender"><?= lang('profile.man') ?></label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="maleGender"
+                                            value="<?= lang('profile.female') ?>" />
+                                        <label class="form-check-label"
+                                            for="maleGender"><?= lang('profile.female') ?></label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" id="otherGender"
+                                            value="<?= lang('profile.other') ?>" />
+                                        <label class="form-check-label"
+                                            for="otherGender"><?= lang('profile.other') ?></label>
+                                    </div>
+                                </div>
+                                <div class="col-12 ">
+                                    <div class="form-floating mb-4">
+                                        <input type="text" class="form-control" name="phone" id="phone"
+                                            placeholder="<?= lang('profile.phone') ?>" required>
+                                        <label for="phone"><?= lang('profile.phone') ?></label>
+                                    </div>
+                                </div>
+                                <div class="col-12 ">
+                                    <div class="form-floating mb-4">
+                                        <input type="text" class="form-control" name="username" id="username"
+                                            placeholder="<?= lang('profile.username') ?>" required>
+                                        <label for="username"><?= lang('profile.username') ?></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-floating mb-2">
+                                        <input type="password" class="form-control" name="password" id="password"
+                                            placeholder="<?= lang('profile.password') ?>" required>
+                                        <label for="password"><?= lang('profile.password') ?></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <div class="form-floating mb-2">
+                                        <input type="password" class="form-control" name="repeat_password"
+                                            id="repeat_password" placeholder="<?= lang('profile.repeat-password') ?>"
+                                            required>
+                                        <label for="repeat_password"><?= lang('profile.repeat-password') ?></label>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 mb-4 d-none d-sm-block">
+                                    <span class="fs-6 fst-normal">- มีความยาวอย่างน้อย 8 ตัวอักษร</span><br>
+                                    <span class="fs-6 fst-normal">- ประกอบด้วยตัวเลขอย่างน้อย 1 ตัว</span><br>
+                                    <span class="fs-6 fst-normal">- ประกอบด้วยตัวอักษรพิมพ์ใหญ่อย่างน้อย 1
+                                        ตัว</span><br>
+                                    <span class="fs-6 fst-normal">- ประกอบด้วยตัวอักษรพิมพ์เล็กอย่างน้อย 1
+                                        ตัว</span><br>
+                                    <span class="fs-6 fst-normal">- ประกอบด้วยอักขระพิเศษอย่างน้อย 1 ตัว</span>
+                                </div>
+
+                                <div class="col-12 mb-4 d-block d-sm-none d-md-none d-lg-none">
+                                    <span class="fst-normal" style="font-size: 9pt;">
+                                        - มีความยาวอย่างน้อย 8 ตัวอักษร</span><br>
+                                    <span class="fst-normal" style="font-size: 9pt;">
+                                        - ประกอบด้วยตัวเลขอย่างน้อย 1 ตัว</span><br>
+                                    <span class="fst-normal" style="font-size: 9pt;">
+                                        - ประกอบด้วยตัวอักษรพิมพ์ใหญ่อย่างน้อย 1 ตัว</span> <br>
+                                    <span class="fst-normal" style="font-size: 9pt;">
+                                        - ประกอบด้วยตัวอักษรพิมพ์เล็กอย่างน้อย 1 ตัว</span><br>
+                                    <span class="fst-normal" style="font-size: 9pt;">
+                                        - ประกอบด้วยอักขระพิเศษอย่างน้อย 1 ตัว</span>
+                                </div>
+
+                                <div class="col-12 text-end">
+                                    <a href="<?= base_url('/login') ?>"
+                                        class="btn btn-light"><?= lang('profile.cancel') ?></a>
+                                    <button type="submit" id="submitBtn"
+                                        class="btn btn-primary"><?= lang('profile.seve-sign-up') ?></button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- end Web -->
 
-<!-- mobile -->
-<div class="d-block d-sm-none d-md-none d-lg-none">
-    <div class="vh-100 gradient-custom">
-        <div class="container py-5 h-100">
-            <div class="row justify-content-center align-items-center h-100">
-                <div class="col-12 col-lg-9 col-xl-7">
-                    <div class="card shadow-2-strong card-registration" style="border-radius: 1rem;">
-                        <div class="card-body p-5 ">
-
-                            <h2 class="fw-bold mb-5 text-capitalize">Register From</h2>
-                            <form id="registerFormMobile" method="POST">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-floating mb-4">
-                                            <input type="text" class="form-control" name="fname" id="fnameMobile"
-                                                placeholder="ชื่อจริง" required>
-                                            <label for="fname">ชื่อจริง</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-floating mb-4">
-                                            <input type="text" class="form-control" name="lname" id="lnameMobile"
-                                                placeholder="นามสกุล" required>
-                                            <label for="lname">นามสกุล</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-floating mb-4">
-                                            <input type="date" class="form-control" name="birthday" id="birthdayMobile"
-                                                placeholder="วัน/เดือน/ปีเกิด" required>
-                                            <label for="birthday">วัน/เดือน/ปีเกิด</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 mb-4">
-                                        <h6 class="mb-2 pb-1">เพศ: </h6>
-
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="gender"
-                                                id="femaleGenderMobile" value="ชาย" checked />
-                                            <label class="form-check-label" for="femaleGender">ชาย</label>
-                                        </div>
-
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="gender"
-                                                id="maleGenderMobile" value="หญิง" />
-                                            <label class="form-check-label" for="maleGender">หญิง</label>
-                                        </div>
-
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="gender"
-                                                id="otherGenderMobile" value="อื่นๆ" />
-                                            <label class="form-check-label" for="otherGender">อื่นๆ</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-floating mb-4">
-                                            <input type="text" class="form-control" name="phone" id="phoneMobile"
-                                                placeholder="เบอร์โทรศัพท์" required>
-                                            <label for="phone">เบอร์โทรศัพท์</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-floating mb-4">
-                                            <input type="text" class="form-control" name="username" id="usernameMobile"
-                                                placeholder="username" required>
-                                            <label for="username">username</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-floating mb-2">
-                                            <input type="password" class="form-control" name="password"
-                                                id="passwordMobile" placeholder="password" required>
-                                            <label for="passwordMobile">password</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-floating mb-2">
-                                            <input type="password" class="form-control" name="repeat_password"
-                                                id="repeat_passwordMobile" placeholder="repeat password" required>
-                                            <label for="repeat_passwordMobile">repeat password</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 mb-4">
-                                        <span class="fst-normal" style="font-size: 9pt;">-
-                                            มีความยาวอย่างน้อย 8
-                                            ตัวอักษร</span><br>
-                                        <span class="fst-normal" style="font-size: 9pt;">-
-                                            ประกอบด้วยตัวเลขอย่างน้อย 1
-                                            ตัว</span><br>
-                                        <span class="fst-normal" style="font-size: 9pt;">-
-                                            ประกอบด้วยตัวอักษรพิมพ์ใหญ่อย่างน้อย
-                                            1
-                                            ตัว</span><br>
-                                        <span class="fst-normal" style="font-size: 9pt;">-
-                                            ประกอบด้วยตัวอักษรพิมพ์เล็กอย่างน้อย
-                                            1
-                                            ตัว</span><br>
-                                        <span class="fst-normal" style="font-size: 9pt;">-
-                                            ประกอบด้วยอักขระพิเศษอย่างน้อย 1
-                                            ตัว</span>
-                                    </div>
-
-                                    <div class="col-12 text-end">
-                                        <a href="/login" class="btn btn-light">ย้อนกลับ</a>
-                                        <button type="submit" id="submitBtnMobile"
-                                            class="btn btn-primary">บันทึกข้อมูล</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- end mobile -->
 <script>
-    // ฟังก์ชันเพื่อแบ่งรหัสโทรศัพท์ให้ถูกต้อง
+
     function formatPhoneNumber(phoneNumber) {
-        var cleaned = ('' + phoneNumber).replace(/\D/g, ''); // ลบทุกอักขระที่ไม่ใช่ตัวเลข
-        // ตรวจสอบว่ามีตัวเลขไม่เกิน 10 ตัว
+        var cleaned = ('' + phoneNumber).replace(/\D/g, '');
+
         if (cleaned.length > 10) {
-            cleaned = cleaned.substring(0, 10); // ถ้ามีมากกว่า 10 ตัวให้เอาเฉพาะ 10 ตัวแรก
+            cleaned = cleaned.substring(0, 10);
         }
-        var match = cleaned.match(/^(\d{2})(\d{4})(\d{4})$/); // แบ่งเป็นกลุ่ม 2-4-4
+        var match = cleaned.match(/^(\d{2})(\d{4})(\d{4})$/);
 
         if (match) {
             return match[1] + '-' + match[2] + '-' + match[3];
@@ -241,26 +141,27 @@
         }
     }
 
-    // เมื่อเสร็จสิ้นการป้อนข้อมูลให้แสดงผลรหัสโทรศัพท์ใหม่
-    $('#phoneWeb').on('input', function () {
+    $('#phone').on('input', function () {
         var formattedPhoneNumber = formatPhoneNumber($(this).val());
         if (formattedPhoneNumber) {
             $(this).val(formattedPhoneNumber);
         }
     });
-
-    $('#phoneMobile').on('input', function () {
-        var formattedPhoneNumber = formatPhoneNumber($(this).val());
-        if (formattedPhoneNumber) {
-            $(this).val(formattedPhoneNumber);
-        }
-    });
+    
     $(document).ready(function () {
-        $('#submitBtnWeb').on('click', function (event) {
+
+        $('#username').on('input', function () {
+            var value = $(this).val();
+            if (/[^a-zA-Z0-9]/.test(value)) {
+                $(this).val(value.replace(/[^a-zA-Z0-9]/g, ''));
+            }
+        });
+
+        $('#submitBtn').on('click', function (event) {
             event.preventDefault();
 
-            var fname = $('#fnameWeb').val();
-            var lname = $('#lnameWeb').val();
+            var fname = $('#fname').val();
+            var lname = $('#lname').val();
 
             checkDuplicateRegistration(fname, lname, function (isDuplicate) {
                 if (isDuplicate) {
@@ -272,9 +173,9 @@
                         window.location.href = '<?= base_url('forgot_password'); ?>';
                     });
                 } else {
-                    if (validateForm('registerFormWeb')) {
-                        var password = $('#passwordWeb').val();
-                        var repeat_password = $('#repeat_passwordWeb').val();
+                    if (validateForm('registerForm')) {
+                        var password = $('#password').val();
+                        var repeat_password = $('#repeat_password').val();
 
                         // เช็คความยาวของรหัสผ่าน
                         if (password.length < 8) {
@@ -340,7 +241,7 @@
                             return;
                         }
 
-                        const formData = $('#registerFormWeb').serialize();
+                        const formData = $('#registerForm').serialize();
 
                         $.ajax({
                             url: '<?= base_url('register'); ?>',
@@ -383,7 +284,6 @@
                 });
             }
 
-            // ฟังก์ชันสำหรับเช็คฟอร์ม
             function validateForm(formId) {
                 var isValid = true;
                 $('#' + formId + ' input').each(function () {

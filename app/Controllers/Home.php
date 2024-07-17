@@ -46,8 +46,7 @@ class Home extends Controller
                     $profile['coordinates'] = array_map('floatval', $coords);
                 }
             }
-            // echo '<pre>';
-            // var_dump($check_user);
+            
             if($check_user){
                 $data = array('status' => 200 , 'message' => 'suceess', 'data' => $check_user);
             }else{
