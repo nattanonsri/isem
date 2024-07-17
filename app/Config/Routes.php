@@ -22,7 +22,7 @@ $routes->match(['get', 'post'], 'login', 'Profile_HomeController::login');
 $routes->group('', ['filter' => 'auth'], function ($routes) {
     $routes->match(['get', 'post'],'profile', 'Profile_HomeController::index');
     $routes->get('profile/load_add_user/', 'Profile_HomeController::load_add_user');
-    $routes->match(['get','post'],'profile/user_search/', 'Profile_HomeController::user_search');
+    $routes->post('profile/user_search/', 'Profile_HomeController::user_search');
     $routes->post('profile/add_from_user/', 'Profile_HomeController::add_from_user');
     $routes->get('profile/load_edit_form_user/(:any)', 'Profile_HomeController::load_edit_form_user/$1');
     $routes->post('profile/edit_form_user/(:any)', 'Profile_HomeController::edit_form_user/$1');
