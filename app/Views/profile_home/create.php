@@ -34,14 +34,16 @@
                 <div class="col-md-6 col-12 mt-3">
                     <div class="form-floating">
                         <input class="form-control form-field" type="text" name="fname" id="fname"
-                            placeholder="<?= lang('profile.fname') ?>" required>
+                            placeholder="<?= lang('profile.fname') ?>" required
+                            oninput="this.value = this.value.replace(/[^\u0E00-\u0E7F]/g, '')">
                         <label for="fname"><?= lang('profile.fname') ?><span class=" me-1 text-danger">*</span></label>
                     </div>
                 </div>
                 <div class="col-md-6 col-12 mt-3">
                     <div class="form-floating">
                         <input class="form-control form-field" type="text" name="lname" id="lname"
-                            placeholder="<?= lang('profile.lname') ?>" required>
+                            placeholder="<?= lang('profile.lname') ?>" required
+                            oninput="this.value = this.value.replace(/[^\u0E00-\u0E7F]/g, '')">
                         <label for="lname"><?= lang('profile.lname') ?><span class="me-1 text-danger">*</span></label>
                     </div>
                 </div>
@@ -165,20 +167,17 @@
 </div>
 <script>
 
-    // $(document).ready(function () {
-    //     let filter = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
+    $(document).ready(function () {
 
-    //     $('#phoneForm').on('submit', function (e) {
-    //         let phoneNumber = $('#phone_number').val();
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0');
+        let yyyy = today.getFullYear();
 
-    //         if (!filter.test(phoneNumber)) {
-    //             $('#error_message').show();
-    //             e.preventDefault();
-    //         } else {
-    //             $('#error_message').hide();
-    //         }
-    //     });
-    // });
+        today = yyyy + '-' + mm + '-' + dd;
+        $('#birthdate').attr('max', today);
+        
+    });
 
     $('.form-field').on('change', function () {
         $('#submitBtn').prop('disabled', false);
@@ -249,7 +248,7 @@
     }
 
 
-    $('#frm').submit(function(e) {
+    $('#frm').submit(function (e) {
         e.preventDefault();
         var form = $(this)[0];
         var formData = new FormData(form);

@@ -5,38 +5,47 @@ use App\Models\Profile_HomeModel;
 use App\Models\AdminProfileModel;
 use CodeIgniter\Controller;
 use Ramsey\Uuid\Uuid;
+use App\Libraries\Auth;
 
-$lang = \Config\Services::language();
-$lang->setLocale('th');
+
 class Profile_HomeController extends Controller
 {
     protected $helpers = ['url', 'form'];
 
-    public function index()
+    public function __construct()
     {
-        // $user = new Profile_HomeModel();
+        $lang = \Config\Services::language();
+        $lang->setLocale('th');
 
-        // $profile = $user->user_search();
-        // $data['profile'] = $profile;
-        return view('common/header') . view('profile_home/index') . view('common/footer');
-
+        $this->Auth = new Auth;
     }
 
+    public function index()
+    {
+        $admin_user = new AdminProfileModel();
+        $admin_user = $admin_user->groupAdminProfileObject();
+        var_dump($admin_user);exit;
+
+        return view('common/header') . view('profile_home/index') . view('common/footer');
+    }
 
     public function user_search()
     {
-
-        $model = new Profile_HomeModel();
+        $user = new Profile_HomeModel();
+        
+    
 
         $search = $this->request->getPost('search');
 
-        $data['profile'] = $model->user_search($search);
+        $data['profile'] = $user->user_search($search);
+       
 
-        return view('common/header') . view('profile_home/card', $data) .  view('common/footer');
+        return view('profile_home/card', $data) . view('common/footer');
 
     }
     public function load_add_user()
     {
+
         echo view('common/header', ['title' => 'ฟอร์มเพิ่มข้อมูล']);
         echo view('profile_home/create');
         echo view('common/footer');
@@ -63,8 +72,8 @@ class Profile_HomeController extends Controller
             $file = $this->request->getFile('file_image');
 
             $imageNameUpload = "{$fname}-{$lname}-{$birthdate}.jpeg";
-            $file->move('uploads/profiles/', $imageNameUpload);
-            $file_image = 'uploads/profiles/' . $imageNameUpload;
+            $file->move(LIBRARY_PATH . '/profiles/', $imageNameUpload);
+            $file_image = '/profiles/' . $imageNameUpload;
 
             $data = array(
                 'uuid' => Uuid::uuid4()->toString(),
@@ -84,8 +93,6 @@ class Profile_HomeController extends Controller
                 'file_image' => $file_image,
                 'status' => 1
             );
-
-
 
             $insert = $insertProfile->insert($data);
 
@@ -159,8 +166,8 @@ class Profile_HomeController extends Controller
                 }
 
                 $imageName = "{$data['fname']}-{$data['lname']}-{$data['birthdate']}." . $file->getExtension();
-                $file->move('uploads/profiles/', $imageName);
-                $data['file_image'] = 'uploads/profiles/' . $imageName;
+                $file->move(LIBRARY_PATH . '/profiles/', $imageName);
+                $data['file_image'] = '/profiles/' . $imageName;
             }
 
             $updataed_data = $editUser->updateProfileById($id, $data);

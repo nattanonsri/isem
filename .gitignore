@@ -1,7 +1,7 @@
 #-------------------------
 # Operating Specific Junk Files
 #-------------------------
-uploads
+file
 
 # OS X
 .DS_Store

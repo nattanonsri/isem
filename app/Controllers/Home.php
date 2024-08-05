@@ -4,14 +4,23 @@ namespace App\Controllers;
 use App\Models\Profile_HomeModel;
 use CodeIgniter\Controller;
 use Config\Database;
+use App\Libraries\Auth;
 
 class Home extends Controller
 {
-    public function index()
+
+    public function __construct()
     {
         $lang = \Config\Services::language();
         $lang->setLocale('th');
 
+        $this->Auth = new Auth;
+
+
+    }
+
+    public function index()
+    {
         $model = new Profile_HomeModel();
 
         $profiles = $model->getProfileAll();
@@ -37,20 +46,22 @@ class Home extends Controller
         if ($this->request->getPost()) {
 
             $search = $this->request->getPost('search');
+            $field = $this->request->getPost('field');
+            $value = $this->request->getPost('value');
 
-            $check_user = $model->getProfileAll($search);
-            
+            $check_user = $model->getProfileAll($search, $field, $value);
+
             foreach ($check_user as &$profile) {
                 if (isset($profile['coordinates'])) {
                     $coords = explode(',', $profile['coordinates']);
                     $profile['coordinates'] = array_map('floatval', $coords);
                 }
             }
-            
-            if($check_user){
-                $data = array('status' => 200 , 'message' => 'suceess', 'data' => $check_user);
-            }else{
-                $data = array('status' => 400 , 'message' => 'error');
+
+            if ($check_user) {
+                $data = array('status' => 200, 'message' => 'suceess', 'data' => $check_user);
+            } else {
+                $data = array('status' => 400, 'message' => 'error'); // ไม่มีสิ่งที่คุณต้องการหา
             }
 
             echo json_encode($data);

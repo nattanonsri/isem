@@ -6,7 +6,7 @@
                     <i class="fa-solid fa-house-chimney"></i> <?= lang('profile.image-home') ?>
                 </div>
                 <div class="card-body text-center">
-                    <img src="<?= base_url() . $users['file_image'] ?>" width="300" height="200">
+                    <img src="<?= base_url(LIBRARY_PATH . $users['file_image'])?>" width="300" height="200">
                 </div>
             </div>
 
@@ -40,7 +40,7 @@
                         <span class="text-primary" style="font-weight: 600;">
                             <?= lang('profile.phone') ?> :
                         </span>
-                        <?= $users['phone'] ?>
+                        <?= !empty($users['phone']) ? $users['phone'] : lang('profile.null=value') ?>
                     </div>
                     <div class="col-12 fs-6 mb-3 ms-5">
                         <?= $users['succor_id'] == 1 ? '<i class="fa-solid fa-circle-xmark fs-5 me-1 text-danger"></i>' : '<i class="fa-solid fa-circle-check fs-5 me-1 text-success"></i>'; ?>

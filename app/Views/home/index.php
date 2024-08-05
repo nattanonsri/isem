@@ -74,26 +74,23 @@
 </form>
 
 <div id="frm-switch">
-    <i class="fa-solid fa-xmark close-btn fs-4 pe-1 pt-1"></i>
-    <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="medicine">
+    <!-- <i class="fa-solid fa-xmark close-btn fs-4 pe-1 pt-1"></i> -->
+    <!-- <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" name="medicine" id="medicine">
         <label class="form-check-label" for="medicine"><?= lang('Home.medicine'); ?></label>
-    </div>
+    </div> -->
     <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="relative">
+        <input class="form-check-input" type="checkbox" name="relative" id="relative">
         <label class="form-check-label" for="relative"><?= lang('Home.relative'); ?></label>
     </div>
     <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="disease">
+        <input class="form-check-input" type="checkbox" name="disease" id="disease">
         <label class="form-check-label" for="disease"><?= lang('Home.disease'); ?></label>
     </div>
     <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="succor">
+        <input class="form-check-input" type="checkbox" name="succor" id="succor">
         <label class="form-check-label" for="succor"><?= lang('Home.succor'); ?></label>
     </div>
-
-</div>
-
 
 </div>
 
@@ -102,6 +99,7 @@
     if (typeof map !== 'undefined') {
         map.remove();
     }
+
     var key = 'SP0YvasznjoCPiwDZi6N';
     var map = L.map('map').setView([13.7563, 100.5018], 10); // Bangkok, Thailand
 
@@ -110,9 +108,9 @@
         attribution: '© ISEM'
     }).addTo(map);
 
-    var profileData = <?php echo $profile_json; ?>;
-    
-    var profile = JSON.parse(JSON.stringify(profileData));
+    var profilesPath = JSON.parse(JSON.stringify(<?= json_encode(LIBRARY_PATH); ?>));
+    var profile = JSON.parse(JSON.stringify(<?= $profile_json; ?>));
+
     var markers = [];
 
     function addMarkers(profile) {
@@ -121,13 +119,13 @@
 
         profile.forEach((item, index) => {
             if (!item.coordinates || item.coordinates.length !== 2) {
-                console.error(`Invalid coordinates for item at index ${index}`);
+                // console.error(`Invalid coordinates for item at index ${index}`);
                 return;
             }
 
             let blueIcon = new L.Icon({
-                iconUrl: '<?= base_url('assets/icons/marker-icon-blue.png'); ?>',
-                shadowUrl: '<?= base_url('assets/icons/marker-shadow.png'); ?>',
+                iconUrl: '<?= base_url(LIBRARY_PATH .'/icons/marker-icon-blue.png'); ?>',
+                shadowUrl: '<?= base_url(LIBRARY_PATH .'/icons/marker-shadow.png'); ?>',
                 iconSize: [25, 41],
                 iconAnchor: [12, 41],
                 popupAnchor: [1, -34],
@@ -135,7 +133,7 @@
             });
 
             let marker = L.marker(item.coordinates, { icon: blueIcon }).bindPopup(`
-                    <img src="${item.file_image}" alt="Image for Marker ${index + 1}" style="width:100%;height:auto;">            
+                    <img src="${profilesPath}${item.file_image}" alt="Image for Marker ${index + 1}" style="width:100%;height:auto;">            
                     <p style="font-size: 14pt">${item.prefix}${item.fullname} <br/>
                     - ${item.disease_name} <br/>
                     - ${item.succor_name} <br/>
@@ -181,5 +179,49 @@
             }
         });
     }
+
+    $('#relative').click(function () {
+        var isChecked = $(this).is(':checked');
+        var relative = isChecked ? 'Yes' : 'No';
+        check_switch('relative', relative);
+    });
+
+    $('#disease').click(function () {
+        var isChecked = $(this).is(':checked');
+        var disease = isChecked ? 'Yes' : 'No';
+        check_switch('disease', disease);
+    });
+
+    $('#succor').click(function () {
+        var isChecked = $(this).is(':checked');
+        var succor = isChecked ? 'Yes' : 'No';
+        check_switch('succor', succor);
+    });
+
+
+    function check_switch(field, value) {
+
+        $.ajax({
+            url: '<?= base_url('home/check_search_user') ?>',
+            type: 'POST',
+            data: {
+                field: field,
+                value: value,
+                '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.status == 200) {
+                    profile = data.data;
+                    addMarkers(profile);
+                } else {
+                    console.log(data.message);
+                }
+            }
+        });
+    }
+
+
+
 
 </script>

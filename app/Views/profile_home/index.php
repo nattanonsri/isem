@@ -1,23 +1,35 @@
 <div class="container">
-  <div class="row d-flex flex-wrap align-items-center pt-2 py-2 mb-4 text-center border-bottom ">
-    <div class="col-md-5 col-6 text-start"">
-        <a href=" <?= base_url('/profile') ?>"
-      class="d-flex align-items-center mb-md-0 me-md-auto text-dark text-decoration-none">
-      <img class="img-logo" src="<?= base_url('/assets/icons/icon_isem.png') ?>" width="50">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white mt-3 mb-4 border-bottom">
+      <a href="<?= base_url('/profile') ?>" class="d-flex align-items-center mb-md-0 me-md-auto text-dark text-decoration-none">
+        <img class="img-logo" src="<?= base_url(LIBRARY_PATH . '/icons/icon_isem.png') ?>" width="50">
       </a>
-    </div>
-    <div class="col-md-7 col-6 d-flex align-self-center justify-content-end">
-      <button class="btn btn-outline-secondary" id="logoutBtnWeb">
-        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24">
-          <path fill="currentColor"
-            d="M6 2h9a2 2 0 0 1 2 2v1a1 1 0 0 1-2 0V4H6v16h9v-1a1 1 0 0 1 2 0v1a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2" />
-          <path fill="currentColor"
-            d="M16.795 16.295c.39.39 1.02.39 1.41 0l3.588-3.588a1 1 0 0 0 0-1.414l-3.588-3.588a.999.999 0 0 0-1.411 1.411L18.67 11H10a1 1 0 0 0 0 2h8.67l-1.876 1.884a.999.999 0 0 0 .001 1.411" />
-        </svg>
-        <?= lang('profile.logout') ?>
-      </button>
-    </div>
-  </div>
+      <ul class="navbar-nav ms-auto">
+        <div class="topbar-divider d-none d-sm-block"></div>
+        <li class="nav-item dropdown no-arrow">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="me-2 d-none d-lg-inline text-gray-600 small">ฒฦช</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+              <a class="dropdown-item" href="#">
+                <i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>
+                <?= lang('profile.profile') ?>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li>
+              <a class="dropdown-item" href="<?= base_url('logout') ?>" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                <i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>
+                <?= lang('profile.logout') ?>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
 
   <div class="row mt-3">
     <div class="col-md-4 ms-sm-auto">
@@ -116,9 +128,6 @@
 
     function searchButton() {
       let search = $('#txtkeyword').val();
-
-      console.log(search);
-
       $.ajax({
         url: '<?= base_url('profile/user_search') ?>',
         type: 'POST',
@@ -126,11 +135,9 @@
           search: search,
           '<?= csrf_token() ?>': '<?= csrf_hash() ?>',
         },
+        dataType: 'html',
         success: function (result) {
           $('#card_getdatail').html(result);
-        },
-        error: function (xhr, status, error) {
-          console.error("AJAX Error: " + status + " " + error);
         }
       });
     } 

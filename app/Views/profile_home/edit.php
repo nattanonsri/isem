@@ -34,14 +34,14 @@
             <div class="col-md-6 col-12 mt-3">
                 <div class="form-floating">
                     <input type="text" name="fname" id="fname" class="form-control"
-                        placeholder="<?= lang('profile.fname') ?>" value="<?= esc($profile['fname']) ?>" />
+                        placeholder="<?= lang('profile.fname') ?>" value="<?= esc($profile['fname']) ?>"  oninput="this.value = this.value.replace(/[^\u0E00-\u0E7F]/g, '')"/>
                     <label for="fname"><?= lang('profile.fname') ?><span class=" me-1 text-danger">*</span></label>
                 </div>
             </div>
             <div class="col-md-6 col-12 mt-3">
                 <div class="form-floating ">
                     <input type="text" name="lname" id="lname" class="form-control"
-                        placeholder="<?= lang('profile.lname') ?>" value="<?= esc($profile['lname']) ?>" />
+                        placeholder="<?= lang('profile.lname') ?>" value="<?= esc($profile['lname']) ?>"  oninput="this.value = this.value.replace(/[^\u0E00-\u0E7F]/g, '')" />
                     <label for="lname"><?= lang('profile.lname') ?><span class="me-1 text-danger">*</span></label>
                 </div>
             </div>
@@ -165,6 +165,18 @@
 </div>
 
 <script>
+
+    $(document).ready(function () {
+
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0');
+        let yyyy = today.getFullYear();
+
+        today = yyyy + '-' + mm + '-' + dd;
+        $('#birthdate').attr('max', today);
+        
+    })
     $('#phone_number').on('input', function () {
         let value = $(this).val().replace(/\D/g, '');
         let formattedValue = '';

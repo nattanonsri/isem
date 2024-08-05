@@ -6,9 +6,8 @@
                 <div class="card shadow-2-strong card-registration" style="border-radius: 1rem;" data-aos="fade-up"
                     data-aos-anchor=".other-element">
                     <div class="card-body p-5 ">
-
                         <h2 class="fw-bold mb-5 text-capitalize"><?= lang('profile.register-from') ?></h2>
-                        <form id="registerFormWeb" method="POST">
+                        <form id="register" method="POST">
                             <?= csrf_field() ?>
                             <div class="row">
                                 <div class="col-md-6 col-12">
@@ -86,7 +85,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-12 mb-4 d-none d-sm-block">
+                                <!-- <div class="col-12 mb-4 d-none d-sm-block">
                                     <span class="fs-6 fst-normal">- มีความยาวอย่างน้อย 8 ตัวอักษร</span><br>
                                     <span class="fs-6 fst-normal">- ประกอบด้วยตัวเลขอย่างน้อย 1 ตัว</span><br>
                                     <span class="fs-6 fst-normal">- ประกอบด้วยตัวอักษรพิมพ์ใหญ่อย่างน้อย 1
@@ -107,7 +106,7 @@
                                         - ประกอบด้วยตัวอักษรพิมพ์เล็กอย่างน้อย 1 ตัว</span><br>
                                     <span class="fst-normal" style="font-size: 9pt;">
                                         - ประกอบด้วยอักขระพิเศษอย่างน้อย 1 ตัว</span>
-                                </div>
+                                </div> -->
 
                                 <div class="col-12 text-end">
                                     <a href="<?= base_url('/login') ?>"
@@ -147,260 +146,34 @@
             $(this).val(formattedPhoneNumber);
         }
     });
-    
-    $(document).ready(function () {
 
-        $('#username').on('input', function () {
-            var value = $(this).val();
-            if (/[^a-zA-Z0-9]/.test(value)) {
-                $(this).val(value.replace(/[^a-zA-Z0-9]/g, ''));
-            }
+
+
+    $('#username').on('input', function () {
+        var value = $(this).val();
+        if (/[^a-zA-Z0-9]/.test(value)) {
+            $(this).val(value.replace(/[^a-zA-Z0-9]/g, ''));
+        }
+    });
+
+    $('#submitBtn').on('click', function (event) {
+        event.preventDefault();
+        let formData = $('#register').serialize();
+        $.ajax({
+            url: '<?= base_url('register'); ?>',
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'บันทึกข้อมูลสำเร็จ',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(function () {
+                    window.location.href = '<?= base_url('login'); ?>'
+                });
+            },
         });
-
-        $('#submitBtn').on('click', function (event) {
-            event.preventDefault();
-
-            var fname = $('#fname').val();
-            var lname = $('#lname').val();
-
-            checkDuplicateRegistration(fname, lname, function (isDuplicate) {
-                if (isDuplicate) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'เกิดข้อผิดพลาด',
-                        text: 'ข้อมูลผู้ใช้มีอยู่แล้ว กรุณาไปที่หน้าลืมรหัสผ่าน'
-                    }).then(function () {
-                        window.location.href = '<?= base_url('forgot_password'); ?>';
-                    });
-                } else {
-                    if (validateForm('registerForm')) {
-                        var password = $('#password').val();
-                        var repeat_password = $('#repeat_password').val();
-
-                        // เช็คความยาวของรหัสผ่าน
-                        if (password.length < 8) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'เกิดข้อผิดพลาด',
-                                text: 'รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร'
-                            });
-                            return;
-                        }
-
-                        // เช็คว่ารหัสผ่านมีตัวเลขหรือไม่
-                        var hasNumber = /\d/.test(password);
-                        if (!hasNumber) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'เกิดข้อผิดพลาด',
-                                text: 'รหัสผ่านต้องประกอบด้วยตัวเลขอย่างน้อย 1 ตัว'
-                            });
-                            return;
-                        }
-
-                        // เช็คว่ารหัสผ่านมีตัวอักษรพิมพ์ใหญ่หรือไม่
-                        var hasUpperCase = /[A-Z]/.test(password);
-                        if (!hasUpperCase) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'เกิดข้อผิดพลาด',
-                                text: 'รหัสผ่านต้องประกอบด้วยตัวอักษรพิมพ์ใหญ่อย่างน้อย 1 ตัว'
-                            });
-                            return;
-                        }
-
-                        // เช็คว่ารหัสผ่านมีตัวอักษรพิมพ์เล็กหรือไม่
-                        var hasLowerCase = /[a-z]/.test(password);
-                        if (!hasLowerCase) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'เกิดข้อผิดพลาด',
-                                text: 'รหัสผ่านต้องประกอบด้วยตัวอักษรพิมพ์เล็กอย่างน้อย 1 ตัว'
-                            });
-                            return;
-                        }
-
-                        // เช็คว่ารหัสผ่านมีอักขระพิเศษหรือไม่
-                        var hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-                        if (!hasSpecialChar) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'เกิดข้อผิดพลาด',
-                                text: 'รหัสผ่านต้องประกอบด้วยอักขระพิเศษอย่างน้อย 1 ตัว'
-                            });
-                            return;
-                        }
-
-                        // เช็ครหัสผ่านและการยืนยันรหัสผ่าน
-                        if (password !== repeat_password) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'เกิดข้อผิดพลาด',
-                                text: 'รหัสผ่านและการยืนยันรหัสผ่านไม่ตรงกัน'
-                            });
-                            return;
-                        }
-
-                        const formData = $('#registerForm').serialize();
-
-                        $.ajax({
-                            url: '<?= base_url('register'); ?>',
-                            type: 'POST',
-                            data: formData,
-                            success: function (response) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'บันทึกข้อมูลสำเร็จ',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                }).then(function () {
-                                    window.location.href = '<?= base_url('login'); ?>';
-                                });
-                            },
-                            error: function (xhr, status, error) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'เกิดข้อผิดพลาด',
-                                    text: error
-                                });
-                            }
-                        });
-                    }
-                }
-            });
-
-            // ฟังก์ชันสำหรับเช็คการลงทะเบียนซ้ำ
-            function checkDuplicateRegistration(fname, lname, callback) {
-                $.ajax({
-                    url: '<?= base_url('check_duplicate'); ?>',
-                    type: 'POST',
-                    data: { fname: fname, lname: lname },
-                    success: function (response) {
-                        callback(response.isDuplicate);
-                    },
-                    error: function () {
-                        callback(false);
-                    }
-                });
-            }
-
-            function validateForm(formId) {
-                var isValid = true;
-                $('#' + formId + ' input').each(function () {
-                    if ($(this).val() === '') {
-                        isValid = false;
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'เกิดข้อผิดพลาด',
-                            text: 'กรุณากรอกข้อมูลให้ครบถ้วน'
-                        });
-                        return false;
-                    }
-                });
-                return isValid;
-            }
-        });
-
-        // end web
-
-        // mobile
-
-        $('#submitBtnMobile').on('click', function (event) {
-            event.preventDefault();
-
-            var password = $('#passwordMobile').val();
-            var repeat_password = $('#repeat_passwordMobile').val();
-
-            // เช็คความยาวของรหัสผ่าน
-            if (password.length < 8) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'เกิดข้อผิดพลาด',
-                    text: 'รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร'
-                });
-                return;
-            }
-
-            // เช็คว่ารหัสผ่านมีตัวเลขหรือไม่
-            var hasNumber = /\d/.test(password);
-            if (!hasNumber) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'เกิดข้อผิดพลาด',
-                    text: 'รหัสผ่านต้องประกอบด้วยตัวเลขอย่างน้อย 1 ตัว'
-                });
-                return;
-            }
-
-            // เช็คว่ารหัสผ่านมีตัวอักษรพิมพ์ใหญ่หรือไม่
-            var hasUpperCase = /[A-Z]/.test(password);
-            if (!hasUpperCase) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'เกิดข้อผิดพลาด',
-                    text: 'รหัสผ่านต้องประกอบด้วยตัวอักษรพิมพ์ใหญ่อย่างน้อย 1 ตัว'
-                });
-                return;
-            }
-
-            // เช็คว่ารหัสผ่านมีตัวอักษรพิมพ์เล็กหรือไม่
-            var hasLowerCase = /[a-z]/.test(password);
-            if (!hasLowerCase) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'เกิดข้อผิดพลาด',
-                    text: 'รหัสผ่านต้องประกอบด้วยตัวอักษรพิมพ์เล็กอย่างน้อย 1 ตัว'
-                });
-                return;
-            }
-
-            // เช็คว่ารหัสผ่านมีอักขระพิเศษหรือไม่
-            var hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-            if (!hasSpecialChar) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'เกิดข้อผิดพลาด',
-                    text: 'รหัสผ่านต้องประกอบด้วยอักขระพิเศษอย่างน้อย 1 ตัว'
-                });
-                return;
-            }
-
-            // เช็ครหัสผ่านและการยืนยันรหัสผ่าน
-            if (password !== repeat_password) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'เกิดข้อผิดพลาด',
-                    text: 'รหัสผ่านและการยืนยันรหัสผ่านไม่ตรงกัน'
-                });
-                return;
-            }
-
-            const formData = $('#registerFormMobile').serialize();
-
-            $.ajax({
-                url: '<?= base_url('register'); ?>',
-                type: 'POST',
-                data: formData,
-                success: function (response) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'บันทึกข้อมูลสำเร็จ',
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(function () {
-                        window.location.href = '<?= base_url('login'); ?>'
-                    });
-                },
-                error: function (xhr, status, error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'เกิดข้อผิดพลาด',
-                        text: error
-                    });
-                }
-            });
-        });
-        // end mobile
     });
 
 </script>

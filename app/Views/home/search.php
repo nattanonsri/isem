@@ -77,7 +77,7 @@ $data = json_decode('[
 	{"loc":[41.239190,13.032145], "title":"white"}
 ]',true);	//SIMULATE A DATABASE data
 //the searched field is: title
-
+	
 if(isset($_GET['cities']))	//SIMULATE A BIG DATABASE, for ajax-bulk.html example
 	$data = json_decode( file_get_contents('cities15000.json'), true);
 //load big data store, cities15000.json (about 14000 records)

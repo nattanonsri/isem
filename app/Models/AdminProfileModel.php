@@ -38,15 +38,45 @@ class AdminProfileModel extends Model
         return $this->findAll();
     }
 
+    public function getAdminByUuid($uuid)
+    {
+        $data = $this->where('uuid', $uuid)->first();
+        return $data;
+
+    }
+
+    public function groupAdminProfile()
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('id, uuid, CONCAT(fname, " ", lname) as fullname, birthday, gender, phone, username, password');
+
+        $query = $builder->get();
+        $results = $query->getResultArray();
+
+        return $results;
+    }
+
+    public function groupAdminProfileObject()
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('id, uuid, CONCAT(fname, " ", lname) as fullname, birthday, gender, phone, username, password');
+
+        $query = $builder->get();
+        $results = $query->getRowArray();
+
+        return $results;
+    }
+
     public function ckeckDuplicate($fname, $lname)
     {
         $query = $this->where('fname', $fname)->where('lname', $lname)->get();
-        
-        if($query->getNumRows() > 0){
+
+        if ($query->getNumRows() > 0) {
             return $query->getNumRows();
-        }else{
+        } else {
             return $query;
         }
-        // return ($query->getNumRows() > 0);
     }
+
+
 }

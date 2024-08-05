@@ -13,7 +13,13 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Home::index');
 $routes->get('home/check_search_user/', 'Home::check_search_user');
 
-$routes->get('/backend', 'backend::dashboard');
+$routes->get('backend/login/', 'backend::load_login');
+
+$routes->get('backend', 'backend::index');
+$routes->post('backend/load_content_dash/', 'backend::load_content_dash');
+$routes->post('backend/load_content_admin/', 'backend::load_content_admin');
+$routes->post('backend/load_content_users/', 'backend::load_content_users');
+$routes->delete('backend/delete_profile_admin/(:any)', 'backend::delete_profile_admin/$1');
 
 $routes->match(['get', 'post'], 'register', 'Profile_HomeController::register');
 $routes->match(['get', 'post'], 'check_duplicate', 'Profile_HomeController::check_duplicate');

@@ -55,13 +55,16 @@ class Profile_HomeModel extends Model
     protected $beforeDelete = [];
     protected $afterDelete = [];
 
-    public function getProfileHome($search = '')
+    public function getProfileHome()
     {
-        if($search){
-            $this->like('CONCAT(tb_user.fname, " ", tb_user.lname) as fullname', $search);
-        }
+
         $data = $this->findAll();
         return $data;
+    }
+
+    public function getProfileNumRow()
+    {
+        return $this->countAllResults();
     }
     public function getProfileHomeByUuid($uuid)
     {
@@ -70,10 +73,9 @@ class Profile_HomeModel extends Model
     }
     public function updateProfileById($id, $data)
     {
-
         return $this->update($id, $data);
     }
-    public function getProfileAll($search = '')
+    public function getProfileAll($search = '', $field = '', $value = '')
     {
         $builder = $this->db->table($this->table);
         $builder->select('
@@ -84,12 +86,14 @@ class Profile_HomeModel extends Model
         tb_user.card_id, 
         tb_user.birthdate, 
         tb_user.phone, 
+        tb_user.disease_id as disease_id,
         disease.uuid as disease_uuid, 
         disease.name_th as disease_name, 
         tb_user.disease_details, 
-        succor.id as succor_id,
+        tb_user.succor_id as succor_id,
         succor.uuid as succor_uuid,
         succor.name_th as succor_name,
+        tb_user.relative_id as relative_id,
         relative.uuid as relative_uuid,
         relative.name_th as relative_name,
         tb_user.caretaker,
@@ -102,11 +106,23 @@ class Profile_HomeModel extends Model
         $builder->join('tb_user_relative as relative', 'relative.id =  tb_user.relative_id', 'left');
 
         if (!empty($search)) {
-            $builder->like('CONCAT( tb_user.fname, " ",  tb_user.lname)', $search);
+            $builder->like('CONCAT(tb_user.fname, " ",  tb_user.lname)', $search);
         }
+        // var_dump($field);
+        // if (!empty($field) && !empty($value)) {
+        if ($field == 'relative' && $value == 'Yes') {
+            $builder->like('tb_user.relative_id', '2');
+        }
+        if ($field == 'disease' && $value == 'Yes') {
+            $builder->like('tb_user.disease_id', '2');
+        }
+        if ($field == 'succor' && $value == 'Yes') {
+            $builder->like('tb_user.succor_id', '2');
+        }
+        // }
 
-        $query = $builder->get();
-        $results = $query->getResultArray();
+        $results = $builder->get()->getResultArray();
+        // $results = $;
 
         return $results;
     }
@@ -197,5 +213,32 @@ class Profile_HomeModel extends Model
         $age = $currentDate->diff($birthDate)->y;
 
         return $age;
+    }
+    public function getLoginCountsByDate()
+    {
+        $current = date('Y-m-d');
+        $new_date1 = date('Y-m-d', strtotime('-1 days', strtotime($current)));
+        $new_date2 = date('Y-m-d', strtotime('-2 days', strtotime($current)));
+        $new_date3 = date('Y-m-d', strtotime('-3 days', strtotime($current)));
+        $new_date4 = date('Y-m-d', strtotime('-4 days', strtotime($current)));
+
+        // $user = $this->db->table($this->table);
+        $user = $this->db->table($this->table);
+
+        $get_dateTime1 = $user->where('DATE(updated_at)', $current)->countAllResults(false);
+        $get_dateTime2 = $user->where('DATE(updated_at)', $new_date1)->countAllResults(false);
+        $get_dateTime3 = $user->where('DATE(updated_at)', $new_date2)->countAllResults(false);
+        $get_dateTime4 = $user->where('DATE(updated_at)', $new_date3)->countAllResults(false);
+        $get_dateTime5 = $user->where('DATE(updated_at)', $new_date4)->countAllResults(false);
+
+
+        return [
+            'get_dateTime1' => $get_dateTime1,
+            'get_dateTime2' => $get_dateTime2,
+            'get_dateTime3' => $get_dateTime3,
+            'get_dateTime4' => $get_dateTime4,
+            'get_dateTime5' => $get_dateTime5,
+        ];
+
     }
 }

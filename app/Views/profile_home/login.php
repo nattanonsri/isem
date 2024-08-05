@@ -53,7 +53,7 @@
         }
     });
         $('#loginfrm').on('submit', function (event) {
-            event.preventDefault(); // ป้องกันการโหลดหน้าใหม่
+            event.preventDefault();
 
             var formData = $(this).serialize();
             var rememberMe = $('#rememberMe').is(':checked');
