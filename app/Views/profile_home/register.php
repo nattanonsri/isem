@@ -3,7 +3,7 @@
     <div class="container py-5 h-100">
         <div class="row justify-content-center align-items-center h-100">
             <div class="col-12 col-lg-9 col-xl-7">
-                <div class="card shadow-2-strong card-registration" style="border-radius: 1rem;" data-aos="fade-up"
+                <div class="card shadow card-registration" style="border-radius: 1rem;" data-aos="fade-up"
                     data-aos-anchor=".other-element">
                     <div class="card-body p-5 ">
                         <h2 class="fw-bold mb-5 text-capitalize"><?= lang('profile.register-from') ?></h2>

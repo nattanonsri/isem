@@ -36,7 +36,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
     
     $routes->get('profile/detail_all_user/(:any)', 'Profile_HomeController::detail_all_user/$1');
     $routes->get('profile/profile_details/(:any)', 'Profile_HomeController::profile_details/$1');
-    $routes->get('profile/update_admin_profile/(:any)', 'Profile_HomeController::update_admin_profile/$1');
+    $routes->post('profile/update_admin_profile/', 'Profile_HomeController::update_admin_profile');
 });
 
 $routes->get('logout', 'Profile_HomeController::logout');

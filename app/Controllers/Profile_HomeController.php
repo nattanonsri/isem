@@ -117,10 +117,39 @@ class Profile_HomeController extends Controller
         $data['admin'] = $admin_modal->getAdminByUuid($uuid);
         // var_dump($data['admin']);exit;
 
-        return view('common/header') . view('profile_home/profile_admin',$data) . view('common/footer');
+        return view('common/header') . view('profile_home/profile_admin', $data) . view('common/footer');
     }
-    function update_admin_profile(){
-        var_dump($this->request->getPost());exit;
+    function update_admin_profile()
+    {
+
+
+        if ($this->request->getPost()) {
+            $admin_modal = new AdminProfileModel();
+
+            $uuid = $this->request->getPost('uuid');
+            $fname = $this->request->getPost('fname');
+            $lname = $this->request->getPost('lname');
+            $birthday = $this->request->getPost('birthday');
+            $gender = $this->request->getPost('gender');
+            $phone = $this->request->getPost('phone');
+            $username = $this->request->getPost('username');
+            $password = $this->request->getPost('password');
+
+            $admin = $admin_modal->getAdminByUuid($uuid);
+            $admin_id = $admin['id'];
+
+
+            $update_date = $admin_modal->update_admin($admin_id, $fname, $lname, $birthday, $gender, $phone, $username, $password);
+
+            if ($update_date) {
+                $data = ['status' => 200, 'message' => lang('profile.edit-success')];
+            } else {
+                $data = ['status' => 400, 'message' => lang('profile.edit-error')];
+            }
+
+            echo json_encode($data);
+            exit;
+        }
     }
 
     function edit_form_user($uuid)

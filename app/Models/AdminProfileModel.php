@@ -40,7 +40,7 @@ class AdminProfileModel extends Model
 
     public function getAdminByUuid($uuid)
     {
-        $data = $this->where('uuid', $uuid)->first();
+        $data = $this->where(['id' => ADMIN_ID, 'uuid' => $uuid])->first();
         return $data;
 
     }
@@ -76,6 +76,22 @@ class AdminProfileModel extends Model
         } else {
             return $query;
         }
+    }
+
+    public function update_admin($id, $fname, $lname, $birthday, $gender, $phone, $username, $password)
+    {
+        $data = [
+            'fname' => $fname,
+            'lname' => $lname,
+            'birthday' => $birthday,
+            'gender' => $gender,
+            'phone' => $phone,
+            'username' => $username,
+            'password' => password_hash($password, PASSWORD_DEFAULT),
+        ];
+
+        $update_data = $this->update($id, $data);
+        return $update_data;
     }
 
 
