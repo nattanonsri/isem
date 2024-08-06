@@ -49,7 +49,7 @@
         $('#username').on('input', function() {
         var value = $(this).val();
         if (/[^a-zA-Z]/.test(value)) {
-            $(this).val(value.replace(/[^a-zA-Z]/g, ''));
+            $(this).val(value.replace(/[^a-zA-Z0-9]]/g, ''));
         }
     });
         $('#loginfrm').on('submit', function (event) {

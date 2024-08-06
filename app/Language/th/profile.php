@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'details'                                   => 'รายละเอียด',
     'create-success'                            => 'เพิ่มข้อมูลสำเร็จ',
     'create-error'                              => 'เพิ่มข้อมูลไม่สำเร็จ',
     'edit-success'                              => 'แก้ไขข้อมูลสำเร็จ',
@@ -28,7 +29,7 @@ return [
     'fullname'                                  => 'ชื่อ-นามสกุล',
     "birthday"                                  => 'วัน/เดือน/ปีเกิด',
     'gender'                                    => 'เพศ',
-    'man'                                       => 'ชาย',
+    'male'                                      => 'ชาย',
     'female'                                    => 'หญิง',
     'other'                                     => 'อื่นๆ',
     'phone'                                     => 'เบอร์โทรศัพท์',
@@ -59,8 +60,6 @@ return [
     'null-value'                                => 'ไม่มี',
     'elderly-information'                       => 'ข้อมูลผู้สูงอายุ',
     'caution'                                   => '(กรุณาถ่ายแนวนอน)',
-
-    
 
 
 ];

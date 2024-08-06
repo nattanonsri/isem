@@ -35,6 +35,8 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
     $routes->delete('profile/delete_form_user/(:any)', 'Profile_HomeController::delete_form_user/$1');
     
     $routes->get('profile/detail_all_user/(:any)', 'Profile_HomeController::detail_all_user/$1');
+    $routes->get('profile/profile_details/(:any)', 'Profile_HomeController::profile_details/$1');
+    $routes->get('profile/update_admin_profile/(:any)', 'Profile_HomeController::update_admin_profile/$1');
 });
 
 $routes->get('logout', 'Profile_HomeController::logout');

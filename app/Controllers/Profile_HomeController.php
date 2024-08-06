@@ -12,7 +12,7 @@ class Profile_HomeController extends Controller
 {
     protected $helpers = ['url', 'form'];
 
-    public function __construct()
+    function __construct()
     {
         $lang = \Config\Services::language();
         $lang->setLocale('th');
@@ -20,30 +20,26 @@ class Profile_HomeController extends Controller
         $this->Auth = new Auth;
     }
 
-    public function index()
+    function index()
     {
         $admin_user = new AdminProfileModel();
-        $admin_user = $admin_user->groupAdminProfileObject();
-        var_dump($admin_user);exit;
+        $data['admin_user'] = $admin_user->groupAdminProfileROW(ADMIN_ID);
 
-        return view('common/header') . view('profile_home/index') . view('common/footer');
+        return view('common/header') . view('profile_home/index', $data) . view('common/footer');
     }
 
-    public function user_search()
+    function user_search()
     {
         $user = new Profile_HomeModel();
-        
-    
 
         $search = $this->request->getPost('search');
 
         $data['profile'] = $user->user_search($search);
-       
 
         return view('profile_home/card', $data) . view('common/footer');
 
     }
-    public function load_add_user()
+    function load_add_user()
     {
 
         echo view('common/header', ['title' => 'ฟอร์มเพิ่มข้อมูล']);
@@ -51,7 +47,7 @@ class Profile_HomeController extends Controller
         echo view('common/footer');
     }
 
-    public function add_from_user()
+    function add_from_user()
     {
         $insertProfile = new Profile_HomeModel();
         if ($this->request->getPost()) {
@@ -91,7 +87,7 @@ class Profile_HomeController extends Controller
                 'caretaker' => $caretaker,
                 'medicines' => $medicines,
                 'file_image' => $file_image,
-                'status' => 1
+                'status' => 1,
             );
 
             $insert = $insertProfile->insert($data);
@@ -107,7 +103,7 @@ class Profile_HomeController extends Controller
         }
     }
 
-    public function load_edit_form_user($uuid)
+    function load_edit_form_user($uuid)
     {
         $editUser = new Profile_HomeModel();
         $data['profile'] = $editUser->getProfileHomeByUuid($uuid);
@@ -115,7 +111,19 @@ class Profile_HomeController extends Controller
         return view('common/header') . view('profile_home/edit', $data) . view('common/footer');
     }
 
-    public function edit_form_user($uuid)
+    function profile_details($uuid)
+    {
+        $admin_modal = new AdminProfileModel();
+        $data['admin'] = $admin_modal->getAdminByUuid($uuid);
+        // var_dump($data['admin']);exit;
+
+        return view('common/header') . view('profile_home/profile_admin',$data) . view('common/footer');
+    }
+    function update_admin_profile(){
+        var_dump($this->request->getPost());exit;
+    }
+
+    function edit_form_user($uuid)
     {
         $editUser = new Profile_HomeModel();
 
@@ -183,7 +191,9 @@ class Profile_HomeController extends Controller
         }
     }
 
-    public function delete_form_user($uuid)
+
+
+    function delete_form_user($uuid)
     {
         $dalete_user = new Profile_HomeModel();
         if ($this->request->getMethod() === 'DELETE') {
@@ -205,7 +215,7 @@ class Profile_HomeController extends Controller
 
     }
 
-    public function detail_all_user($uuid)
+    function detail_all_user($uuid)
     {
         $user = new Profile_HomeModel();
         $users = $user->getProfileAllByUUID($uuid);
@@ -223,7 +233,7 @@ class Profile_HomeController extends Controller
     }
 
 
-    public function login()
+    function login()
     {
         $session = session();
         $model = new AdminProfileModel();
@@ -260,7 +270,7 @@ class Profile_HomeController extends Controller
         echo view('common/footer');
     }
 
-    public function register()
+    function register()
     {
 
         $model = new AdminProfileModel();
@@ -290,7 +300,7 @@ class Profile_HomeController extends Controller
         }
     }
 
-    public function check_duplicate()
+    function check_duplicate()
     {
         $fname = $this->request->getPost('fname');
         $lname = $this->request->getPost('lname');
@@ -302,7 +312,7 @@ class Profile_HomeController extends Controller
         echo json_encode(['isDuplicate' => $isDuplicate]);
     }
 
-    public function logout()
+    function logout()
     {
         $session = session();
         $session->destroy();

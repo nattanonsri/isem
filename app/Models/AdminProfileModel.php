@@ -56,10 +56,10 @@ class AdminProfileModel extends Model
         return $results;
     }
 
-    public function groupAdminProfileObject()
+    public function groupAdminProfileROW($admin_id)
     {
         $builder = $this->db->table($this->table);
-        $builder->select('id, uuid, CONCAT(fname, " ", lname) as fullname, birthday, gender, phone, username, password');
+        $builder->select('id, uuid, CONCAT(fname, " ", lname) as fullname, birthday, gender, phone, username, password')->where('id', $admin_id);
 
         $query = $builder->get();
         $results = $query->getRowArray();
