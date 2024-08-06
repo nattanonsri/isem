@@ -22,19 +22,19 @@ class Profile_HomeController extends Controller
 
     function index()
     {
-        $admin_user = new AdminProfileModel();
-        $data['admin_user'] = $admin_user->groupAdminProfileROW(ADMIN_ID);
+        $admin_model = new AdminProfileModel();
+        $data['admin_user'] = $admin_model->groupAdminProfileROW(ADMIN_ID);
 
         return view('common/header') . view('profile_home/index', $data) . view('common/footer');
     }
 
     function user_search()
     {
-        $user = new Profile_HomeModel();
+        $profile_model = new Profile_HomeModel();
 
         $search = $this->request->getPost('search');
 
-        $data['profile'] = $user->user_search($search);
+        $data['profile'] = $profile_model->user_search($search);
 
         return view('profile_home/card', $data) . view('common/footer');
 
@@ -49,7 +49,7 @@ class Profile_HomeController extends Controller
 
     function add_from_user()
     {
-        $insertProfile = new Profile_HomeModel();
+        $profile_model = new Profile_HomeModel();
         if ($this->request->getPost()) {
             $prefix = $this->request->getPost('prefix');
             $fname = $this->request->getPost('fname');
@@ -90,7 +90,7 @@ class Profile_HomeController extends Controller
                 'status' => 1,
             );
 
-            $insert = $insertProfile->insert($data);
+            $insert = $profile_model->insert($data);
 
             if ($insert) {
                 $data = array('status' => 200, 'message' => lang('profile.create-success'));
@@ -105,26 +105,23 @@ class Profile_HomeController extends Controller
 
     function load_edit_form_user($uuid)
     {
-        $editUser = new Profile_HomeModel();
-        $data['profile'] = $editUser->getProfileHomeByUuid($uuid);
+        $profile_model = new Profile_HomeModel();
+        $data['profile'] = $profile_model->getProfileHomeByUuid($uuid);
 
         return view('common/header') . view('profile_home/edit', $data) . view('common/footer');
     }
 
     function profile_details($uuid)
     {
-        $admin_modal = new AdminProfileModel();
-        $data['admin'] = $admin_modal->getAdminByUuid($uuid);
-        // var_dump($data['admin']);exit;
+        $admin_model = new AdminProfileModel();
+        $data['admin'] = $admin_model->getAdminByUuid($uuid);
 
         return view('common/header') . view('profile_home/profile_admin', $data) . view('common/footer');
     }
     function update_admin_profile()
     {
-
-
         if ($this->request->getPost()) {
-            $admin_modal = new AdminProfileModel();
+            $admin_model = new AdminProfileModel();
 
             $uuid = $this->request->getPost('uuid');
             $fname = $this->request->getPost('fname');
@@ -135,11 +132,10 @@ class Profile_HomeController extends Controller
             $username = $this->request->getPost('username');
             $password = $this->request->getPost('password');
 
-            $admin = $admin_modal->getAdminByUuid($uuid);
+            $admin = $admin_model->getAdminByUuid($uuid);
             $admin_id = $admin['id'];
 
-
-            $update_date = $admin_modal->update_admin($admin_id, $fname, $lname, $birthday, $gender, $phone, $username, $password);
+            $update_date = $admin_model->update_admin($admin_id, $fname, $lname, $birthday, $gender, $phone, $username, $password);
 
             if ($update_date) {
                 $data = ['status' => 200, 'message' => lang('profile.edit-success')];
@@ -154,12 +150,11 @@ class Profile_HomeController extends Controller
 
     function edit_form_user($uuid)
     {
-        $editUser = new Profile_HomeModel();
-
         if ($this->request->getPost()) {
+            $profile_model = new Profile_HomeModel();
 
             $file = $this->request->getFile('file_image');
-            $user = $editUser->getProfileHomeByUuid($uuid);
+            $user = $profile_model->getProfileHomeByUuid($uuid);
 
             if (!$user) {
                 echo json_encode(['status' => 404, 'message' => 'User not found']);
@@ -207,7 +202,7 @@ class Profile_HomeController extends Controller
                 $data['file_image'] = '/profiles/' . $imageName;
             }
 
-            $updataed_data = $editUser->updateProfileById($id, $data);
+            $updataed_data = $profile_model->updateProfileById($id, $data);
 
             if ($updataed_data !== false) {
                 $data = ['status' => 200, 'message' => lang('profile.edit-success')];
@@ -224,12 +219,12 @@ class Profile_HomeController extends Controller
 
     function delete_form_user($uuid)
     {
-        $dalete_user = new Profile_HomeModel();
         if ($this->request->getMethod() === 'DELETE') {
-            $delete_user = $dalete_user->getProfileHomeByUuid($uuid);
+            $profile_model = new Profile_HomeModel();
+            $delete_user = $profile_model->getProfileHomeByUuid($uuid);
             $id = $delete_user['id'];
 
-            $deleted = $dalete_user->delete($id);
+            $deleted = $profile_model->delete($id);
 
             if ($deleted !== false) {
                 $data = ['status' => 200, 'message' => lang('profile.delete-success')];
@@ -246,10 +241,10 @@ class Profile_HomeController extends Controller
 
     function detail_all_user($uuid)
     {
-        $user = new Profile_HomeModel();
-        $users = $user->getProfileAllByUUID($uuid);
+        $profile_model = new Profile_HomeModel();
+        $users = $profile_model->getProfileAllByUUID($uuid);
 
-        if (!$user) {
+        if (!$profile_model) {
             throw new \Exception('User not found');
         }
 
@@ -265,13 +260,13 @@ class Profile_HomeController extends Controller
     function login()
     {
         $session = session();
-        $model = new AdminProfileModel();
+        $admin_model = new AdminProfileModel();
 
         if ($this->request->getMethod() === 'POST') {
             $username = $this->request->getPost('username');
             $password = $this->request->getPost('password');
 
-            $user = $model->where('username', $username)->first();
+            $user = $admin_model->where('username', $username)->first();
 
             if ($user) {
                 $pass = $user['password'];
@@ -302,12 +297,12 @@ class Profile_HomeController extends Controller
     function register()
     {
 
-        $model = new AdminProfileModel();
+        $admin_model = new AdminProfileModel();
         $uuid = Uuid::uuid4();
 
         if ($this->request->getMethod() === 'POST') {
 
-            $model->save([
+            $admin_model->save([
                 'uuid' => $uuid->toString(),
                 'fname' => $this->request->getPost('fname'),
                 'lname' => $this->request->getPost('lname'),
@@ -334,11 +329,12 @@ class Profile_HomeController extends Controller
         $fname = $this->request->getPost('fname');
         $lname = $this->request->getPost('lname');
 
-        $model = new AdminProfileModel();
+        $admin_model = new AdminProfileModel();
 
-        $isDuplicate = $model->ckeckDuplicate($fname, $lname);
+        $isDuplicate = $admin_model->ckeckDuplicate($fname, $lname);
 
         echo json_encode(['isDuplicate' => $isDuplicate]);
+        exit;
     }
 
     function logout()

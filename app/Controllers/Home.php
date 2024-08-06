@@ -21,9 +21,9 @@ class Home extends Controller
 
     public function index()
     {
-        $model = new Profile_HomeModel();
+        $profile_model = new Profile_HomeModel();
 
-        $profiles = $model->getProfileAll();
+        $profiles = $profile_model->getProfileAll();
 
         foreach ($profiles as &$profile) {
             if (isset($profile['coordinates'])) {
@@ -41,15 +41,15 @@ class Home extends Controller
     public function check_search_user()
     {
 
-        $model = new Profile_HomeModel();
-
+        
         if ($this->request->getPost()) {
-
+            $profile_model = new Profile_HomeModel();
+            
             $search = $this->request->getPost('search');
             $field = $this->request->getPost('field');
             $value = $this->request->getPost('value');
 
-            $check_user = $model->getProfileAll($search, $field, $value);
+            $check_user = $profile_model->getProfileAll($search, $field, $value);
 
             foreach ($check_user as &$profile) {
                 if (isset($profile['coordinates'])) {

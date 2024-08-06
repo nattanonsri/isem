@@ -24,25 +24,25 @@ class Backend extends Controller
     }
     public function load_content_dash()
     {
-        $model = new Profile_HomeModel();
+        $profile_model = new Profile_HomeModel();
 
         // $user = $modal->getProfileNumRow();
 
-        $data['datetime'] = $model->getLoginCountsByDate();
+        $data['datetime'] = $profile_model->getLoginCountsByDate();
 
         return view('backend/details_content/my_content_dashboard', $data);
     }
     public function load_content_admin()
     {
-        $modal = new AdminProfileModel();
-        $data['admin'] = $modal->groupAdminProfile();
+        $admin_model = new AdminProfileModel();
+        $data['admin'] = $admin_model->groupAdminProfile();
 
         return view('backend/details_content/my_content_admin', $data);
     }
     public function load_content_users()
     {
-        $modal = new Profile_HomeModel();
-        $data['users'] = $modal->getProfileAll();
+        $profile_model = new Profile_HomeModel();
+        $data['users'] = $profile_model->getProfileAll();
 
         return view('backend/details_content/my_content_users', $data);
     }
@@ -51,11 +51,11 @@ class Backend extends Controller
     {
         if ($this->request->getMethod() === 'DELETE') {
 
-            $delete_admin = new AdminProfileModel();
-            $delete_admin = $delete_admin->getAdminByUuid($uuid);
-            $id = $delete_admin['id'];
+            $admin_model = new AdminProfileModel();
+            $admin = $admin_model->getAdminByUuid($uuid);
+            $id = $admin['id'];
 
-            $delete = $delete_admin->delete($id);
+            $delete = $admin_model->delete($id);
 
             if ($delete !== false) {
                 $data = ['status' => 200, 'message' => lang('profile.delete-success')];
