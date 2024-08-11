@@ -131,8 +131,14 @@
     </div>
 </div>
 
+
+
 <script>
-    new DataTable('#my_table_admin');
+    new DataTable('#my_table_admin', {
+        language: {
+            lengthMenu: "_MENU_"
+        }
+    });
 
     var tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     var tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));

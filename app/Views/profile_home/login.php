@@ -7,6 +7,7 @@
                         <div class="mb-md-5 mt-md-4 pb-5">
                             <h2 class="fw-bold mb-5 text-uppercase"><?= lang('profile.login') ?></h2>
                             <form id="loginfrm" method="POST">
+                                <?= csrf_field() ?>
                                 <div class="form-floating mb-4">
                                     <input type="text" class="form-control" name="username" id="username"
                                         placeholder="username">
@@ -17,11 +18,11 @@
                                         placeholder="password">
                                     <label for="password"><?= lang('profile.password') ?></label>
                                 </div>
-                                <div class="form-check mb-4 text-start">
+                                <!-- <div class="form-check mb-4 text-start">
                                     <input class="form-check-input" type="checkbox" id="rememberMe">
                                     <label class="form-check-label"
                                         for="rememberMe"><?= lang('profile.remember-me') ?></label>
-                                </div>
+                                </div> -->
                                 <!-- <p class="small mb-5"><a class="text-dark-50" href="#!">Forgot password?</a></p> -->
                                 <button class="btn btn-primary btn-lg px-5"
                                     type="submit"><?= lang('profile.login') ?></button>

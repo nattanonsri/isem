@@ -35,14 +35,14 @@
                                 <td><?= $user['birthdate'] ?></td>
                                 <td><?= $user['phone'] ?></td>
                                 <td>
-                                <a role="button" data-bs-toggle="tooltip" data-bs-title="<?= lang('profile.edit') ?>"
-                                    class="modalButton">
-                                    <i class="fa-solid fa-pen-to-square fs-3 text-warning"></i>
-                                </a>
-                                <a onclick="deleteUsers('<?= $user['user_uuid'] ?>');" role="button" data-bs-toggle="tooltip"
-                                    data-bs-title="<?= lang('profile.delete') ?>">
-                                    <i class="fa-solid fa-trash fs-3 text-danger"></i>
-                                </a>
+                                    <a role="button" data-bs-toggle="tooltip" data-bs-title="<?= lang('profile.edit') ?>"
+                                        class="modalButton">
+                                        <i class="fa-solid fa-pen-to-square fs-3 text-warning"></i>
+                                    </a>
+                                    <a onclick="deleteUsers('<?= $user['user_uuid'] ?>');" role="button"
+                                        data-bs-toggle="tooltip" data-bs-title="<?= lang('profile.delete') ?>">
+                                        <i class="fa-solid fa-trash fs-3 text-danger"></i>
+                                    </a>
                                 </td>
                             </tr>
 
@@ -58,7 +58,11 @@
 </div>
 
 <script>
-    new DataTable('#my_table_users');
+    new DataTable('#my_table_users', {
+        language: {
+            lengthMenu: "_MENU_"
+        }
+    });
 
     var tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     var tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));

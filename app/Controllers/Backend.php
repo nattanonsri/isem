@@ -26,9 +26,13 @@ class Backend extends Controller
     {
         $profile_model = new Profile_HomeModel();
 
-        // $user = $modal->getProfileNumRow();
-
         $data['datetime'] = $profile_model->getLoginCountsByDate();
+        $data['sum_user'] = $profile_model->_getProfileNumAll();
+        $data['male'] = $profile_model->_getProfileNumRowMale();
+        $data['female'] = $profile_model->_getProfileNumRowFemale();
+        // var_dump($data['sum_user']);exit;
+
+        // var_dump($data['datetime']);exit;
 
         return view('backend/details_content/my_content_dashboard', $data);
     }

@@ -4,7 +4,6 @@ namespace App\Controllers;
 use App\Models\Profile_HomeModel;
 use App\Models\AdminProfileModel;
 use CodeIgniter\Controller;
-use Ramsey\Uuid\Uuid;
 use App\Libraries\Auth;
 
 
@@ -72,7 +71,7 @@ class Profile_HomeController extends Controller
             $file_image = '/profiles/' . $imageNameUpload;
 
             $data = array(
-                'uuid' => Uuid::uuid4()->toString(),
+                'uuid' => create_uuid(),
                 'prefix' => $prefix,
                 'fname' => $fname,
                 'lname' => $lname,
@@ -117,35 +116,6 @@ class Profile_HomeController extends Controller
         $data['admin'] = $admin_model->getAdminByUuid($uuid);
 
         return view('common/header') . view('profile_home/profile_admin', $data) . view('common/footer');
-    }
-    function update_admin_profile()
-    {
-        if ($this->request->getPost()) {
-            $admin_model = new AdminProfileModel();
-
-            $uuid = $this->request->getPost('uuid');
-            $fname = $this->request->getPost('fname');
-            $lname = $this->request->getPost('lname');
-            $birthday = $this->request->getPost('birthday');
-            $gender = $this->request->getPost('gender');
-            $phone = $this->request->getPost('phone');
-            $username = $this->request->getPost('username');
-            $password = $this->request->getPost('password');
-
-            $admin = $admin_model->getAdminByUuid($uuid);
-            $admin_id = $admin['id'];
-
-            $update_date = $admin_model->update_admin($admin_id, $fname, $lname, $birthday, $gender, $phone, $username, $password);
-
-            if ($update_date) {
-                $data = ['status' => 200, 'message' => lang('profile.edit-success')];
-            } else {
-                $data = ['status' => 400, 'message' => lang('profile.edit-error')];
-            }
-
-            echo json_encode($data);
-            exit;
-        }
     }
 
     function edit_form_user($uuid)
@@ -296,31 +266,47 @@ class Profile_HomeController extends Controller
 
     function register()
     {
+        echo view('common/header', ['title' => 'ฟอร์มสมัคร User Admin']);
+        echo view('profile_home/register');
+        echo view('common/footer');
 
-        $admin_model = new AdminProfileModel();
-        $uuid = Uuid::uuid4();
+    }
+    function add_user_admin($type)
+    {
+        if ($this->request->getPost()) {
 
-        if ($this->request->getMethod() === 'POST') {
+            $admin_model = new AdminProfileModel();
+            $insert = $admin_model->_addAdmin($type, $this->request->getPost());
 
-            $admin_model->save([
-                'uuid' => $uuid->toString(),
-                'fname' => $this->request->getPost('fname'),
-                'lname' => $this->request->getPost('lname'),
-                'birthday' => $this->request->getPost('birthday'),
-                'gender' => $this->request->getPost('gender'),
-                'phone' => $this->request->getPost('phone'),
-                'username' => $this->request->getPost('username'),
-                'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
-                'type_admin' => 'create-admin-user',
-                'status' => 1
-            ]);
+            if ($insert) {
+                $data = ['status' => 200, 'message' => lang('profile.seve-admin-success')];
+            } else {
+                $data = ['status' => 400, 'message' => lang('profile.seve-admin-error')];
+            }
 
-            return redirect()->to('/login')->with('success', 'Register created successfully');
+            echo json_encode($data);
+            exit;
 
-        } else {
-            echo view('common/header', ['title' => 'ฟอร์มสมัคร Admin']);
-            echo view('profile_home/register');
-            echo view('common/footer');
+        }
+    }
+    function update_admin_profile($type)
+    {
+        if ($this->request->getPost()) {
+            $admin_model = new AdminProfileModel();
+
+            $uuid = $this->request->getPost('uuid');
+            $admin = $admin_model->getAdminByUuid($uuid);
+            $admin_id = $admin['id'];
+            $update_date = $admin_model->_updateAdmin($admin_id, $type, $this->request->getPost());
+
+            if ($update_date) {
+                $data = ['status' => 200, 'message' => lang('profile.edit-success')];
+            } else {
+                $data = ['status' => 400, 'message' => lang('profile.edit-error')];
+            }
+
+            echo json_encode($data);
+            exit;
         }
     }
 

@@ -13,7 +13,7 @@
                                 <div class="col-md-6 col-12">
                                     <div class="form-floating mb-4">
                                         <input type="text" class="form-control" name="fname" id="fname"
-                                            oninput="this.value = this.value.replace(/[^\u0E00-\u0E7F]/g, '')"
+                                            oninput="this.value = this.value.replace(/[^a-z\u0E00-\u0E7F]/gi, '')"
                                             placeholder="<?= lang('profile.fname') ?>" required>
                                         <label for="fname"><?= lang('profile.fname') ?></label>
                                     </div>
@@ -21,7 +21,7 @@
                                 <div class="col-md-6 col-12">
                                     <div class="form-floating mb-4">
                                         <input type="text" class="form-control" name="lname" id="lname"
-                                            oninput="this.value = this.value.replace(/[^\u0E00-\u0E7F]/g, '')"
+                                            oninput="this.value = this.value.replace(/[^a-z\u0E00-\u0E7F]/gi, '')"
                                             placeholder="<?= lang('profile.lname') ?>" required>
                                         <label for="lname"><?= lang('profile.lname') ?></label>
                                     </div>
@@ -60,13 +60,14 @@
                                 <div class="col-12 ">
                                     <div class="form-floating mb-4">
                                         <input type="text" class="form-control" name="phone" id="phone"
+                                            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                             placeholder="<?= lang('profile.phone') ?>" required>
                                         <label for="phone"><?= lang('profile.phone') ?></label>
                                     </div>
                                 </div>
                                 <div class="col-12 ">
                                     <div class="form-floating mb-4">
-                                        <input type="text" class="form-control" name="username" id="username" 
+                                        <input type="text" class="form-control" name="username" id="username"
                                             placeholder="<?= lang('profile.username') ?>" required>
                                         <label for="username"><?= lang('profile.username') ?></label>
                                     </div>
@@ -129,55 +130,105 @@
 
 <script>
 
-    function formatPhoneNumber(phoneNumber) {
-        var cleaned = ('' + phoneNumber).replace(/\D/g, '');
+    $(document).ready(function () {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0');
+        let yyyy = today.getFullYear();
 
-        if (cleaned.length > 10) {
-            cleaned = cleaned.substring(0, 10);
+        today = yyyy + '-' + mm + '-' + dd;
+        $('#birthday').attr('max', today);
+
+        function formatPhoneNumber(phoneNumber) {
+            var cleaned = ('' + phoneNumber).replace(/\D/g, '');
+
+            if (cleaned.length > 10) {
+                cleaned = cleaned.substring(0, 10);
+            }
+            var match = cleaned.match(/^(\d{2})(\d{4})(\d{4})$/);
+
+            if (match) {
+                return match[1] + '-' + match[2] + '-' + match[3];
+            } else {
+                return cleaned.replace(/(\d{2})(\d{4})(\d{4})/, "$1-$2-$3");
+            }
         }
-        var match = cleaned.match(/^(\d{2})(\d{4})(\d{4})$/);
 
-        if (match) {
-            return match[1] + '-' + match[2] + '-' + match[3];
-        } else {
-            return cleaned.replace(/(\d{2})(\d{4})(\d{4})/, "$1-$2-$3");
-        }
-    }
-
-    $('#phone').on('input', function () {
-        var formattedPhoneNumber = formatPhoneNumber($(this).val());
-        if (formattedPhoneNumber) {
-            $(this).val(formattedPhoneNumber);
-        }
-    });
-
-
-
-    $('#username').on('input', function () {
-        var value = $(this).val();
-        if (/[^a-zA-Z0-9]/.test(value)) {
-            $(this).val(value.replace(/[^a-zA-Z0-9]/g, ''));
-        }
-    });
-
-    $('#submitBtn').on('click', function (event) {
-        event.preventDefault();
-        let formData = $('#register').serialize();
-        $.ajax({
-            url: '<?= base_url('register'); ?>',
-            type: 'POST',
-            data: formData,
-            success: function (response) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'บันทึกข้อมูลสำเร็จ',
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(function () {
-                    window.location.href = '<?= base_url('login'); ?>'
-                });
-            },
+        $('#phone').on('input', function () {
+            var formattedPhoneNumber = formatPhoneNumber($(this).val());
+            if (formattedPhoneNumber) {
+                $(this).val(formattedPhoneNumber);
+            }
         });
+
+        $('#username').on('input', function () {
+            var value = $(this).val();
+            if (/[^a-zA-Z0-9]/.test(value)) {
+                $(this).val(value.replace(/[^a-zA-Z0-9]/g, ''));
+            }
+        });
+
+        $('#submitBtn').on('click', function (e) {
+            e.preventDefault();
+
+            if (validateForm('register')) {
+                let formData = $('#register').serialize();
+                $.ajax({
+                    url: '<?= base_url('register/add_user_admin/user_admin'); ?>',
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.status == 200) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: data.message,
+                                text: ''
+                            }).then(function () {
+                                window.location.href = '<?= base_url('login'); ?>'
+                            });
+                        }else{
+                            Swal.fire({
+                                icon: 'warning',
+                                title: data.message,
+                                text: ''
+                            });
+                        }
+                    },
+                });
+            }
+        });
+
+        function checkDuplicateRegistration(fname, lname, callback) {
+            $.ajax({
+                url: '<?= base_url('check_duplicate'); ?>',
+                type: 'POST',
+                data: { fname: fname, lname: lname },
+                success: function (response) {
+                    callback(response.isDuplicate);
+                },
+                error: function () {
+                    callback(false);
+                }
+            });
+        }
+
+        function validateForm(formId) {  
+            var isValid = true;
+            $('#' + formId + ' input').each(function () {
+                if ($(this).val() === '') {
+                    isValid = false;
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'เกิดข้อผิดพลาด',
+                        text: 'กรุณากรอกข้อมูลให้ครบถ้วน'
+                    });
+                    return false;
+                }
+            });
+            return isValid;
+        }
     });
+
 
 </script>

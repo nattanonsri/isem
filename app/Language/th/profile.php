@@ -60,6 +60,8 @@ return [
     'null-value'                                => 'ไม่มี',
     'elderly-information'                       => 'ข้อมูลผู้สูงอายุ',
     'caution'                                   => '(กรุณาถ่ายแนวนอน)',
+    'seve-admin-success'                        => 'บันทึกข้อมูลสำเร็จ', 
+    'seve-admin-error'                          => 'ไม่สามารถบันทึกข้อมูลได้', 
 
 
 ];

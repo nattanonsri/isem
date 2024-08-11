@@ -110,6 +110,17 @@
 
 <script>
 
+    $(document).ready(function () {
+        
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0');
+        let yyyy = today.getFullYear();
+
+        today = yyyy + '-' + mm + '-' + dd;
+        $('#birthday').attr('max', today);
+    });
+
     function formatPhoneNumber(phoneNumber) {
         var cleaned = ('' + phoneNumber).replace(/\D/g, '');
 
@@ -145,18 +156,15 @@
         e.preventDefault();
         let formData = $('#frmDetailProifle').serialize();
         $.ajax({
-            url: '<?= base_url('profile/update_admin_profile'); ?>',
+            url: '<?= base_url('profile/update_admin_profile/user_admin'); ?>',
             type: 'POST',
             data: formData,
             dataType: 'json',
             success: function (data) {
-                console.log(data);
                 if (data.status == 200) {
                     Swal.fire({
                         icon: 'success',
                         title: data.message,
-                        showConfirmButton: false,
-                        timer: 1500
                     }).then(function () {
                         window.location.href = '<?= base_url('profile'); ?>'
                     });
@@ -164,8 +172,6 @@
                     Swal.fire({
                         icon: 'warning',
                         title: data.message,
-                        showConfirmButton: false,
-                        timer: 1500,
                     })
                 }
 

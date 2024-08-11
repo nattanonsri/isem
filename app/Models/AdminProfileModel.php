@@ -77,21 +77,38 @@ class AdminProfileModel extends Model
             return $query;
         }
     }
-
-    public function update_admin($id, $fname, $lname, $birthday, $gender, $phone, $username, $password)
+    function _addAdmin($type, $data)
     {
-        $data = [
-            'fname' => $fname,
-            'lname' => $lname,
-            'birthday' => $birthday,
-            'gender' => $gender,
-            'phone' => $phone,
-            'username' => $username,
-            'password' => password_hash($password, PASSWORD_DEFAULT),
+        $add_data = [
+            'uuid' => create_uuid(),
+            'fname' => $data['fname'],
+            'lname' => $data['lname'],
+            'birthday' => $data['birthday'],
+            'gender' => $data['gender'],
+            'phone' => $data['phone'],
+            'username' => $data['username'],
+            'password' => password_hash($data['password'], PASSWORD_DEFAULT),
+            'type_admin' => $type,
+            'status' => '1'
         ];
 
-        $update_data = $this->update($id, $data);
-        return $update_data;
+       return $this->insert($add_data, false);
+
+    }
+
+    public function _updateAdmin($id, $type, $data)
+    {
+        $update_data = [
+            'fname' => $data['fname'],
+            'lname' => $data['lname'],
+            'birthday' => $data['birthday'],
+            'gender' => $data['gender'],
+            'phone' => $data['phone'],
+            'username' => $data['username'],
+            'password' => password_hash($data['password'], PASSWORD_DEFAULT),
+        ];
+
+        return $this->where('type_admin', $type)->update($id, $update_data, false);
     }
 
 

@@ -62,7 +62,14 @@ class Profile_HomeModel extends Model
         return $data;
     }
 
-    public function getProfileNumRow()
+    public function _getProfileNumRowMale()
+    {
+        return $this->where('prefix', 'นาย')->countAllResults();
+    }
+    public function _getProfileNumRowFemale(){
+        return $this->whereIn('prefix', ['นาง', 'นางสาว'])->countAllResults();
+    }
+    public function _getProfileNumAll()
     {
         return $this->countAllResults();
     }
@@ -216,20 +223,18 @@ class Profile_HomeModel extends Model
     }
     public function getLoginCountsByDate()
     {
-        $current = date('Y-m-d');
-        $new_date1 = date('Y-m-d', strtotime('-1 days', strtotime($current)));
-        $new_date2 = date('Y-m-d', strtotime('-2 days', strtotime($current)));
-        $new_date3 = date('Y-m-d', strtotime('-3 days', strtotime($current)));
-        $new_date4 = date('Y-m-d', strtotime('-4 days', strtotime($current)));
+        // $current = CURRENT_DATE;
+        $current = date('Y-m-d', strtotime(CURRENT_DATE));
+        $new_date1 = date('Y-m-d', strtotime('-1 days', strtotime(CURRENT_DATE)));
+        $new_date2 = date('Y-m-d', strtotime('-2 days', strtotime(CURRENT_DATE)));
+        $new_date3 = date('Y-m-d', strtotime('-3 days', strtotime(CURRENT_DATE)));
+        $new_date4 = date('Y-m-d', strtotime('-4 days', strtotime(CURRENT_DATE)));
 
-        // $user = $this->db->table($this->table);
-        $user = $this->db->table($this->table);
-
-        $get_dateTime1 = $user->where('DATE(updated_at)', $current)->countAllResults(false);
-        $get_dateTime2 = $user->where('DATE(updated_at)', $new_date1)->countAllResults(false);
-        $get_dateTime3 = $user->where('DATE(updated_at)', $new_date2)->countAllResults(false);
-        $get_dateTime4 = $user->where('DATE(updated_at)', $new_date3)->countAllResults(false);
-        $get_dateTime5 = $user->where('DATE(updated_at)', $new_date4)->countAllResults(false);
+        $get_dateTime1 = $this->where('DATE(updated_at)', $current)->countAllResults();
+        $get_dateTime2 = $this->where('DATE(updated_at)', $new_date1)->countAllResults();
+        $get_dateTime3 = $this->where('DATE(updated_at)', $new_date2)->countAllResults();
+        $get_dateTime4 = $this->where('DATE(updated_at)', $new_date3)->countAllResults();
+        $get_dateTime5 = $this->where('DATE(updated_at)', $new_date4)->countAllResults();
 
 
         return [

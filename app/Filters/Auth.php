@@ -6,7 +6,6 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Filters\FilterInterface;
 use App\Models\AdminProfileModel;
-
 class Auth implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
@@ -17,8 +16,8 @@ class Auth implements FilterInterface
         }
 
         $adminProfileModel = new AdminProfileModel();
-        $userId = session()->get('uuid'); // ใช้ UUID ที่เก็บในเซสชัน
-        $adminProfile = $adminProfileModel->where('uuid', $userId)->first();
+        $uuid = session()->get('uuid');
+        $adminProfile = $adminProfileModel->where('uuid', $uuid)->first();
 
         if ($adminProfile) {
             defined('IS_ALIVE') or define('IS_ALIVE', TRUE);
