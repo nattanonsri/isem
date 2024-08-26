@@ -1,3 +1,6 @@
+
+
+<script src="<?= base_url() ?>assets/bootstrap5/js/bootstrap.bundle.min.js"></script>
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <div class="fs-4 mb-0 text-gray-800"><?= lang('backend.dashboard') ?></div>
@@ -6,13 +9,13 @@
 </div>
 
 <!-- Content Row -->
-<div class="row justify-content-around" data-aos="fade-up">
+<div class="row" data-aos="fade-up">
 
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card shadow rounded-2 h-100 py-2">
+        <div class="card shadow rounded-2 h-100 px-3 py-2">
             <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
+                <div class="row align-items-center">
+                    <div class="col  mr-2">
                         <div class="fw-500 text-gray-600 fs-5 mb-1">
                             <?= lang('backend.sum-users') ?>
                         </div>
@@ -25,11 +28,11 @@
             </div>
         </div>
     </div>
-
+    
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card shadow rounded-2 h-100 py-2">
+        <div class="card shadow rounded-2 h-100 px-3 py-2">
             <div class="card-body">
-                <div class="row no-gutters align-items-center">
+                <div class="row align-items-center">
                     <div class="col mr-2">
                         <div class="fw-500 text-gray-600 fs-5 mb-1">
                             <?= lang('backend.male') ?>
@@ -45,9 +48,9 @@
     </div>
 
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card shadow rounded-2 h-100 py-2">
+        <div class="card shadow rounded-2 h-100 px-3 py-2">
             <div class="card-body">
-                <div class="row no-gutters align-items-center">
+                <div class="row align-items-center">
                     <div class="col mr-2">
                         <div class="fw-500 text-gray-600 fs-5 mb-1">
                             <?= lang('backend.female') ?>

@@ -1,3 +1,8 @@
+<?= $this->extend('layouts/main') ?>
+
+<?= $this->section('content') ?>
+
+
 <section class="vh-100 gradient-custom">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -10,7 +15,8 @@
                                 <?= csrf_field() ?>
                                 <div class="form-floating mb-4">
                                     <input type="text" class="form-control" name="username" id="username"
-                                        placeholder="username">
+                                        placeholder="username"
+                                        oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g,'')">
                                     <label for="username"><?= lang('profile.username') ?></label>
                                 </div>
                                 <div class="form-floating mb-4">
@@ -38,8 +44,8 @@
                 </div>
             </div>
         </div>
-
     </div>
+
 </section>
 
 
@@ -47,12 +53,12 @@
 
     $(document).ready(function () {
 
-        $('#username').on('input', function() {
-        var value = $(this).val();
-        if (/[^a-zA-Z]/.test(value)) {
-            $(this).val(value.replace(/[^a-zA-Z0-9]]/g, ''));
-        }
-    });
+        // $('#username').on('input', function () {
+        //     var value = $(this).val();
+        //     if (/[^a-zA-Z]/.test(value)) {
+        //         $(this).val(value.replace(/[^a-zA-Z0-9]/g, ''));
+        //     }
+        // });
         $('#loginfrm').on('submit', function (event) {
             event.preventDefault();
 
@@ -95,3 +101,5 @@
         });
     });
 </script>
+
+<?= $this->endSection() ?>

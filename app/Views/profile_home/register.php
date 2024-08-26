@@ -1,3 +1,9 @@
+<?= $this->extend('layouts/main') ?>
+
+<?= $this->section('content') ?>
+
+
+
 <!-- <div class="d-none d-sm-block"> -->
 <div class="vh-100 gradient-custom">
     <div class="container py-5 h-100">
@@ -232,3 +238,5 @@
 
 
 </script>
+
+<?= $this->endSection() ?>

@@ -7,8 +7,7 @@
   <title>การจัดการดูแลสุขภาพผู้สูงอายุ จังหวัดนราธิวาส</title>
   <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('/assets/icons/icon_isem.png') ?>">
 
-  <!-- bootstrap -->
-  <link href="<?= base_url() ?>assets/bootstrap5/css/bootstrap.min.css" rel="stylesheet">
+
   <!-- font -->
   <link href="<?= base_url() ?>assets/fonts/Kanit.css" rel="stylesheet">
   <!-- sweetaert2 -->
@@ -27,13 +26,16 @@
   <link href="<?= base_url() ?>/assets/dataTable/css/datatables.min.css" rel="stylesheet" />
 
 
-  <script src="<?= base_url() ?>assets/dataTable/js/dataTables.min.js"></script>
+  
+  <!-- bootstrap -->
+  <link href="<?= base_url() ?>assets/bootstrap5/css/bootstrap.min.css" rel="stylesheet">
 
+
+  <script src="<?= base_url() ?>assets/dataTable/js/dataTables.min.js"></script>
+  
   <!-- MapTiler SDK -->
   <script src="https://cdn.maptiler.com/maptiler-sdk-js/latest/maptiler-sdk.umd.js"></script>
-  <!-- font  -->
-  <script src="<?= base_url() ?>assets/bootstrap5/js/bootstrap.bundle.min.js"></script>
-  <!-- leaflet -->
+
   <script src="<?= base_url() ?>assets/leaflet/js/leaflet.js"></script>
   <script src="<?= base_url() ?>assets/leaflet/js/Control.Geocoder.js"></script>
   <!-- webcam -->
@@ -47,7 +49,11 @@
 
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js" integrity="sha512-L0Shl7nXXzIlBSUUPpxrokqq4ojqgZFQczTYlGjzONGTDAcLremjwaWv5A+EDLnxhQzY5xUZPWLOLqYRkY0Cbw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="<?= base_url() ?>assets/bootstrap5/js/bootstrap.bundle.min.js"></script>
+  <!-- <script src="<?= base_url() ?>assets/bootstrap5/js/popper.min.js"></script>
+  <script src="<?= base_url() ?>assets/bootstrap5/js/bootstrap.min.js"></script> -->
 
+  
 </head>
 
 <style>
@@ -57,6 +63,10 @@
 
   body {
     color: black;
+  }
+
+  .fw-400 {
+    font-weight: 400;
   }
 </style>
 

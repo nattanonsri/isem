@@ -1,3 +1,8 @@
+<?= $this->extend('layouts/main') ?>
+
+<?= $this->section('content') ?>
+
+
 <div class="container mt-5">
     <div class="row">
         <div class="col-xl-4 col-lg-5">
@@ -97,3 +102,5 @@
     </div>
 
 </div>
+
+<?= $this->endSection() ?>

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'create-profile' => 'ฟอร์มเพิ่มข้อมูล',
     'details'                                   => 'รายละเอียด',
     'create-success'                            => 'เพิ่มข้อมูลสำเร็จ',
     'create-error'                              => 'เพิ่มข้อมูลไม่สำเร็จ',
@@ -13,6 +14,7 @@ return [
     'login-success'                             => 'ล็อกอินสำเร็จ',
     'login-error'                               => 'ล็อกอินไม่สำเร็จ',
     'logout-success'                            => 'ล็อกเอ้าสำเร็จ',
+    'logout-error'                              => 'ล็อกเอ้าไม่สำเร็จ',
     'error'                                     => 'เกิดข้อผิดพลาด',
     'logout'                                    => 'ออกจากระบบ',
     'login'                                     => 'เข้าสู่ระบบ',
@@ -61,7 +63,9 @@ return [
     'elderly-information'                       => 'ข้อมูลผู้สูงอายุ',
     'caution'                                   => '(กรุณาถ่ายแนวนอน)',
     'seve-admin-success'                        => 'บันทึกข้อมูลสำเร็จ', 
-    'seve-admin-error'                          => 'ไม่สามารถบันทึกข้อมูลได้', 
+    'seve-admin-error'                          => 'ไม่สามารถบันทึกข้อมูลได้',
+
+
 
 
 ];

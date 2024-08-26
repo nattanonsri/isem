@@ -1,3 +1,7 @@
+<?= $this->extend('layouts/main') ?>
+
+
+<?= $this->section('content') ?>
 <!-- mobile -->
 <div class="container bg-white shadow mt-3 mb-3">
     <div class="row">
@@ -283,3 +287,5 @@
         });
     });
 </script>
+
+<?= $this->endSection() ?>

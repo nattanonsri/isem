@@ -1,5 +1,7 @@
-<div class="fs-4 mb-0 text-gray-800 ">ข้อมูลผู้สูงอายุ</div>
+<?= $this->extend('layouts/main') ?>
 
+<?= $this->section('content') ?>
+<div class="fs-4 mb-0 text-gray-800 ">ข้อมูลผู้สูงอายุ</div>
 <div class="row mt-4">
     <div class="card shadow mb-4">
         <div class="card-body mt-4">
@@ -67,3 +69,5 @@
     var tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     var tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 </script>
+
+<?= $this->endSection() ?>

@@ -1,19 +1,26 @@
+<?= $this->extend('layouts/main') ?>
+
+<?= $this->section('content') ?>
+
+<script src="<?= base_url() ?>assets/bootstrap5/js/bootstrap.bundle.min.js"></script>
+
 <div class="container">
+
   <nav class="navbar navbar-expand-lg navbar-light bg-white mt-3 mb-4 border-bottom">
     <a href="<?= base_url('/profile') ?>"
-      class="d-flex align-items-center mb-md-0 me-md-auto text-dark text-decoration-none">
+      class="d-flex align-items-center text-dark">
       <img class="img-logo" src="<?= base_url(LIBRARY_PATH . '/icons/icon_isem.png') ?>" width="50">
     </a>
-    <ul class="navbar-nav ms-auto">
-      <div class="topbar-divider d-none d-sm-block"></div>
+
+    <ul class="navbar-nav ms-auto d-none d-sm-block">
       <li class="nav-item dropdown no-arrow">
-        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <span class="me-2 d-none d-lg-inline text-gray-600 small"><?= $admin_user['fullname']; ?></span>
+        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <span class="me-2 d-lg-inline text-gray-600 small"><?= $admin_user['fullname'] ?></span>
           <i class="fa-solid fa-chevron-down"></i>
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
           <li>
-            <a class="dropdown-item" href="<?= base_url() . 'profile/profile_details/' . ADMIN_UUID ?>">
+            <a class="dropdown-item" href="<?= base_url() . 'profile/profile_details/' . USER_UUID ?>">
               <i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>
               <?= lang('profile.profile') ?>
             </a>
@@ -30,6 +37,14 @@
         </ul>
       </li>
     </ul>
+
+    
+<ul>
+  <li></li>
+</ul>
+
+
+    
   </nav>
 
   <div class="row mt-3">
@@ -57,6 +72,7 @@
   <div class="row mb-3" id="card_getdatail"></div>
 
   <script>
+
     $(document).ready(function () {
       searchButton();
     });
@@ -143,3 +159,4 @@
       });
     } 
   </script>
+  <?= $this->endSection() ?>

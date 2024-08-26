@@ -1,3 +1,7 @@
+<?= $this->extend('layouts/main') ?>
+
+<?= $this->section('content') ?>
+
 <div class="vh-100 gradient-custom">
     <div class="container py-5 h-100">
         <div class="row justify-content-center align-items-center h-100">
@@ -19,6 +23,7 @@
                                         <label for="fname"><?= lang('profile.fname') ?></label>
                                     </div>
                                 </div>
+                                
                                 <div class="col-md-6 col-12">
                                     <div class="form-floating mb-4">
                                         <input type="text" class="form-control" name="lname" id="lname"
@@ -28,6 +33,7 @@
                                         <label for="lname"><?= lang('profile.lname') ?></label>
                                     </div>
                                 </div>
+
                                 <div class="col-md-6 col-12">
                                     <div class="form-floating mb-4">
                                         <input type="date" class="form-control" name="birthday" id="birthday"
@@ -180,3 +186,5 @@
     });
 
 </script>
+
+<?= $this->endSection() ?>

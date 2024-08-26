@@ -1,54 +1,40 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\Profile_HomeModel;
-use App\Models\AdminProfileModel;
-use CodeIgniter\Controller;
+use App\Controllers\BaseController;
 use App\Libraries\Auth;
 
 
-class Profile_HomeController extends Controller
+class Profile_HomeController extends BaseController
 {
-    protected $helpers = ['url', 'form'];
-
     function __construct()
     {
         $lang = \Config\Services::language();
         $lang->setLocale('th');
-
         $this->Auth = new Auth;
     }
 
     function index()
     {
-        $admin_model = new AdminProfileModel();
-        $data['admin_user'] = $admin_model->groupAdminProfileROW(ADMIN_ID);
-
-        return view('common/header') . view('profile_home/index', $data) . view('common/footer');
+        $data['admin_user'] = $this->admin_model->groupAdminProfileROW(USER_ID);
+        return view('profile_home/index', $data);
     }
 
     function user_search()
     {
-        $profile_model = new Profile_HomeModel();
-
         $search = $this->request->getPost('search');
-
-        $data['profile'] = $profile_model->user_search($search);
-
-        return view('profile_home/card', $data) . view('common/footer');
+        $data['profile'] = $this->profile_model->user_search($search);
+        return view('profile_home/card', $data);
 
     }
+
     function load_add_user()
     {
-
-        echo view('common/header', ['title' => 'ฟอร์มเพิ่มข้อมูล']);
-        echo view('profile_home/create');
-        echo view('common/footer');
+        return view('profile_home/create');
     }
 
     function add_from_user()
     {
-        $profile_model = new Profile_HomeModel();
         if ($this->request->getPost()) {
             $prefix = $this->request->getPost('prefix');
             $fname = $this->request->getPost('fname');
@@ -89,7 +75,7 @@ class Profile_HomeController extends Controller
                 'status' => 1,
             );
 
-            $insert = $profile_model->insert($data);
+            $insert = $this->profile_model->insert($data);
 
             if ($insert) {
                 $data = array('status' => 200, 'message' => lang('profile.create-success'));
@@ -104,27 +90,21 @@ class Profile_HomeController extends Controller
 
     function load_edit_form_user($uuid)
     {
-        $profile_model = new Profile_HomeModel();
-        $data['profile'] = $profile_model->getProfileHomeByUuid($uuid);
-
-        return view('common/header') . view('profile_home/edit', $data) . view('common/footer');
+        $data['profile'] = $this->profile_model->getProfileHomeByUuid($uuid);
+        return view('profile_home/edit', $data);
     }
 
     function profile_details($uuid)
     {
-        $admin_model = new AdminProfileModel();
-        $data['admin'] = $admin_model->getAdminByUuid($uuid);
-
-        return view('common/header') . view('profile_home/profile_admin', $data) . view('common/footer');
+        $data['admin'] = $this->admin_model->getAdminByUuid($uuid);
+        return view('profile_home/profile_admin', $data);
     }
 
     function edit_form_user($uuid)
     {
         if ($this->request->getPost()) {
-            $profile_model = new Profile_HomeModel();
-
             $file = $this->request->getFile('file_image');
-            $user = $profile_model->getProfileHomeByUuid($uuid);
+            $user = $this->profile_model->getProfileHomeByUuid($uuid);
 
             if (!$user) {
                 echo json_encode(['status' => 404, 'message' => 'User not found']);
@@ -172,7 +152,7 @@ class Profile_HomeController extends Controller
                 $data['file_image'] = '/profiles/' . $imageName;
             }
 
-            $updataed_data = $profile_model->updateProfileById($id, $data);
+            $updataed_data = $this->profile_model->updateProfileById($id, $data);
 
             if ($updataed_data !== false) {
                 $data = ['status' => 200, 'message' => lang('profile.edit-success')];
@@ -185,16 +165,14 @@ class Profile_HomeController extends Controller
         }
     }
 
-
-
     function delete_form_user($uuid)
     {
         if ($this->request->getMethod() === 'DELETE') {
-            $profile_model = new Profile_HomeModel();
-            $delete_user = $profile_model->getProfileHomeByUuid($uuid);
+
+            $delete_user = $this->profile_model->getProfileHomeByUuid($uuid);
             $id = $delete_user['id'];
 
-            $deleted = $profile_model->delete($id);
+            $deleted = $this->profile_model->delete($id);
 
             if ($deleted !== false) {
                 $data = ['status' => 200, 'message' => lang('profile.delete-success')];
@@ -211,44 +189,37 @@ class Profile_HomeController extends Controller
 
     function detail_all_user($uuid)
     {
-        $profile_model = new Profile_HomeModel();
-        $users = $profile_model->getProfileAllByUUID($uuid);
-
-        if (!$profile_model) {
-            throw new \Exception('User not found');
-        }
+        $users = $this->profile_model->getProfileAllByUUID($uuid);
 
         $timestamp = strtotime($users['birthdate']);
         $users['birthdate'] = date('d-m-', $timestamp) . (date('Y', $timestamp) + 543);
         $data['users'] = $users;
 
-        return view('common/header') . view('profile_home/detailsProifle', $data) . view('common/footer');
+        return view('profile_home/detailsProifle', $data);
 
     }
 
-
     function login()
     {
-        $session = session();
-        $admin_model = new AdminProfileModel();
 
         if ($this->request->getMethod() === 'POST') {
             $username = $this->request->getPost('username');
             $password = $this->request->getPost('password');
 
-            $user = $admin_model->where('username', $username)->first();
+            $user = $this->admin_model->where('username', $username)->first();
 
             if ($user) {
                 $pass = $user['password'];
-                $authPassword = password_verify($password, $pass);
+                $authPassword = password_verify($password,$pass);
+
 
                 if ($authPassword) {
-                    $sessionData = [
+                    $session_Data = [
                         'uuid' => $user['uuid'],
                         'username' => $user['username'],
                         'logged_in' => TRUE
                     ];
-                    $session->set($sessionData);
+                    $this->session->set($session_Data);
                     return $this->response->setJSON(['success' => true]);
                 } else {
                     return $this->response->setJSON(['success' => false, 'message' => 'รหัสผ่านไม่ถูกต้อง']);
@@ -259,24 +230,20 @@ class Profile_HomeController extends Controller
             }
         }
 
-        echo view('common/header', ['title' => 'Login']);
         echo view('profile_home/login');
-        echo view('common/footer');
+
     }
 
     function register()
     {
-        echo view('common/header', ['title' => 'ฟอร์มสมัคร User Admin']);
         echo view('profile_home/register');
-        echo view('common/footer');
-
     }
+
     function add_user_admin($type)
     {
         if ($this->request->getPost()) {
 
-            $admin_model = new AdminProfileModel();
-            $insert = $admin_model->_addAdmin($type, $this->request->getPost());
+            $insert = $this->admin_model->_addAdmin($type, $this->request->getPost());
 
             if ($insert) {
                 $data = ['status' => 200, 'message' => lang('profile.seve-admin-success')];
@@ -289,15 +256,15 @@ class Profile_HomeController extends Controller
 
         }
     }
+
     function update_admin_profile($type)
     {
         if ($this->request->getPost()) {
-            $admin_model = new AdminProfileModel();
 
             $uuid = $this->request->getPost('uuid');
-            $admin = $admin_model->getAdminByUuid($uuid);
+            $admin = $this->admin_model->getAdminByUuid($uuid);
             $admin_id = $admin['id'];
-            $update_date = $admin_model->_updateAdmin($admin_id, $type, $this->request->getPost());
+            $update_date = $this->admin_model->_updateAdmin($admin_id, $type, $this->request->getPost());
 
             if ($update_date) {
                 $data = ['status' => 200, 'message' => lang('profile.edit-success')];
@@ -315,9 +282,8 @@ class Profile_HomeController extends Controller
         $fname = $this->request->getPost('fname');
         $lname = $this->request->getPost('lname');
 
-        $admin_model = new AdminProfileModel();
 
-        $isDuplicate = $admin_model->ckeckDuplicate($fname, $lname);
+        $isDuplicate = $this->admin_model->ckeckDuplicate($fname, $lname);
 
         echo json_encode(['isDuplicate' => $isDuplicate]);
         exit;

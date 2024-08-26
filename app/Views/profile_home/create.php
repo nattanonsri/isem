@@ -1,8 +1,12 @@
+<?= $this->extend('layouts/main') ?>
+
+<?= $this->section('content') ?>
+
 <div>
     <div class="container bg-white shadow mt-3 mb-3">
         <div class="row">
             <div class="col-12 mt-3">
-                <h4><?= esc($title); ?></h4>
+                <div class="fw-400 fs-4"><?= lang('profile.create-profile') ?></div>
                 <?= \Config\Services::validation()->listErrors(); ?>
             </div>
         </div>
@@ -284,3 +288,5 @@
         });
     })
 </script>
+
+<?= $this->endSection() ?>

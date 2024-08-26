@@ -40,7 +40,7 @@ class AdminProfileModel extends Model
 
     public function getAdminByUuid($uuid)
     {
-        $data = $this->where(['id' => ADMIN_ID, 'uuid' => $uuid])->first();
+        $data = $this->where(['id' => USER_ID, 'uuid' => $uuid])->first();
         return $data;
 
     }
@@ -92,7 +92,7 @@ class AdminProfileModel extends Model
             'status' => '1'
         ];
 
-       return $this->insert($add_data, false);
+        return $this->insert($add_data, false);
 
     }
 

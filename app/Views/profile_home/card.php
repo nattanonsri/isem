@@ -1,3 +1,7 @@
+<?= $this->extend('layouts/main') ?>
+
+<?= $this->section('content') ?>
+
 <?php foreach ($profile as $row): ?>
   <div class="col-sm-6 col-md-4 col-12 mt-3">
     <div class="card border shadow" data-aos="fade-up" data-aos-anchor=".other-element">
@@ -41,3 +45,5 @@
     </div>
   </div>
 <?php endforeach; ?>
+
+<?= $this->endSection() ?>
