@@ -40,17 +40,17 @@ class AdminProfileModel extends Model
 
     public function getAdminByUuid($uuid)
     {
-        $data = $this->where(['id' => USER_ID, 'uuid' => $uuid])->first();
+        $data = $this->where('uuid', $uuid)->first();
         return $data;
 
     }
 
     public function groupAdminProfile()
     {
-        $builder = $this->db->table($this->table);
-        $builder->select('id, uuid, CONCAT(fname, " ", lname) as fullname, birthday, gender, phone, username, password');
-
-        $query = $builder->get();
+        $admin = $this->db->table($this->table);
+        $admin->select('id, uuid, CONCAT(fname, " ", lname) as fullname, birthday, gender, phone, username, password');
+        $admin->where('type_admin', 'officer');
+        $query = $admin->get();
         $results = $query->getResultArray();
 
         return $results;
@@ -67,33 +67,21 @@ class AdminProfileModel extends Model
         return $results;
     }
 
-    public function ckeckDuplicate($fname, $lname)
+    public function checkDuplicate($data)
     {
-        $query = $this->where('fname', $fname)->where('lname', $lname)->get();
 
-        if ($query->getNumRows() > 0) {
-            return $query->getNumRows();
+        $query = $this->where('fname', $data['fname'])
+            ->where('lname', $data['lname'])
+            ->where('username', $data['username']);
+
+        $result = $query->get();
+
+        if ($result->getNumRows() > 0) {
+            return $result->getNumRows();
         } else {
-            return $query;
+
+            return $result->getRowArray();
         }
-    }
-    function _addAdmin($type, $data)
-    {
-        $add_data = [
-            'uuid' => create_uuid(),
-            'fname' => $data['fname'],
-            'lname' => $data['lname'],
-            'birthday' => $data['birthday'],
-            'gender' => $data['gender'],
-            'phone' => $data['phone'],
-            'username' => $data['username'],
-            'password' => password_hash($data['password'], PASSWORD_DEFAULT),
-            'type_admin' => $type,
-            'status' => '1'
-        ];
-
-        return $this->insert($add_data, false);
-
     }
 
     public function _updateAdmin($id, $type, $data)
@@ -102,7 +90,7 @@ class AdminProfileModel extends Model
             'fname' => $data['fname'],
             'lname' => $data['lname'],
             'birthday' => $data['birthday'],
-            'gender' => $data['gender'],
+            'gender' => $data['prefix'],
             'phone' => $data['phone'],
             'username' => $data['username'],
             'password' => password_hash($data['password'], PASSWORD_DEFAULT),

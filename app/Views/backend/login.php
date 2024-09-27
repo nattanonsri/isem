@@ -14,10 +14,10 @@
                 <img src="<?= base_url() . LIBRARY_PATH . '/icons/icon_isem.png' ?>" style="width: 72%;">
             </div>
 
-            <form id="frmLogin" class="login100-form validate-form">
+            <form id="frmLogin" class="validate-form" style="padding-top: 55px;">
                 <?= csrf_field() ?>
                 <input type="hidden" name="type" value="<?= lang('backend.super-admin') ?>">
-                <span class="login100-form-title">
+                <span class="login100-form-title fs-4">
                     <?= lang('backend.login-admin') ?>
                 </span>
 
@@ -25,7 +25,7 @@
                     <input class="input100" type="text" name="username" placeholder="Username">
                     <span class="focus-input100"></span>
                     <span class="symbol-input100">
-                    <i class="fa-solid fa-user" aria-hidden="true"></i>
+                        <i class="fa-solid fa-user" aria-hidden="true"></i>
                     </span>
                 </div>
 
@@ -54,7 +54,7 @@
     });
 
 
-    function btnLogin(){
+    function btnLogin() {
         let form_data = $('#frmLogin').serialize();
 
         $.ajax({
@@ -62,9 +62,8 @@
             type: 'POST',
             data: form_data,
             dataType: 'json',
-            success: function(data){
-                console.log(data);
-                if(data.status == 200){
+            success: function (data) {
+                if (data.status == 200) {
                     Swal.fire({
                         icon: 'success',
                         title: data.message,
@@ -72,7 +71,7 @@
                     }).then(function () {
                         location.href = '<?= base_url() . 'backend' ?>';
                     });
-                }else{
+                } else {
                     Swal.fire({
                         icon: 'error',
                         title: data.message,
@@ -81,7 +80,7 @@
                 }
             }
         })
-    
+
     }
 
 

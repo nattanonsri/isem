@@ -1,10 +1,16 @@
 <?= $this->extend('layouts/main') ?>
 
 <?= $this->section('content') ?>
-<div class="fs-4 mb-0 text-gray-800 ">ข้อมูลผู้สูงอายุ</div>
-<div class="row mt-4">
-    <div class="card shadow mb-4">
+
+<div class="fs-4 mx-4 text-gray-800"><?= lang('backend.elderly-people') ?></div>
+
+<div class="row m-4">
+    <div class="card shadow">
+        
         <div class="card-body mt-4">
+        <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal"
+                data-bs-target="#register_user_modal"
+                style="float: inline-end;"><?= lang('profile.add-profile') ?></button>
             <div class="table-responsive">
                 <table class="table table-striped" id="my_table_users">
                     <thead>
@@ -38,7 +44,7 @@
                                 <td><?= $user['phone'] ?></td>
                                 <td>
                                     <a role="button" data-bs-toggle="tooltip" data-bs-title="<?= lang('profile.edit') ?>"
-                                        class="modalButton">
+                                        class="modalButton" onclick="btnEditUsers('<?= $user['user_uuid'] ?>')">
                                         <i class="fa-solid fa-pen-to-square fs-3 text-warning"></i>
                                     </a>
                                     <a onclick="deleteUsers('<?= $user['user_uuid'] ?>');" role="button"

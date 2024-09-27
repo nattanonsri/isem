@@ -55,6 +55,8 @@
         top: 10px;
         left: 60px;
     }
+
+    
 </style>
 
 <div id="map"></div>
@@ -74,24 +76,21 @@
 </form>
 
 <div id="frm-switch">
-    <!-- <i class="fa-solid fa-xmark close-btn fs-4 pe-1 pt-1"></i> -->
-    <!-- <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" name="medicine" id="medicine">
-        <label class="form-check-label" for="medicine"><?= lang('Home.medicine'); ?></label>
-    </div> -->
-    <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" name="relative" id="relative">
-        <label class="form-check-label" for="relative"><?= lang('Home.relative'); ?></label>
-    </div>
-    <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" name="disease" id="disease">
-        <label class="form-check-label" for="disease"><?= lang('Home.disease'); ?></label>
-    </div>
-    <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" name="succor" id="succor">
-        <label class="form-check-label" for="succor"><?= lang('Home.succor'); ?></label>
-    </div>
 
+    <form id="frmSwitch">
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="relative" id="relative">
+            <label class="form-check-label" for="relative"><?= lang('Home.relative'); ?></label>
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="disease" id="disease">
+            <label class="form-check-label" for="disease"><?= lang('Home.disease'); ?></label>
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="succor" id="succor">
+            <label class="form-check-label" for="succor"><?= lang('Home.succor'); ?></label>
+        </div>
+    </form>
 </div>
 
 <script>
@@ -101,7 +100,7 @@
     }
 
     var key = 'SP0YvasznjoCPiwDZi6N';
-    var map = L.map('map').setView([13.7563, 100.5018], 10); // Bangkok, Thailand
+    var map = L.map('map').setView([6.2920444, 101.6806698], 10); // Bangkok, Thailand
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         apiKey: key,
@@ -124,8 +123,8 @@
             }
 
             let blueIcon = new L.Icon({
-                iconUrl: '<?= base_url(LIBRARY_PATH .'/icons/marker-icon-blue.png'); ?>',
-                shadowUrl: '<?= base_url(LIBRARY_PATH .'/icons/marker-shadow.png'); ?>',
+                iconUrl: '<?= base_url(LIBRARY_PATH . '/icons/marker-icon-blue.png'); ?>',
+                shadowUrl: '<?= base_url(LIBRARY_PATH . '/icons/marker-shadow.png'); ?>',
                 iconSize: [25, 41],
                 iconAnchor: [12, 41],
                 popupAnchor: [1, -34],
@@ -172,55 +171,60 @@
                 if (data.status == 200) {
                     profile = data.data;
                     addMarkers(profile);
-                    console.log(data.data);
                 } else {
-                    console.log(data.message);
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'ไม่มีชื่อที่ค้นหา',
+                        text: ''
+                    });
                 }
             }
         });
     }
 
-    $('#relative').click(function () {
-        var isChecked = $(this).is(':checked');
-        var relative = isChecked ? 'Yes' : 'No';
-        check_switch('relative', relative);
-    });
-
-    $('#disease').click(function () {
-        var isChecked = $(this).is(':checked');
-        var disease = isChecked ? 'Yes' : 'No';
-        check_switch('disease', disease);
-    });
-
-    $('#succor').click(function () {
-        var isChecked = $(this).is(':checked');
-        var succor = isChecked ? 'Yes' : 'No';
-        check_switch('succor', succor);
-    });
+    $(document).ready(function () {
 
 
-    function check_switch(field, value) {
 
-        $.ajax({
-            url: '<?= base_url('home/check_search_user') ?>',
-            type: 'POST',
-            data: {
-                field: field,
-                value: value,
-                '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
-            },
-            dataType: 'json',
-            success: function (data) {
-                if (data.status == 200) {
-                    profile = data.data;
-                    addMarkers(profile);
-                } else {
-                    console.log(data.message);
-                }
-            }
+        $('.form-check-input').change(function () {
+
+            var isChecked = $(this).is(':checked');
+            var field = $(this).attr('name');
+
+            console.log(isChecked);
+            console.log(field);
+            check_switch(field, isChecked);
         });
-    }
 
+        function check_switch(field, value) {
+            $.ajax({
+                url: '<?= base_url('home/check_search_user') ?>',
+                type: 'POST',
+                data: {
+                    field: field,
+                    value: value ? 'Yes' : 'No',
+                    '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status == 200) {
+                        var profile = data.data;
+                        addMarkers(profile);
+                    } else {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'ไม่มีสิ่งที่ค้นหา',
+                            text: ''
+                        });
+
+                        $('#relative').prop('checked', false);
+                        $('#disease').prop('checked', false);
+                        $('#succor').prop('checked', false);
+                    }
+                }
+            });
+        }
+    });
 
 
 

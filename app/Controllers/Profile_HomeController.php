@@ -209,10 +209,8 @@ class Profile_HomeController extends BaseController
             $user = $this->admin_model->where('username', $username)->first();
 
             if ($user) {
-                $pass = $user['password'];
-                $authPassword = password_verify($password,$pass);
-
-
+                $authPassword = password_verify($password,$user['password']);
+                
                 if ($authPassword) {
                     $session_Data = [
                         'uuid' => $user['uuid'],
@@ -279,11 +277,7 @@ class Profile_HomeController extends BaseController
 
     function check_duplicate()
     {
-        $fname = $this->request->getPost('fname');
-        $lname = $this->request->getPost('lname');
-
-
-        $isDuplicate = $this->admin_model->ckeckDuplicate($fname, $lname);
+        $isDuplicate = $this->admin_model->ckeckDuplicate($this->request->getPost());
 
         echo json_encode(['isDuplicate' => $isDuplicate]);
         exit;

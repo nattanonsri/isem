@@ -13,7 +13,7 @@
                     data-aos-anchor=".other-element">
                     <div class="card-body p-5 ">
                         <h2 class="fw-bold mb-5 text-capitalize"><?= lang('profile.register-from') ?></h2>
-                        <form id="register" method="POST">
+                        <form id="frmReg" method="POST">
                             <?= csrf_field() ?>
                             <div class="row">
                                 <div class="col-md-6 col-12">
@@ -96,7 +96,7 @@
                                     </div>
                                 </div>
 
-                                <!-- <div class="col-12 mb-4 d-none d-sm-block">
+                                <div class="col-12 mb-4 d-none d-sm-block">
                                     <span class="fs-6 fst-normal">- มีความยาวอย่างน้อย 8 ตัวอักษร</span><br>
                                     <span class="fs-6 fst-normal">- ประกอบด้วยตัวเลขอย่างน้อย 1 ตัว</span><br>
                                     <span class="fs-6 fst-normal">- ประกอบด้วยตัวอักษรพิมพ์ใหญ่อย่างน้อย 1
@@ -117,7 +117,7 @@
                                         - ประกอบด้วยตัวอักษรพิมพ์เล็กอย่างน้อย 1 ตัว</span><br>
                                     <span class="fst-normal" style="font-size: 9pt;">
                                         - ประกอบด้วยอักขระพิเศษอย่างน้อย 1 ตัว</span>
-                                </div> -->
+                                </div>
 
                                 <div class="col-12 text-end">
                                     <a href="<?= base_url('/login') ?>"
@@ -135,65 +135,139 @@
 </div>
 
 <script>
-
     $(document).ready(function () {
-        let today = new Date();
-        let dd = String(today.getDate()).padStart(2, '0');
-        let mm = String(today.getMonth() + 1).padStart(2, '0');
-        let yyyy = today.getFullYear();
-
-        today = yyyy + '-' + mm + '-' + dd;
+        // Set maximum date for birthday input to today
+        const today = new Date().toISOString().split('T')[0];
         $('#birthday').attr('max', today);
 
-        function formatPhoneNumber(phoneNumber) {
-            var cleaned = ('' + phoneNumber).replace(/\D/g, '');
+        // Format phone number in a standard way
+        const formatPhoneNumber = (phoneNumber) => {
+            const cleaned = phoneNumber.replace(/\D/g, '').substring(0, 10);
+            const match = cleaned.match(/^(\d{2})(\d{4})(\d{4})$/);
+            return match ? `${match[1]}-${match[2]}-${match[3]}` : cleaned;
+        };
 
-            if (cleaned.length > 10) {
-                cleaned = cleaned.substring(0, 10);
-            }
-            var match = cleaned.match(/^(\d{2})(\d{4})(\d{4})$/);
-
-            if (match) {
-                return match[1] + '-' + match[2] + '-' + match[3];
-            } else {
-                return cleaned.replace(/(\d{2})(\d{4})(\d{4})/, "$1-$2-$3");
-            }
-        }
-
+        // Format phone number on input
         $('#phone').on('input', function () {
-            var formattedPhoneNumber = formatPhoneNumber($(this).val());
-            if (formattedPhoneNumber) {
-                $(this).val(formattedPhoneNumber);
-            }
+            $(this).val(formatPhoneNumber($(this).val()));
         });
 
+        // Ensure username contains only letters and numbers
         $('#username').on('input', function () {
-            var value = $(this).val();
-            if (/[^a-zA-Z0-9]/.test(value)) {
-                $(this).val(value.replace(/[^a-zA-Z0-9]/g, ''));
-            }
+            $(this).val($(this).val().replace(/[^a-zA-Z0-9]/g, ''));
         });
 
+        // Function to check for duplicate registration
+        const checkDuplicateRegistration = (fname, lname, username, callback) => {
+            $.ajax({
+                url: '<?= base_url('check_duplicate'); ?>',
+                type: 'POST',
+                data: {
+                    fname: fname,
+                    lname: lname,
+                    username: username,
+                    '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
+                },
+                dataType: 'json',
+                success: (response) => {
+                    callback(response.isDuplicate);
+                },
+                error: () => {
+                    callback(false);
+                },
+            });
+        };
+
+        // Validate form fields
+        const validateForm = (formId) => {
+            let isValid = true;
+            $(`#${formId} input`).each(function () {
+                if ($(this).val().trim() === '') {
+                    isValid = false;
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'เกิดข้อผิดพลาด',
+                        text: 'กรุณากรอกข้อมูลให้ครบถ้วน',
+                    });
+                    return false;
+                }
+            });
+            return isValid;
+        };
+
+        // Validate password strength
+        const validatePassword = (password) => {
+            if (password.length < 8) return 'รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร';
+            if (!/\d/.test(password)) return 'รหัสผ่านต้องประกอบด้วยตัวเลขอย่างน้อย 1 ตัว';
+            if (!/[A-Z]/.test(password)) return 'รหัสผ่านต้องประกอบด้วยตัวอักษรพิมพ์ใหญ่อย่างน้อย 1 ตัว';
+            if (!/[a-z]/.test(password)) return 'รหัสผ่านต้องประกอบด้วยตัวอักษรพิมพ์เล็กอย่างน้อย 1 ตัว';
+            if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) return 'รหัสผ่านต้องประกอบด้วยอักขระพิเศษอย่างน้อย 1 ตัว';
+            return '';
+        };
+
+        // Submit button click event
         $('#submitBtn').on('click', function (e) {
             e.preventDefault();
 
-            if (validateForm('register')) {
-                let formData = $('#register').serialize();
+            const fname = $('#fname').val().trim();
+            const lname = $('#lname').val().trim();
+            const username = $('#username').val().trim();
+            const password = $('#password').val();
+            const repeatPassword = $('#repeat_password').val();
+
+            // Check for duplicate registration
+            checkDuplicateRegistration(fname, lname, username, (isDuplicate) => {
+                if (isDuplicate) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'เกิดข้อผิดพลาด',
+                        text: 'ข้อมูลผู้ใช้มีอยู่แล้ว',
+                        //  กรุณาไปที่หน้าลืมรหัสผ่าน
+                    });
+                    return;
+                }
+
+                // Validate form fields
+                if (!validateForm('frmReg')) return;
+
+                // Validate password strength
+                const passwordError = validatePassword(password);
+                if (passwordError) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'เกิดข้อผิดพลาด',
+                        text: passwordError,
+                    });
+                    return;
+                }
+
+                // Check if password and repeat password match
+                if (password !== repeatPassword) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'เกิดข้อผิดพลาด',
+                        text: 'รหัสผ่านและการยืนยันรหัสผ่านไม่ตรงกัน',
+                    });
+                    return;
+                }
+
+                // Serialize form data and submit
+                const formData = $('#frmReg').serialize();
                 $.ajax({
                     url: '<?= base_url('register/add_user_admin/user_admin'); ?>',
                     type: 'POST',
                     data: formData,
                     dataType: 'json',
                     success: function (data) {
-                        if (data.status == 200) {
+                        if (data.status === 200) {
                             Swal.fire({
                                 icon: 'success',
                                 title: data.message,
                                 text: ''
                             }).then(function () {
-                                window.location.href = '<?= base_url('login'); ?>'
+                                window.location.href = '<?= base_url('login'); ?>';
                             });
-                        }else{
+                        } else {
                             Swal.fire({
                                 icon: 'warning',
                                 title: data.message,
@@ -201,42 +275,18 @@
                             });
                         }
                     },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'เกิดข้อผิดพลาด',
+                            text: 'ไม่สามารถส่งข้อมูลได้ กรุณาลองใหม่อีกครั้ง',
+                        });
+                    }
                 });
-            }
+            });
         });
-
-        function checkDuplicateRegistration(fname, lname, callback) {
-            $.ajax({
-                url: '<?= base_url('check_duplicate'); ?>',
-                type: 'POST',
-                data: { fname: fname, lname: lname },
-                success: function (response) {
-                    callback(response.isDuplicate);
-                },
-                error: function () {
-                    callback(false);
-                }
-            });
-        }
-
-        function validateForm(formId) {  
-            var isValid = true;
-            $('#' + formId + ' input').each(function () {
-                if ($(this).val() === '') {
-                    isValid = false;
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'เกิดข้อผิดพลาด',
-                        text: 'กรุณากรอกข้อมูลให้ครบถ้วน'
-                    });
-                    return false;
-                }
-            });
-            return isValid;
-        }
     });
-
-
 </script>
+
 
 <?= $this->endSection() ?>

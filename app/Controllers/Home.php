@@ -40,14 +40,12 @@ class Home extends Controller
 
     public function check_search_user()
     {
-
-        
         if ($this->request->getPost()) {
             $profile_model = new Profile_HomeModel();
             
             $search = $this->request->getPost('search');
             $field = $this->request->getPost('field');
-            $value = $this->request->getPost('value');
+            $value = filter_var($this->request->getPost('value'), FILTER_VALIDATE_BOOLEAN);
 
             $check_user = $profile_model->getProfileAll($search, $field, $value);
 
@@ -59,13 +57,13 @@ class Home extends Controller
             }
 
             if ($check_user) {
-                $data = array('status' => 200, 'message' => 'suceess', 'data' => $check_user);
+                $data = ['status' => 200, 'message' => 'suceess', 'data' => $check_user];
             } else {
-                $data = array('status' => 400, 'message' => 'error'); // ไม่มีสิ่งที่คุณต้องการหา
+                $data = ['status' => 400, 'message' => 'error']; 
             }
 
-            echo json_encode($data);
-            exit;
+           return $this->response->setJSON($data);
+         
         }
     }
 

@@ -16,7 +16,7 @@ $routes->get('home/check_search_user/', 'Home::check_search_user');
 
 
 $routes->get('register', 'Profile_HomeController::register');
-$routes->post('register/add_user_admin/(:any)', 'Profile_HomeController::add_user_admin/$1');
+// $routes->post('register/add_user_admin/(:any)', 'Profile_HomeController::add_user_admin/$1');
 $routes->match(['get', 'post'], 'check_duplicate', 'Profile_HomeController::check_duplicate');
 $routes->match(['get', 'post'], 'login', 'Profile_HomeController::login');
 $routes->get('logout', 'Profile_HomeController::logout');
@@ -46,8 +46,14 @@ $routes->get('backend/logout', 'BackendController::logout');
 $routes->group('backend', ['filter' => 'AdminAuth'], function ($routes) {
     $routes->get('/', 'BackendController::index');
     $routes->post('load_content_dash/', 'BackendController::load_content_dash');
-    $routes->post('load_content_admin/', 'BackendController::load_content_admin');
+    $routes->post('load_content_officer/', 'BackendController::load_content_officer');
     $routes->post('load_content_users/', 'BackendController::load_content_users');
+    $routes->post('load_content_administrator/', 'BackendController::load_content_administrator');
+    $routes->post('load_content_maps/', 'BackendController::load_content_maps');
+    $routes->post('add_user_admin/(:any)', 'BackendController::add_user_admin/$1');
+    $routes->post('openEditOfficerModal/', 'BackendController::openEditOfficerModal');
+    $routes->post('openEditUsersModal/', 'BackendController::openEditUsersModal');
+    
     $routes->delete('delete_profile_admin/(:any)', 'BackendController::delete_profile_admin/$1');
 });
 

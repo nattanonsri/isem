@@ -1,18 +1,9 @@
+<div class="fs-4 mx-4 text-gray-800"><?= lang('backend.home') ?></div>
 
+<div class="row m-4" data-aos="fade-up">
 
-<script src="<?= base_url() ?>assets/bootstrap5/js/bootstrap.bundle.min.js"></script>
-<!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <div class="fs-4 mb-0 text-gray-800"><?= lang('backend.dashboard') ?></div>
-    <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-            class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
-</div>
-
-<!-- Content Row -->
-<div class="row" data-aos="fade-up">
-
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card shadow rounded-2 h-100 px-3 py-2">
+    <div class="col-xl-3 col-md-6 ">
+        <div class="card shadow rounded-2 px-3 py-2">
             <div class="card-body">
                 <div class="row align-items-center">
                     <div class="col  mr-2">
@@ -28,9 +19,9 @@
             </div>
         </div>
     </div>
-    
+
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card shadow rounded-2 h-100 px-3 py-2">
+        <div class="card shadow rounded-2 px-3 py-2">
             <div class="card-body">
                 <div class="row align-items-center">
                     <div class="col mr-2">
@@ -48,7 +39,7 @@
     </div>
 
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card shadow rounded-2 h-100 px-3 py-2">
+        <div class="card shadow rounded-2 px-3 py-2">
             <div class="card-body">
                 <div class="row align-items-center">
                     <div class="col mr-2">
@@ -66,7 +57,7 @@
     </div>
 </div>
 
-<div class="row justify-content-center mt-3" data-aos="fade-up">
+<div class="row justify-content-center m-4" data-aos="fade-up">
     <div class="col-12 ">
         <div class="card shadow rounded-2 mb-4">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -117,8 +108,6 @@
     var numOfDays = 4;
     var number = generatePastDates(numOfDays);
     var datatimes = <?= json_encode($datetime) ?>;
-
-    console.log(datatimes);
 
     new Chart($('#acquisitions'), {
         type: 'bar',

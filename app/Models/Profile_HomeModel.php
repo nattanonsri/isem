@@ -66,7 +66,8 @@ class Profile_HomeModel extends Model
     {
         return $this->where('prefix', 'นาย')->countAllResults();
     }
-    public function _getProfileNumRowFemale(){
+    public function _getProfileNumRowFemale()
+    {
         return $this->whereIn('prefix', ['นาง', 'นางสาว'])->countAllResults();
     }
     public function _getProfileNumAll()
@@ -82,7 +83,7 @@ class Profile_HomeModel extends Model
     {
         return $this->update($id, $data);
     }
-    public function getProfileAll($search = '', $field = '', $value = '')
+    public function getProfileAll($search = '', $field = '', $value = false)
     {
         $builder = $this->db->table($this->table);
         $builder->select('
@@ -113,29 +114,34 @@ class Profile_HomeModel extends Model
         $builder->join('tb_user_relative as relative', 'relative.id =  tb_user.relative_id', 'left');
 
         if (!empty($search)) {
-            $builder->like('CONCAT(tb_user.fname, " ",  tb_user.lname)', $search);
+            $builder->groupStart()
+                ->like('tb_user.prefix', $search)
+                ->orLike('tb_user.fname', $search)
+                ->orLike('tb_user.lname', $search)
+                ->orLike('CONCAT(tb_user.prefix, tb_user.fname)', $search)
+                ->orLike('CONCAT(tb_user.fname, " ", tb_user.lname)', $search)
+                ->orLike('CONCAT(tb_user.prefix, " ", tb_user.fname, " ", tb_user.lname)', $search)
+                ->groupEnd();
         }
-        // var_dump($field);
-        // if (!empty($field) && !empty($value)) {
-        if ($field == 'relative' && $value == 'Yes') {
-            $builder->like('tb_user.relative_id', '2');
+
+        if ($field == 'relative') {
+            $builder->where('tb_user.relative_id', '1');
+        } else if ($field == 'disease') {
+            $builder->where('tb_user.disease_id', '2');
+        } else if ($field == 'succor') {
+            $builder->where('tb_user.succor_id', '1');
         }
-        if ($field == 'disease' && $value == 'Yes') {
-            $builder->like('tb_user.disease_id', '2');
-        }
-        if ($field == 'succor' && $value == 'Yes') {
-            $builder->like('tb_user.succor_id', '2');
-        }
-        // }
 
         $results = $builder->get()->getResultArray();
-        // $results = $;
 
         return $results;
     }
 
+
     public function user_search($search = '')
     {
+
+
         $builder = $this->db->table($this->table);
         $builder->select('
         tb_user.id, 

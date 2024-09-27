@@ -6,19 +6,18 @@
 
 <div class="container">
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-white mt-3 mb-4 border-bottom">
-    <a href="<?= base_url('/profile') ?>"
-      class="d-flex align-items-center text-dark">
+  <nav class="navbar navbar-expand navbar-light bg-white mt-3 mb-4 border-bottom" style="z-index: 99999;">
+    <a href="<?= base_url('/profile') ?>" class="d-flex align-items-center text-dark">
       <img class="img-logo" src="<?= base_url(LIBRARY_PATH . '/icons/icon_isem.png') ?>" width="50">
     </a>
 
-    <ul class="navbar-nav ms-auto d-none d-sm-block">
+    <ul class="navbar-nav ms-auto">
       <li class="nav-item dropdown no-arrow">
         <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           <span class="me-2 d-lg-inline text-gray-600 small"><?= $admin_user['fullname'] ?></span>
           <i class="fa-solid fa-chevron-down"></i>
         </a>
-        <ul class="dropdown-menu dropdown-menu-end">
+        <ul class="dropdown-menu">
           <li>
             <a class="dropdown-item" href="<?= base_url() . 'profile/profile_details/' . USER_UUID ?>">
               <i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>
@@ -37,14 +36,6 @@
         </ul>
       </li>
     </ul>
-
-    
-<ul>
-  <li></li>
-</ul>
-
-
-    
   </nav>
 
   <div class="row mt-3">
@@ -70,6 +61,20 @@
     </div>
   </div>
   <div class="row mb-3" id="card_getdatail"></div>
+
+
+  <style>
+    .dropdown-menu {
+      left: -35px !important;
+    }
+
+    @media screen and (max-width: 992px) {
+      .dropdown-menu {
+        right: 5px !important;
+        /* left: -55px !important; */
+      }
+    }
+  </style>
 
   <script>
 

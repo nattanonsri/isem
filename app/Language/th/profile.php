@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'create-profile' => 'ฟอร์มเพิ่มข้อมูล',
+    'create-profile'                            => 'ฟอร์มเพิ่มผู้สูงอายุ',
     'details'                                   => 'รายละเอียด',
     'create-success'                            => 'เพิ่มข้อมูลสำเร็จ',
     'create-error'                              => 'เพิ่มข้อมูลไม่สำเร็จ',
@@ -25,7 +25,7 @@ return [
     'repeat-password'                           => 'ใส่รหัสผ่านอีกครั้ง',
     'remember-me'                               => 'จดจำชื่อผู้ใช้และรหัสผ่าน',
     "dont'have-an-account"                      => 'ยังไม่มีบัญชี?',
-    "register-from"                             => 'ฟอร์มลงทะเบียน',
+    "register-from"                             => 'ฟอร์มเพิ่มเจ้าหน้าที่',
     "fname"                                     => 'ชื่อ',
     "lname"                                     => 'นามสกุล',
     'fullname'                                  => 'ชื่อ-นามสกุล',
@@ -40,6 +40,7 @@ return [
     'seve-add-profile'                          => 'บันทึกข้อมูล',
     'seve-edit-profile'                         => 'บันทึกการแก้ไข',
     'add-profile'                               => 'เพิ่มข้อมูล',
+    'add-member'                                => 'เพิ่มเจ้าหน้าที่',
     'delete-profile'                            => 'ลบ',
     'edit-profile'                              => 'แก้ไข',
     'detail-profile'                            => 'ดูเพิ่มเติม',

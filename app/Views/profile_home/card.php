@@ -3,7 +3,8 @@
 <?= $this->section('content') ?>
 
 <?php foreach ($profile as $row): ?>
-  <div class="col-sm-6 col-md-4 col-12 mt-3">
+
+  <div class="col-md-6 col-lg-4  col-12 mt-3">
     <div class="card border shadow" data-aos="fade-up" data-aos-anchor=".other-element">
       <img src="<?= base_url(LIBRARY_PATH . $row['file_image']); ?>" class="card-img-top" width="150" height="200">
       <div class="card-body">
@@ -15,14 +16,19 @@
             <?= $row['disease_name'] ?>
           </span>
           <br>
-          <span class="text-primary" style="font-weight: 600;">
-            <?= lang('profile.caretaker') ?> :
-          </span>
+          <span class="text-primary" style="font-weight: 600;"><?= lang('profile.caretaker') ?> :</span>
           <?= !empty($row['caretaker']) ? $row['caretaker'] : lang('profile.null-value'); ?><br>
-          <span class="text-primary" style="font-weight: 600;">
-            <?= lang('profile.medicines') ?> :
-          </span>
-          <?= !empty($row['medicines']) ? $row['medicines'] : lang('profile.null-value'); ?>
+          <span class="text-primary" style="font-weight: 600;"> <?= lang('profile.medicines') ?> : </span>
+          <?php
+          $maxLength = 30;
+          $medicines = !empty($row['medicines']) ? $row['medicines'] : lang('profile.null-value');
+          
+          if (mb_strlen($medicines, 'UTF-8') > $maxLength) {
+            echo $limitedText = mb_substr($medicines, 0, $maxLength, 'UTF-8') . '...';
+          } else {
+            echo $limitedText = $medicines;
+          }
+          ?>
         </p>
         <div class="col-12 text-end mb-3">
           <a href="<?= base_url() ?>">

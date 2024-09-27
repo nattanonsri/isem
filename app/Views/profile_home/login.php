@@ -34,12 +34,12 @@
                                     type="submit"><?= lang('profile.login') ?></button>
                             </form>
                         </div>
-                        <div>
+                        <!-- <div>
                             <p class="mb-0"><?= lang("profile.dont'have-an-account") ?><a
                                     href="<?= base_url('/register') ?>"
                                     class="fw-bold ms-1"><?= lang('profile.sign-up') ?></a>
                             </p>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
