@@ -9,11 +9,12 @@ use CodeIgniter\Router\RouteCollection;
 
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
-$routes->setAutoRoute(true);
+$routes->setAutoRoute(false);
+
+
 $routes->get('/', 'Home::index');
+$routes->get('coord', 'Home::index');
 $routes->get('home/check_search_user/', 'Home::check_search_user');
-
-
 
 $routes->get('register', 'Profile_HomeController::register');
 // $routes->post('register/add_user_admin/(:any)', 'Profile_HomeController::add_user_admin/$1');
@@ -35,7 +36,6 @@ $routes->group('profile', ['filter' => 'UserAuth'] , function ($routes) {
     $routes->post('update_admin_profile/(:any)', 'Profile_HomeController::update_admin_profile/$1');
 });
 
-
 $routes->get('backend/login', 'BackendController::load_login');
 $routes->get('backend/register', 'BackendController::load_register');
 $routes->post('backend/add_admin/(:any)', 'BackendController/add_admin/$1');
@@ -56,10 +56,3 @@ $routes->group('backend', ['filter' => 'AdminAuth'], function ($routes) {
     
     $routes->delete('delete_profile_admin/(:any)', 'BackendController::delete_profile_admin/$1');
 });
-
-
-
-
-
-
-

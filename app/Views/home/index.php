@@ -55,8 +55,6 @@
         top: 10px;
         left: 60px;
     }
-
-    
 </style>
 
 <div id="map"></div>
@@ -100,7 +98,24 @@
     }
 
     var key = 'SP0YvasznjoCPiwDZi6N';
-    var map = L.map('map').setView([6.2920444, 101.6806698], 10); // Bangkok, Thailand
+
+    var latitude = 6.2920444;
+    var longitude = 101.6806698;
+    var zoom = 10;
+
+    // ตรวจสอบค่าจาก PHP
+    if (<?= json_encode($latitude) ?> && <?= json_encode($longitude) ?> && <?= json_encode($zoom) ?>) {
+        latitude = parseFloat(<?= json_encode($latitude) ?>);
+        longitude = parseFloat(<?= json_encode($longitude) ?>);
+        zoom = parseInt(<?= json_encode($zoom) ?>);
+    }
+
+    // แสดงค่าที่ได้ใน console
+    console.log('Latitude:', latitude);
+    console.log('Longitude:', longitude);
+    console.log('Zoom Level:', zoom);
+
+    var map = L.map('map').setView([latitude, longitude], zoom);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         apiKey: key,
@@ -183,8 +198,6 @@
     }
 
     $(document).ready(function () {
-
-
 
         $('.form-check-input').change(function () {
 

@@ -205,26 +205,38 @@ class Profile_HomeController extends BaseController
         if ($this->request->getMethod() === 'POST') {
             $username = $this->request->getPost('username');
             $password = $this->request->getPost('password');
+            $rememberMe = $this->request->getPost('rememberMe');
 
             $user = $this->admin_model->where('username', $username)->first();
 
             if ($user) {
-                $authPassword = password_verify($password,$user['password']);
-                
-                if ($authPassword) {
+                if (password_verify($password, $user['password'])) {
                     $session_Data = [
+                        'id' => $user['id'],
                         'uuid' => $user['uuid'],
-                        'username' => $user['username'],
-                        'logged_in' => TRUE
+                        'fullname' => $user['fname'] . ' ' . $user['lname'],
+                        'type' => $user['type_admin'],
+                        'logged_in' => true
                     ];
+
+
                     $this->session->set($session_Data);
-                    return $this->response->setJSON(['success' => true]);
+
+                    if ($rememberMe === 'on') {
+                        setcookie('remember_me', json_encode($session_Data), time() + (86400 * 7), "/login");  // 86400 วินาที = 1 วัน
+                    }
+
+
+                    if ($user['type_admin'] === 'admin') {
+                        return $this->response->setJSON(['status' => 400, 'message' => 'admin']);
+                    }
+                    return $this->response->setJSON(['status' => 200, 'message' => 'ล็อกอินสำเร็จ', 'url_redirect' => base_url('profile')]);
                 } else {
-                    return $this->response->setJSON(['success' => false, 'message' => 'รหัสผ่านไม่ถูกต้อง']);
+                    return $this->response->setJSON(['status' => 400, 'message' => 'รหัสผ่านไม่ถูกต้อง', 'url_redirect' => '']);
                 }
             } else {
                 error_log('User not found: ' . $username);
-                return $this->response->setJSON(['success' => false, 'message' => 'ไม่พบชื่อผู้ใช้']);
+                return $this->response->setJSON(['status' => 400, 'message' => 'ไม่พบชื่อผู้ใช้', 'url_redirect' => '']);
             }
         }
 
@@ -287,6 +299,8 @@ class Profile_HomeController extends BaseController
     {
         $session = session();
         $session->destroy();
+
+        setcookie('remember_me', '', time() - 3600, "/");
 
         return redirect()->to('/login')->with('success', 'You have been logged out');
 

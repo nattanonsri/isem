@@ -14,7 +14,7 @@
         </a>
     </li>
 
-    <li class="nav-item sidebar-backend-item" data-target="#sidebar-admin">
+    <li class="nav-item sidebar-backend-item" data-target="#sidebar-officer">
         <a class="nav-link" role="button" id="sideber-admin-table">
             <i class="fa-solid fa-user fs-6"></i>
             <span class="fs-6"><?= lang('backend.officer') ?></span>
@@ -28,15 +28,15 @@
         </a>
     </li>
 
-    <li class="nav-item sidebar-backend-item" data-target="#sidebar-administrator">
+    <li class="nav-item sidebar-backend-item" data-target="#sidebar-admin">
         <a class="nav-link" role="button" id="sideber-administrator-table">
             <i class="fa-solid fa-user-tie"></i>
             <span class="fs-6"><?= lang('backend.administrator') ?></span>
         </a>
     </li>
 
-    <li class="nav-item sidebar-backend-item" data-target="#sidebar-map">
-        <a class="nav-link" role="button" id="sideber-map-table">
+    <li class="nav-item sidebar-backend-item" data-target="#sidebar-maps">
+        <a class="nav-link" role="button" id="sideber-maps-table">
             <i class="fa-solid fa-location-dot"></i>
             <span class="fs-6"><?= lang('backend.map') ?></span>
         </a>

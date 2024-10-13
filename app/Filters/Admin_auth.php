@@ -10,7 +10,7 @@ class Admin_auth implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
 
-        if (!session()->get('logged_in')) {
+        if (!session()->get('logged_in') || session()->get('type') !== 'admin') {
             return redirect()->to('backend/login');
         }
 

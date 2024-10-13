@@ -35,8 +35,7 @@ class BackendController extends BaseController
 
     function load_content_officer()
     {
-        $data['admin'] = $this->admin_model->groupAdminProfile();
-
+        $data['admin'] = $this->admin_model->groupOfficerProfile();
 
         return view('backend/details_content/my_content_officer', $data);
     }
@@ -48,7 +47,9 @@ class BackendController extends BaseController
     }
     function load_content_administrator()
     {
-        return view('backend/details_content/my_content_administrator');
+        $data['admin'] = $this->admin_model->groupAdminProfile();
+
+        return view('backend/details_content/my_content_administrator', $data);
     }
     function load_content_maps()
     {
@@ -60,8 +61,11 @@ class BackendController extends BaseController
                 $profile['coordinates'] = array_map('floatval', $coords);
             }
         }
+        $data['latitude'] = 6.2920444;
+        $data['longitude'] = 101.6806698;
+        $data['zoom'] = 10;
         $data['profile_json'] = json_encode($profiles);
-        return view('backend/details_content/my_content_maps',$data);    
+        return view('home/index', $data);
     }
 
     function openEditOfficerModal()
@@ -134,22 +138,29 @@ class BackendController extends BaseController
             }
 
             $session_data = [
+                'id' => $admin['id'],
                 'uuid' => $admin['uuid'],
-                'username' => $admin['username'],
+                'fullname' => $admin['fname'] . ' ' . $admin['lname'],
+                'type' => $admin['type_admin'],
                 'logged_in' => true
             ];
 
             $this->session->set($session_data);
 
-            return $this->response->setJSON(['status' => 200, 'message' => lang('backend.login-success')]);
+            if ($admin['type_admin'] === 'officer') {
+                return $this->response->setJSON(['status' => 400, 'message' => 'officer']);
+            }
+
+            return $this->response->setJSON(['status' => 200, 'message' => lang('backend.login-success'), 'url_redirect' => base_url('backend')]);
         }
 
     }
 
-    function add_user_admin($type = '')
+    function add_user_admin()
     {
 
         if ($this->request->getPost()) {
+            $type = $this->request->getPost('type');
             $fname = $this->request->getPost('fname');
             $lname = $this->request->getPost('lname');
             $birthday = $this->request->getPost('birthday');
@@ -170,12 +181,8 @@ class BackendController extends BaseController
                 'type_admin' => $type,
                 'status' => 1
             ];
-
             $insert = $this->admin_model->insert($data);
-
-            // $insert = $this->admin_model->_addAdmin($type, $this->request->getPost(null, true));
-
-
+            
             if ($insert) {
                 $data = ['status' => 200, 'message' => lang('profile.seve-admin-success')];
             } else {

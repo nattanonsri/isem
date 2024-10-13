@@ -10,7 +10,8 @@
 <div class="limiter">
     <div class="container-login100">
         <div class="wrap-login100">
-            <div class="login100-pic js-tilt text-center" data-tilt>
+            <a href="<?= base_url('login') ?>"><i class="fa-solid fa-arrow-left fs-5"></i></a>
+            <div class="login100-pic js-tilt" data-tilt>
                 <img src="<?= base_url() . LIBRARY_PATH . '/icons/icon_isem.png' ?>" style="width: 72%;">
             </div>
 
@@ -47,6 +48,7 @@
         </div>
     </div>
 </div>
+
 <script>
 
     $('.js-tilt').tilt({
@@ -69,7 +71,7 @@
                         title: data.message,
                         text: ''
                     }).then(function () {
-                        location.href = '<?= base_url() . 'backend' ?>';
+                        location.href = data.url_redirect;
                     });
                 } else {
                     Swal.fire({

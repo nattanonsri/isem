@@ -6,7 +6,7 @@
 
 <div class="container">
 
-  <nav class="navbar navbar-expand navbar-light bg-white mt-3 mb-4 border-bottom" style="z-index: 99999;">
+  <nav class="navbar navbar-expand navbar-light bg-white mt-3 mb-4 border-bottom">
     <a href="<?= base_url('/profile') ?>" class="d-flex align-items-center text-dark">
       <img class="img-logo" src="<?= base_url(LIBRARY_PATH . '/icons/icon_isem.png') ?>" width="50">
     </a>
@@ -14,7 +14,7 @@
     <ul class="navbar-nav ms-auto">
       <li class="nav-item dropdown no-arrow">
         <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <span class="me-2 d-lg-inline text-gray-600 small"><?= $admin_user['fullname'] ?></span>
+          <span class="me-2 d-lg-inline text-gray-600 small"><?= USER_FULLNAME ?></span>
           <i class="fa-solid fa-chevron-down"></i>
         </a>
         <ul class="dropdown-menu">

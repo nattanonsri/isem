@@ -367,7 +367,7 @@ iframe {
   }
 
   .login100-pic {
-    width: 35%;
+    width: 75%;
   }
 
   .login100-form {
@@ -381,7 +381,7 @@ iframe {
   }
 
   .login100-pic {
-    display: none;
+    display: block;
   }
 
   .login100-form {
@@ -391,7 +391,8 @@ iframe {
 
 @media (max-width: 576px) {
   .wrap-login100 {
-    padding: 100px 15px 33px 15px;
+    padding: 20px 15px 33px 15px;
+    display: flex;
   }
 }
 

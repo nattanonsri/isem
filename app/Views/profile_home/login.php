@@ -3,52 +3,56 @@
 <?= $this->section('content') ?>
 
 
-<section class="vh-100 gradient-custom">
-    <div class="container py-5 h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                <div class="card " style="border-radius: 1rem;" data-aos="fade-up" data-aos-anchor=".other-element">
-                    <div class="card-body p-5 text-center">
-                        <div class="mb-md-5 mt-md-4 pb-5">
-                            <h2 class="fw-bold mb-5 text-uppercase"><?= lang('profile.login') ?></h2>
-                            <form id="loginfrm" method="POST">
-                                <?= csrf_field() ?>
-                                <div class="form-floating mb-4">
-                                    <input type="text" class="form-control" name="username" id="username"
-                                        placeholder="username"
-                                        oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g,'')">
-                                    <label for="username"><?= lang('profile.username') ?></label>
-                                </div>
-                                <div class="form-floating mb-4">
-                                    <input type="password" class="form-control" name="password" id="password"
-                                        placeholder="password">
-                                    <label for="password"><?= lang('profile.password') ?></label>
-                                </div>
-                                <!-- <div class="form-check mb-4 text-start">
-                                    <input class="form-check-input" type="checkbox" id="rememberMe">
-                                    <label class="form-check-label"
-                                        for="rememberMe"><?= lang('profile.remember-me') ?></label>
-                                </div> -->
-                                <!-- <p class="small mb-5"><a class="text-dark-50" href="#!">Forgot password?</a></p> -->
-                                <button class="btn btn-primary btn-lg px-5"
-                                    type="submit"><?= lang('profile.login') ?></button>
-                            </form>
-                        </div>
-                        <!-- <div>
-                            <p class="mb-0"><?= lang("profile.dont'have-an-account") ?><a
-                                    href="<?= base_url('/register') ?>"
-                                    class="fw-bold ms-1"><?= lang('profile.sign-up') ?></a>
-                            </p>
-                        </div> -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<section class="d-flex align-items-center py-4 vh-100" >
+    <main class="form-signin w-100 m-auto">
+        <form class="text-center" id="loginfrm">
+        <?= csrf_field() ?>
+            <img class="mb-4" src="<?= base_url() . LIBRARY_PATH. '/icons/icon_isem.png' ?>"width="72">
+            <h1 class="fs-3 mb-3"><?= lang('profile.login') ?></h1>
 
+            <div class="form-floating">
+                <input type="text" class="form-control" id="username" name="username" placeholder="username" oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g,'')">
+                <label for="username"><?= lang('profile.username') ?></label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="password" name="password" placeholder="password">
+                <label for="password"><?= lang('profile.password') ?></label>
+            </div>
+
+            <div class="form-check text-start my-3">
+                <input class="form-check-input" type="checkbox" value="remember-me" id="rememberMe">
+                <label class="form-check-label" for="rememberMe">
+                    <?= lang('profile.remember-me') ?>
+                </label>
+            </div>
+            <button class="btn btn-primary w-100 py-2" type="submit"><?= lang('profile.login') ?></button>
+            <p class="border-top pt-2 mt-5 mb-3"><a class="text-decoration-none" href="<?= base_url() . 'backend/login' ?>">สำหรับผู้ดูแลระบบ</a></p>
+        </form>
+    </main>
 </section>
 
+<style>
+    .form-signin {
+        max-width: 330px;
+        padding: 1rem;
+    }
 
+    .form-signin .form-floating:focus-within {
+        z-index: 2;
+    }
+
+    .form-signin input[type="email"] {
+        margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    .form-signin input[type="password"] {
+        margin-bottom: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+</style>
 <script>
 
     $(document).ready(function () {
@@ -72,21 +76,20 @@
                 url: '<?= base_url('login') ?>',
                 type: 'POST',
                 data: formData,
-                success: function (response) {
-                    if (response.success) {
+                success: function (data) {
+                    if (data.status == 200) {
                         Swal.fire({
                             icon: 'success',
-                            title: 'ล็อกอินสำเร็จ',
-                            showConfirmButton: false,
-                            timer: 1500
+                            title: data.message,
+                            text:''
                         }).then(function () {
-                            window.location.href = '<?= base_url('profile'); ?>';
+                            window.location.href = data.url_redirect;
                         });
                     } else {
                         Swal.fire({
                             icon: 'warning',
                             title: 'เกิดข้อผิดพลาด',
-                            text: response.message
+                            text: data.message
                         });
                     }
                 },

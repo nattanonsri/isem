@@ -6,7 +6,9 @@
 
   <div class="col-md-6 col-lg-4  col-12 mt-3">
     <div class="card border shadow" data-aos="fade-up" data-aos-anchor=".other-element">
-      <img src="<?= base_url(LIBRARY_PATH . $row['file_image']); ?>" class="card-img-top" width="150" height="200">
+      <div
+        style="background-image: url(<?= base_url(LIBRARY_PATH . $row['file_image']); ?>); width: 100%; height: 200px;background-size: cover; background-repeat: no-repeat; background-position: center; border-top-left-radius: 5px; border-top-right-radius: 5px;">
+      </div>
       <div class="card-body">
         <h5 class="card-title" style="font-weight: 600;">
           <?= $row['prefix'] . $row['fullname']; ?>
@@ -22,7 +24,7 @@
           <?php
           $maxLength = 30;
           $medicines = !empty($row['medicines']) ? $row['medicines'] : lang('profile.null-value');
-          
+
           if (mb_strlen($medicines, 'UTF-8') > $maxLength) {
             echo $limitedText = mb_substr($medicines, 0, $maxLength, 'UTF-8') . '...';
           } else {
@@ -31,7 +33,7 @@
           ?>
         </p>
         <div class="col-12 text-end mb-3">
-          <a href="<?= base_url() ?>">
+          <a href="<?= base_url('/coord?coordinates=' . urlencode($row['coordinates']) . '&zoom=16') ?>">
             <i class="fa-solid fa-location-dot fs-3"></i>
           </a>
         </div>

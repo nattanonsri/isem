@@ -9,7 +9,7 @@ class AdminProfileModel extends Model
     protected $table = 'tb_admin_profile';
     protected $primaryKey = 'id';
     protected $returnType = 'array';
-    protected $allowedFields = ['uuid', 'fname', 'lname', 'birthday', 'gender', 'phone', 'username', 'password'];
+    protected $allowedFields = ['uuid', 'fname', 'lname', 'birthday', 'gender', 'phone', 'username', 'type_admin','password'];
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
     protected $useTimestamps = true;
@@ -45,7 +45,7 @@ class AdminProfileModel extends Model
 
     }
 
-    public function groupAdminProfile()
+    public function groupOfficerProfile()
     {
         $admin = $this->db->table($this->table);
         $admin->select('id, uuid, CONCAT(fname, " ", lname) as fullname, birthday, gender, phone, username, password');
@@ -56,6 +56,16 @@ class AdminProfileModel extends Model
         return $results;
     }
 
+    public function groupAdminProfile()
+    {
+        $admin = $this->db->table($this->table);
+        $admin->select('id, uuid, CONCAT(fname, " ", lname) as fullname, birthday, gender, phone, username, password');
+        $admin->where('type_admin', 'admin');
+        $query = $admin->get();
+        $results = $query->getResultArray();
+
+        return $results;
+    }
     public function groupAdminProfileROW($admin_id)
     {
         $builder = $this->db->table($this->table);

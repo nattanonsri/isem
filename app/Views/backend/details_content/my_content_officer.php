@@ -8,11 +8,10 @@
         </p> -->
 
         <div class="card-body mt-4">
-            <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal"
-                data-bs-target="#register_user_admin_modal"
+            <button type="button" class="btn btn-primary btn-lg" onclick="btnCreateOfficertAdmin('officer')"
                 style="float: inline-end;"><?= lang('profile.add-member') ?></button>
             <div class="table-responsive">
-                <table class="table table-striped" id="my_table_admin" width="100%" cellspacing="0">
+                <table class="table table-striped" id="my_table_officer" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th style="width: 6%;"></th>
@@ -67,7 +66,7 @@
 
 
 <script>
-    new DataTable('#my_table_admin', {
+    new DataTable('#my_table_officer', {
         language: {
             lengthMenu: "_MENU_",
             search: "ค้นหา:",

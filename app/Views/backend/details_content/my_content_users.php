@@ -68,7 +68,8 @@
 <script>
     new DataTable('#my_table_users', {
         language: {
-            lengthMenu: "_MENU_"
+            lengthMenu: "_MENU_",
+            search: "ค้นหา:",
         }
     });
 

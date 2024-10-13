@@ -41,7 +41,7 @@
             </div>
             <div class="col-md-7 col-12 mt-3">
                 <div class="form-floating">
-                    <input type="text" name="card_id" id="card_id" class="form-control"
+                    <input type="text" name="card_id" id="card_id" class="form-control" maxlength="13" minlength="13"
                         placeholder="<?= lang('profile.card_id') ?>" value="<?= esc($profile['card_id']) ?>" />
                     <label for="card_id"><?= lang('profile.card_id') ?><span class="me-1 text-danger">*</span></label>
                 </div>
@@ -241,6 +241,10 @@
 
         var form = $('#frmEditMobile')[0];
         var formData = new FormData(form);
+    
+        var card_id = $('#card_id').val();
+
+        if(card_id == )
 
         $.ajax({
             url: '<?= base_url('/profile/edit_form_user/') . $profile['uuid']; ?>',
@@ -256,16 +260,14 @@
                         title: data.message,
                         showConfirmButton: true,
                     }).then(function () {
-                        window.location.href = '<?= base_url('profile') ?>'
+                        window.location.reload();
                     });
                 } else {
                     Swal.fire({
                         icon: 'warning',
                         title: data.message,
                         showConfirmButton: true,
-                    }).then(function () {
-                        window.location.reload();
-                    });
+                    })
                 }
 
             },

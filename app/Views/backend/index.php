@@ -9,103 +9,28 @@
             <div class="container-fluid item-content" id="sidebar-dashboard">
                 <div id="content-dashboard" data-aos="fade-up"></div>
             </div>
-            <div class="container-fluid item-content d-none" id="sidebar-admin">
+            <div class="container-fluid item-content d-none" id="sidebar-officer">
                 <div id="content-admin" data-aos="fade-up"></div>
             </div>
             <div class="container-fluid item-content d-none" id="sidebar-users">
                 <div id="content-users" data-aos="fade-up"></div>
             </div>
+            <div class="container-fluid item-content d-none" id="sidebar-admin">
+                <div id="content-administrator" data-aos="fade-up"></div>
+            </div>
+            <div class="item-content d-none" id="sidebar-maps">
+                <div id="content-maps" data-aos="fade-up"></div>
+            </div>
         </div>
-        <footer class="sticky-footer bg-white">
+        <!-- <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
                     <!-- <span>Copyright &copy; Your Website 2021</span> -->
-                </div>
-            </div>
-        </footer>
     </div>
 </div>
-
-
-<!-- Modal -->
-<div class="modal fade" id="register_user_admin_modal" tabindex="-1" aria-labelledby="register_user_admin_Label"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel"><?= lang('profile.register-from') ?></h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="frmAddUserAdmin">
-                    <div class="row">
-
-                        <div class="col-2">
-                            <div class="form-floating">
-                                <select class="form-select" name="prefix" id="prefix">
-                                    <option selected><?= lang('profile.prefix') ?></option>
-                                    <option value="<?= lang('profile.prefix-mr') ?>"> <?= lang('profile.prefix-mr') ?>
-                                    </option>
-                                    <option value="<?= lang('prfile.prefix-mrs') ?>"><?= lang('profile.prefix-mrs') ?>
-                                    </option>
-                                    <option value="<?= lang('profile.prefixmiss') ?>"><?= lang('profile.prefix-miss') ?>
-                                    </option>
-                                </select>
-                                <label for="floatingSelectGrid"><?= lang('profile.prefix') ?></label>
-                            </div>
-                        </div>
-                        <div class="col-5">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="fname" id="fname" required>
-                                <label for="fname"><?= lang('profile.fname') ?></label>
-                            </div>
-                        </div>
-                        <div class="col-5">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="lname" id="lname" required>
-                                <label for="lname"><?= lang('profile.lname') ?></label>
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="username" id="username"
-                                    oninput="this.value = this.value.replace(/[^a-zA-z0-9_]/g, '')" required>
-                                <label for="username"><?= lang('profile.username') ?></label>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-floating mb-3">
-                                <input type="password" class="form-control" name="password" id="password" required>
-                                <label for="password"><?= lang('profile.password') ?></label>
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="form-floating mb-3">
-                                <input type="date" class="form-control" name="birtday" id="birthday">
-                                <label for="birthday"><?= lang('profile.birthday') ?></label>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control phone" name="phone" id="phone">
-                                <label for="phone"><?= lang('profile.phone') ?></label>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
-                    data-bs-dismiss="modal"><?= lang('profile.cancel') ?></button>
-                <button type="submit" id="btnAddUserAdmin"
-                    class="btn btn-primary"><?= lang('profile.seve-add-profile') ?></button>
-            </div>
-        </div>
-    </div>
+</footer> -->
 </div>
-
+</div>
 
 <!-- editadminModal -->
 <div class="modal fade" id="editadminModal" tabindex="-1" aria-labelledby="editadminModalLabel" aria-hidden="true">
@@ -331,6 +256,85 @@
 
 
 
+<!-- Register Modal -->
+<div class="modal fade" id="register_modal" tabindex="-1" aria-labelledby="registerLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"><?= lang('profile.register-from') ?></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmAddUserAdmin">
+                    <div class="row">
+                        <input type="hidden" name="type" id="type">
+                        <div class="col-2">
+                            <div class="form-floating">
+                                <select class="form-select" name="prefix" id="prefix_officer_admin">
+                                    <!-- <option ><?= lang('profile.prefix') ?></option> -->
+                                    <option selected value="<?= lang('profile.prefix-mr') ?>"> <?= lang('profile.prefix-mr') ?>
+                                    </option>
+                                    <option value="<?= lang('prfile.prefix-mrs') ?>"><?= lang('profile.prefix-mrs') ?>
+                                    </option>
+                                    <option value="<?= lang('profile.prefixmiss') ?>"><?= lang('profile.prefix-miss') ?>
+                                    </option>
+                                </select>
+                                <label for="floatingSelectGrid"><?= lang('profile.prefix') ?><span class="te    xt-danger">*</span></label>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="fname" id="fname_officer_admin" required>
+                                <label for="fname_officer_admin"><?= lang('profile.fname') ?><span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="lname" id="lname_officer_admin" required>
+                                <label for="lname_officer_admin"><?= lang('profile.lname') ?><span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="username" id="username_officer_admin"
+                                    oninput="this.value = this.value.replace(/[^a-zA-z0-9_]/g, '')" required>
+                                <label for="username_officer_admin"><?= lang('profile.username') ?><span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" name="password" id="password_officer_admin" required>
+                                <label for="password_officer_admin"><?= lang('profile.password') ?><span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="date" class="form-control" name="birtday" id="birthday_officer_admin">
+                                <label for="birthday_officer_admin"><?= lang('profile.birthday') ?></label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control phone" name="phone" id="phone_officer_admin">
+                                <label for="phone_officer_admin"><?= lang('profile.phone') ?></label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal"><?= lang('profile.cancel') ?></button>
+                <button type="submit" id="btnAddUserAdmin"
+                    class="btn btn-primary"><?= lang('profile.seve-add-profile') ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
 <style>
@@ -473,6 +477,11 @@
     })
 
 
+    function btnCreateOfficertAdmin(type) {
+        $('#type').val(type);
+        $('#register_modal').modal('show');
+    }
+
     $('.sidebar-backend-item').click(function () {
         let target = $(this).attr('data-target');
         $('.item-content').addClass('d-none');
@@ -508,7 +517,6 @@
             }
         });
     }
-
 
     function loadContentUsers() {
         $.ajax({
@@ -625,16 +633,17 @@
     $('#btnAddUserAdmin').click(function (e) {
         e.preventDefault();
 
-        let formData = $('#frmAddUserAdmin').serialize();
+        var formData = $('#frmAddUserAdmin').serialize();
 
-        let prefix = $('#prefix').val();
-        let fname = $('#fname').val().trim();
-        let lname = $('#lname').val().trim();
-        let username = $('#username').val().trim();
-        let password = $('#password').val().trim();
+        var type = $('#type').val();
+        var prefix = $('#prefix_officer_admin').val();
+        var fname = $('#fname_officer_admin').val().trim();
+        var lname = $('#lname_officer_admin').val().trim();
+        var username = $('#username_officer_admin').val().trim();
+        var password = $('#password_officer_admin').val().trim();
 
         if (!prefix || !fname || !lname || !username || !password) {
-            let message = '';
+            var message = '';
             if (!prefix) message = 'กรุณากรอกคำนำหน้า';
             else if (!fname) message = 'กรุณากรอกชื่อ';
             else if (!lname) message = 'กรุณากรอกนามสกุล';
@@ -649,7 +658,7 @@
             return;
         }
         $.ajax({
-            url: '<?= base_url('backend/add_user_admin/officer') ?>',
+            url: '<?= base_url('backend/add_user_admin/') ?>' + type,
             type: 'POST',
             data: formData,
             dataType: 'json',
