@@ -175,7 +175,7 @@
     function searchButton() {
         let search = $('#txtkeyword').val();
         $.ajax({
-            url: '<?= base_url('Home/check_search_user'); ?>',
+            url: '<?= base_url('check_search_user'); ?>',
             type: 'POST',
             data: {
                 search: search,
@@ -204,14 +204,13 @@
             var isChecked = $(this).is(':checked');
             var field = $(this).attr('name');
 
-            console.log(isChecked);
-            console.log(field);
+  
             check_switch(field, isChecked);
         });
 
         function check_switch(field, value) {
             $.ajax({
-                url: '<?= base_url('home/check_search_user') ?>',
+                url: '<?= base_url('check_search_user') ?>',
                 type: 'POST',
                 data: {
                     field: field,

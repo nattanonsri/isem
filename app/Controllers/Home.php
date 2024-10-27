@@ -15,8 +15,6 @@ class Home extends Controller
         $lang->setLocale('th');
 
         $this->Auth = new Auth;
-
-
     }
 
     public function index()

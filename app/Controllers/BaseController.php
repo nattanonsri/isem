@@ -50,8 +50,6 @@ abstract class BaseController extends Controller
      * @return void
      */
 
-    protected $admin_model;
-    protected $profile_model;
     protected $session;
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
@@ -64,8 +62,6 @@ abstract class BaseController extends Controller
 
         $this->session = \Config\Services::session();
 
-        $this->admin_model = new AdminProfileModel();
-        $this->profile_model = new Profile_HomeModel();
     }
     
 }

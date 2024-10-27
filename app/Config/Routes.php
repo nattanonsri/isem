@@ -14,7 +14,7 @@ $routes->setAutoRoute(false);
 
 $routes->get('/', 'Home::index');
 $routes->get('coord', 'Home::index');
-$routes->get('home/check_search_user/', 'Home::check_search_user');
+$routes->post('check_search_user/', 'Home::check_search_user');
 
 $routes->get('register', 'Profile_HomeController::register');
 // $routes->post('register/add_user_admin/(:any)', 'Profile_HomeController::add_user_admin/$1');
